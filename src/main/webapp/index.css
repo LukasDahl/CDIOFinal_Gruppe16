@@ -1,0 +1,31 @@
+body{
+    background-color: white;
+    color: black;
+}
+.center {
+    text-align: center;
+}
+.left {
+    text-align: left;
+}
+table.center {
+    margin-left:auto;
+    margin-right:auto;
+}
+.border{
+    margin-left:auto;
+    margin-right:auto;
+    width: 270px;
+    border-width: thin;
+    border-color: black;
+    border-radius: 0.2cm;
+    border-style: solid;
+}
+.noborder{
+    border-style: none;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+}
