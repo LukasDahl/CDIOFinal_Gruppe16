@@ -1,13 +1,12 @@
 package rest;
 
-import database.dal.*;
-import database.dto.*;
+import csv.dal.*;
+import csv.dto.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Path("/user")
@@ -33,7 +32,7 @@ public class User {
 		}
 		else{
 			IUserDTO userDTO = jsonToUser(user);
-			IUserDAO userDAO = new UserDAO();
+			IUserDAO userDAO = UserDAO.getInstance();
 			try {
 				userDAO.createUser(userDTO);
 			} catch (IUserDAO.DALException e) {
@@ -47,7 +46,7 @@ public class User {
 
 	@GET
 	public ArrayList<JSONuser> getUserList() throws IUserDAO.DALException {
-		IUserDAO userDAO = new UserDAO();
+		IUserDAO userDAO = UserDAO.getInstance();
 		List<IUserDTO> users = userDAO.getUserList();
  		return userToJSON(users);
 	}
