@@ -1,7 +1,6 @@
 package database.dal;
 
-import dto.IUserDTO;
-import dto.UserDTO;
+import database.dto.*;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;

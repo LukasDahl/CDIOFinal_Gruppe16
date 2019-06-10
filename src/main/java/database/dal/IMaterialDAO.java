@@ -1,6 +1,7 @@
 package database.dal;
 
-import dto.IMaterialDTO;
+import database.dto.*;
+
 import java.util.List;
 
 public interface IMaterialDAO extends IDALException{

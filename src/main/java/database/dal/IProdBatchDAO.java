@@ -1,6 +1,6 @@
 package database.dal;
 
-import dto.IProdBatchDTO;
+import database.dto.*;
 
 import java.util.List;
 

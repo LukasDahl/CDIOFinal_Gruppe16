@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brugeradmin</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <LINK REL="SHORTCUT ICON" HREF="favicon.ico">
+<!--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script type="text/javascript" src="jquery-3.1.1.js"></script>
+    <script type="text/javascript" src="jquery.serialize-object.js"></script>
+    <script type="text/javascript" src="usermethods.js"></script>
+</head>
+
+<body>
+
+    <div>
+        <h1 class="center"><b>Administration</b></h1>
+        <h2 class="center"><i>Gruppe 16</i></h2>
+    </div>
+    <div id="bodytest">
+        <script>
+            $(document).ready(function(){
+                $("#useradmin").click(function(){
+                    $("#bodytest").load("brugerliste.html");
+                });
+            });
+        </script>
+        <br>
+        <div class="center">
+            <button id="useradmin" class="center">Brugeradmin</button>
+        </div>
+
+    </div>
+</body>
+</html>

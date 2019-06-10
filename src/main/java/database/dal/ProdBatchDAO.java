@@ -1,6 +1,6 @@
 package database.dal;
 
-import dto.*;
+import database.dto.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

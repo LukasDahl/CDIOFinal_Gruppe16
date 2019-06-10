@@ -1,0 +1,26 @@
+    <script>
+            $(document).ready(function(){
+                $("#newuser").click(function(){
+                    $("#bodytest").load("newuser.html");
+                });
+            });
+        </script>
+        <table style="width:75%" class="center">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Brugernavn</th>
+                <th>Initialer</th>
+                <th>CPR</th>
+                <th>Roller</th>
+            </tr>
+            </thead>
+            <tbody id="usertablebody">
+
+            </tbody>
+        </table>
+        <br>
+    <div class="center">
+         <button id="newuser" class="center">Opret bruger</button>
+    </div>
+<script>loadUsers();</script>

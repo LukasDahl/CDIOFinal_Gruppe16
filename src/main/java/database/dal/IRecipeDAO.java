@@ -1,6 +1,6 @@
 package database.dal;
 
-import dto.IRecipeDTO;
+import database.dto.*;
 import java.util.List;
 
 public interface IRecipeDAO extends IDALException{

@@ -1,7 +1,6 @@
 package database.dal;
 
-import dto.IRecipeDTO;
-import dto.RecipeDTO;
+import database.dto.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

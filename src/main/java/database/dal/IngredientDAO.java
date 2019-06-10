@@ -1,7 +1,6 @@
 package database.dal;
 
-import dto.IIngredientDTO;
-import dto.IngredientDTO;
+import database.dto.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;

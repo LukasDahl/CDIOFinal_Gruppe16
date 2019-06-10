@@ -1,7 +1,6 @@
 package database.dal;
 
-import dto.IMaterialDTO;
-import dto.MaterialDTO;
+import database.dto.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
