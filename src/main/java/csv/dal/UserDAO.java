@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO implements IUserDAO {
+public class 	UserDAO implements IUserDAO {
 	private static IUserDAO instance;
 
 	public static IUserDAO getInstance(){
