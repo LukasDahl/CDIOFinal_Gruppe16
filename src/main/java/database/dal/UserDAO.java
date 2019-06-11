@@ -10,7 +10,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAO implements IUserDAO {
+
+	private static IUserDAO instance;
+
+	public static IUserDAO getInstance(){
+		if(instance == null)
+			instance = new UserDAO();
+		return instance;
+	}
+
 	private Connection createConnection() throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		return DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160068?"
 				+ "user=s160068&password=D8meeg0vOUC5OjertVLZV");
 	}
@@ -35,8 +49,8 @@ public class UserDAO implements IUserDAO {
 
 			st.setInt(1, user.getUserId());
 			st.setString(2, user.getUserName());
-			st.setInt(3, user.getUserIni());
-			st.setInt(4, user.getUserCPR());
+			st.setString(3, user.getIni());
+			st.setString(4, user.getCpr());
 			st.setBoolean(5, user.isAdmin());
 			st.setBoolean(6, user.isLabo());
 			st.setBoolean(7, user.isPLeader());
@@ -169,4 +183,19 @@ public class UserDAO implements IUserDAO {
 			throw new DALException(e.getMessage());
 		}
 	}
+
+	public boolean idAvailable(int id) throws DALException{
+		boolean avail;
+		try (Connection c = createConnection()){
+			Statement st = c.createStatement();
+			ResultSet rs;
+			rs = st.executeQuery("SELECT * FROM Brugere WHERE bruger_id = " + id);
+			avail = !rs.next();
+		} catch (SQLException e) {
+			throw new DALException(e.getMessage());
+		}
+
+		return avail;
+	}
+
 }
