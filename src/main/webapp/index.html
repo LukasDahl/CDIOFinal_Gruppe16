@@ -40,6 +40,13 @@
                 });
             });
         </script>
+        <script>
+            $(document).ready(function(){
+                $("#raevarebatch").click(function(){
+                    $("#bodytest").load("raevarebatchliste.html");
+                });
+            });
+        </script>
         <br>
         <div class="center">
             <button id="useradmin" class="center">Brugeradmin</button>
@@ -49,6 +56,9 @@
         </div>
         <div class="center">
             <button id="recipe" class="center">Opskriftliste</button>
+        </div>
+        <div class="center">
+            <button id="raevarebatch" class="center">Råvarebatchliste</button>
         </div>
 
     </div>
