@@ -1,7 +1,7 @@
 package rest;
 
-import csv.dal.*;
-import csv.dto.*;
+import database.dal.*;
+import database.dto.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -61,7 +61,7 @@ public class User {
 		JSONuser juser;
 		ArrayList<JSONuser> jusers = new ArrayList<>();
 		for (IUserDTO user: users){
-			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), user.getPassword(), user.getRoles().get(0));
+			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), "");
 			jusers.add(juser);
 		}
 		return jusers;
@@ -73,8 +73,10 @@ public class User {
 		user.setUserName(juser.getUsername());
 		user.setIni(juser.getIni());
 		user.setCpr(juser.getCpr());
-		user.setPassword(juser.getPassword());
-		user.addRole(juser.getRole());
+		user.setAdmin(false);
+		user.setLabo(false);
+		user.setPharma(false);
+		user.setPLeader(false);
 		return user;
 	}
 
