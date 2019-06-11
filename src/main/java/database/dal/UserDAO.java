@@ -29,16 +29,18 @@ public class UserDAO implements IUserDAO {
 				throw  new DALException("ID already in use");
 			}
 
-			PreparedStatement st = c.prepareStatement("INSERT INTO Brugere VALUES (?,?,?,?,?,?)");
+			PreparedStatement st = c.prepareStatement("INSERT INTO Brugere VALUES (?,?,?,?,?,?,?,?)");
 			PreparedStatement ps;
 
 
 			st.setInt(1, user.getUserId());
 			st.setString(2, user.getUserName());
-			st.setBoolean(3, user.isAdmin());
-			st.setBoolean(4, user.isLabo());
-			st.setBoolean(5, user.isPLeader());
-			st.setBoolean(6, user.isPharma());
+			st.setInt(3, user.getUserIni());
+			st.setInt(4, user.getUserCPR());
+			st.setBoolean(5, user.isAdmin());
+			st.setBoolean(6, user.isLabo());
+			st.setBoolean(7, user.isPLeader());
+			st.setBoolean(8, user.isPharma());
 			st.executeUpdate();
 			if (user.isAdmin()){
 				ps = c.prepareStatement("INSERT  INTO Administratorer VALUES (?)");

@@ -11,6 +11,8 @@ public class UserDTO implements Serializable, IUserDTO {
 	//Fields
 	private int	userId;
 	private String userName;
+	private int userIni;
+	private int userCPR;
 	private boolean isAdmin;
 	private boolean isPharma;
 	private boolean isPLeader;
@@ -35,6 +37,14 @@ public class UserDTO implements Serializable, IUserDTO {
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
+	@Override
+	public int getUserIni(){return userIni;}
+	@Override
+	public void setUserIni(int userIni) {this.userIni = userIni;}
+	@Override
+	public int getUserCPR(){return userCPR;}
+	@Override
+	public void setUserCPR(int userCPR) {this.userCPR = userCPR;}
 	@Override
 	public boolean isAdmin() {
 		return isAdmin;

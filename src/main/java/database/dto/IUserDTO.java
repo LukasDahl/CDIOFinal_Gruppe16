@@ -11,6 +11,14 @@ public interface IUserDTO {
 
 	void setUserName(String userName);
 
+	int getUserIni();
+
+	void setUserIni(int userIni);
+
+	int getUserCPR();
+
+	void setUserCPR(int userCPR);
+
 	void setAdmin(boolean admin);
 
 	boolean isAdmin();

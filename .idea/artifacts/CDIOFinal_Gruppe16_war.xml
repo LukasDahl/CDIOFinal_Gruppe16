@@ -1,12 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="war" name="CDIOFinal_Gruppe16:war">
     <output-path>$PROJECT_DIR$/target</output-path>
-    <properties id="maven-jee-properties">
-      <options>
-        <module>CDIOFinal_Gruppe16</module>
-        <packaging>war</packaging>
-      </options>
-    </properties>
     <root id="archive" name="CDIOFinal_Gruppe16-0.0.1-SNAPSHOT.war">
       <element id="artifact" artifact-name="CDIOFinal_Gruppe16:war exploded" />
     </root>
