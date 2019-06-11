@@ -96,6 +96,8 @@ public class UserDAO implements IUserDAO {
 
 			user.setUserId(rs.getInt("bruger_id"));
 			user.setUserName(rs.getString("bruger_navn"));
+			user.setIni(rs.getString("ini"));
+			user.setCpr(rs.getString("cpr"));
 			user.setAdmin(rs.getBoolean("isAdmin"));
 			user.setLabo(rs.getBoolean("isLaborant"));
 			user.setPLeader(rs.getBoolean("isProduktionsleder"));
@@ -123,6 +125,8 @@ public class UserDAO implements IUserDAO {
 			{
 				user.setUserId(rs.getInt("bruger_id"));
 				user.setUserName(rs.getString("bruger_navn"));
+				user.setIni(rs.getString("ini"));
+				user.setCpr(rs.getString("cpr"));
 				user.setAdmin(rs.getBoolean("isAdmin"));
 				user.setLabo(rs.getBoolean("isLaborant"));
 				user.setPLeader(rs.getBoolean("isProduktionsleder"));
@@ -142,16 +146,18 @@ public class UserDAO implements IUserDAO {
 	public void updateUser(IUserDTO user) throws DALException {
 
 		try (Connection c = createConnection()){
-			PreparedStatement st = c.prepareStatement("UPDATE Brugere SET bruger_navn = ?, isAdministrator = ?, isLaborant = ?, isProduktionsleder = ?, isFarmaceut = ? WHERE bruger_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE Brugere SET bruger_navn = ?, ini = ?, cpr = ?, isAdministrator = ?, isLaborant = ?, isProduktionsleder = ?, isFarmaceut = ? WHERE bruger_id = ?");
 			Statement str = c.createStatement();
 			ResultSet rs;
 
 			st.setString(1,user.getUserName());
-			st.setBoolean(2,user.isAdmin());
-			st.setBoolean(3,user.isLabo());
-			st.setBoolean(4,user.isPLeader());
-			st.setBoolean(5,user.isPharma());
-			st.setInt(6,user.getUserId());
+			st.setString(2, user.getIni());
+			st.setString(3, user.getCpr());
+			st.setBoolean(4,user.isAdmin());
+			st.setBoolean(5,user.isLabo());
+			st.setBoolean(6,user.isPLeader());
+			st.setBoolean(7,user.isPharma());
+			st.setInt(8,user.getUserId());
 			st.executeUpdate();
 
 			if(user.isAdmin()){
