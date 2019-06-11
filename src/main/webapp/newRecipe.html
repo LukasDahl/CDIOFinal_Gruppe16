@@ -30,7 +30,7 @@
 
                 Antal ingredienser:
                 <div class="custom-select" style="width:200px;">
-                    <select>
+                    <select id="select1">
                         <option value="0">V&aelig;lg antal:</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -41,31 +41,48 @@
                     </select>
                 </div>
 
-                <table style="width:75%" class="center">
-                    <tbody>
+                <table style="width:250px" class="center">
+                    <thead>
                     <tr>
+                        <th></th>
+                        <th>Ingrediens:</th>
+                        <th>M&aelig;ngde:</th>
+                        <th>Tolerence:</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ingtablebody">
+                    <tr>
+                        <td> 1 </td>
                         <td>
-                            Ingrediens: <select>
+                            <select>
                             <option value="0">V&aelig;lg antal:</option>
                             <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option>
                             <option value="4">4</option>
                             <option value="5">5</option>
-                            <option value="5">6</option>
+                            <option value="6">6</option>
                             </select>
                         </td>
                         <td>
-                            M&aelig;ngde: <input type="text" name="mængde"/>
+                            <input type="text" name="mængde" size="7"/>
                         </td>
                         <td>
-                            Tolerence: <input type="text" name="tolerence">
+                            <input type="text" name="tolerence" size="7">
                         </td>
                     </tr>
                     </tbody>
+                </table>
 
             </form>
             &nbsp
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $('#select1').change(function(){
+            setIng(this.value);
+        });
+    });
+</script>
