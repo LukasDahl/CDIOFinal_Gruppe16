@@ -25,9 +25,19 @@
                 });
             });
         </script>
+        <script>
+            $(document).ready(function(){
+                $("#ingredient").click(function(){
+                    $("#bodytest").load("ingredientslist.html");
+                });
+            });
+        </script>
         <br>
         <div class="center">
             <button id="useradmin" class="center">Brugeradmin</button>
+        </div>
+        <div class="center">
+            <button id="ingredient" class="center">Ingrediens liste</button>
         </div>
 
     </div>
