@@ -7,14 +7,8 @@ function setIng(x) {
         $("#ingtablebody").append('<tr>' +
             '<td>'+ j +'</td>' +
             '<td>' +
-            '    <select name="ing"'+ i +'>' +
-            '    <option value="0">V&aelig;lg antal:</option>' +
-            '    <option value="1">1</option>' +
-            '    <option value="2">2</option>' +
-            '    <option value="3">3</option>' +
-            '    <option value="4">4</option>' +
-            '    <option value="5">5</option>' +
-            '    <option value="5">6</option>' +
+            '    <select id="dropdown'+i+'" name="ing'+ i +'">' +
+            '    <option value="0">V&aelig;lg</option>' +
             '    </select>' +
             '</td>' +
             '<td>' +
@@ -25,4 +19,17 @@ function setIng(x) {
             '</td>' +
             '</tr>');
     }
+    getIngNames();
+}
+
+function getIngNames() {
+    $.get('rest/ingredient', function (data, textStatus, req) {
+        var j;
+        for (j=0; j < 6; j++){
+        var $dropdown = $("#dropdown" + j);
+        $.each(data, function (i, elt) {
+            $dropdown.append($("<option />").val(this.id).text(this.name));
+        });
+        }
+    });
 }
