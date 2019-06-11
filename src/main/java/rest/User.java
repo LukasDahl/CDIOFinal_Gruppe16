@@ -60,8 +60,19 @@ public class User {
 	public static ArrayList<JSONuser> userToJSON(List<IUserDTO> users){
 		JSONuser juser;
 		ArrayList<JSONuser> jusers = new ArrayList<>();
+		String role;
 		for (IUserDTO user: users){
-			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), "");
+			if (user.isPharma()){
+				role = "Farmaceut";
+			}
+			else if (user.isPLeader()){
+				role = "Produktionsleder";
+			}
+			else {
+				role = "Laborant";
+			}
+
+			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), "", role);
 			jusers.add(juser);
 		}
 		return jusers;
@@ -73,10 +84,29 @@ public class User {
 		user.setUserName(juser.getUsername());
 		user.setIni(juser.getIni());
 		user.setCpr(juser.getCpr());
-		user.setAdmin(false);
-		user.setLabo(false);
-		user.setPharma(false);
-		user.setPLeader(false);
+		if (juser.getAdmin().equals("yes")){
+			user.setAdmin(true);
+		}
+		else {
+			user.setAdmin(false);
+		}
+
+		if (juser.getRole().equals("Farmaceut")){
+			user.setPharma(true);
+			user.setPLeader(true);
+			user.setLabo(true);
+		}
+		else if (juser.getRole().equals("Produktionsleder")){
+			user.setPharma(false);
+			user.setPLeader(true);
+			user.setLabo(true);
+		}
+		else{
+			user.setPharma(false);
+			user.setPLeader(false);
+			user.setLabo(true);
+		}
+
 		return user;
 	}
 

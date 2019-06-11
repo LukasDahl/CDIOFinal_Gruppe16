@@ -113,7 +113,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public List<IUserDTO> getUserList() throws DALException {
 
-		IUserDTO user = new UserDTO();
+		IUserDTO user;
 		List<IUserDTO> userList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
@@ -123,6 +123,7 @@ public class UserDAO implements IUserDAO {
 
 			while (rs.next())
 			{
+				user = new UserDTO();
 				user.setUserId(rs.getInt("bruger_id"));
 				user.setUserName(rs.getString("bruger_navn"));
 				user.setIni(rs.getString("ini"));
@@ -131,10 +132,8 @@ public class UserDAO implements IUserDAO {
 				user.setLabo(rs.getBoolean("isLaborant"));
 				user.setPLeader(rs.getBoolean("isProduktionsleder"));
 				user.setPharma(rs.getBoolean("isFarmaceut"));
-
 				userList.add(user);
 			}
-
 		} catch (SQLException e) {
 			throw new DALException(e.getMessage());
 		}

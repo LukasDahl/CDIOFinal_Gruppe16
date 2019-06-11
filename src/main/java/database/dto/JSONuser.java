@@ -6,13 +6,15 @@ public class JSONuser {
 	String username;
 	String ini;
 	String cpr;
+	String admin;
 	String role;
 
-	public JSONuser(String id, String username, String ini, String cpr, String role){
+	public JSONuser(String id, String username, String ini, String cpr, String admin,String role){
 		this.id = id;
 		this.username = username;
 		this.ini = ini;
 		this.cpr = cpr;
+		this.admin = admin;
 		this.role = role;
 	}
 
@@ -48,6 +50,14 @@ public class JSONuser {
 
 	public void setIni(String ini) {
 		this.ini = ini;
+	}
+
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
 	}
 
 	public String getRole() {
