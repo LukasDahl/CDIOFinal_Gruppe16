@@ -1,0 +1,25 @@
+    <script>
+            $(document).ready(function(){
+                $("#newraevare").click(function(){
+                    $("#bodytest").load("newraevarebatch.html");
+                });
+            });
+        </script>
+        <table style="width:75%" class="center">
+            <thead>
+            <tr>
+                <th>RåvareID</th>
+                <th>Råvare Navn</th>
+                <th>Mængde</th>
+                <th>Leverandør</th>
+            </tr>
+            </thead>
+            <tbody id="usertablebody">
+
+            </tbody>
+        </table>
+        <br>
+    <div class="center">
+         <button id="newraevare" class="center">Opret batch</button>
+    </div>
+<script>loadUsers();</script>
