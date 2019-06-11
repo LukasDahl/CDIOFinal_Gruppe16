@@ -30,12 +30,15 @@ public class User {
 		else if(!user.getCpr().matches("[0-9]{6}-[0-9]{4}")){
 			return Response.status(Response.Status.BAD_REQUEST).entity("Opgiv venligst gyldigt CPR").build();
 		}
+		else if(user.getIni().length() > 4 || user.getIni().length() < 2){
+			return Response.status(Response.Status.BAD_REQUEST).entity("Opgiv venligst gyldige initialer").build();
+		}
 		else{
 			IUserDTO userDTO = jsonToUser(user);
 			IUserDAO userDAO = UserDAO.getInstance();
 			try {
 				userDAO.createUser(userDTO);
-			} catch (IUserDAO.DALException e) {
+			} catch (IDALException.DALException e) {
 				e.printStackTrace();
 			}
 			ID = findNextID(ID);

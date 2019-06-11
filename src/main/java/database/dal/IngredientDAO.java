@@ -7,11 +7,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class IngredientDAO implements IIngredientDAO {
+
 	private Connection createConnection() throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		return DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160068?"
 				+ "user=s160068&password=D8meeg0vOUC5OjertVLZV");
 	}
 
+
+	private static IIngredientDAO instance;
+
+	public static IIngredientDAO getInstance(){
+		if(instance == null)
+			instance = new IngredientDAO();
+		return instance;
+	}
 
 	@Override
 	public void createIngredient(IIngredientDTO ingredient) throws IIngredientDAO.DALException {
@@ -68,7 +82,7 @@ public class IngredientDAO implements IIngredientDAO {
 	@Override
 	public List<IIngredientDTO> getIngredientList() throws IIngredientDAO.DALException {
 
-		IIngredientDTO ingredient = new IngredientDTO();
+		IIngredientDTO ingredient;
 		List<IIngredientDTO> ingredientList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
@@ -78,6 +92,7 @@ public class IngredientDAO implements IIngredientDAO {
 
 			while (rs.next())
 			{
+				ingredient = new IngredientDTO();
 				ingredient.setIngredientId(rs.getInt("ingrediens_id"));
 				ingredient.setIngredientName(rs.getString("ingrediens_navn"));
 				ingredient.setActive(rs.getBoolean("isAktiv"));

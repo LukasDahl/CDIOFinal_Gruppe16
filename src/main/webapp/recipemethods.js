@@ -18,10 +18,10 @@ function setIng(x) {
             '    </select>' +
             '</td>' +
             '<td>' +
-            '    <input type="text" name="mængde'+ i +'" size="7"/>' +
+            '    <input type="text" name="mængde'+ i +'" size="6"/>' +
             '</td>' +
             '<td>' +
-            '   <input type="text" name="tolerence'+ i +'" size="7">' +
+            '   <input type="text" name="tolerence'+ i +'" size="6">' +
             '</td>' +
             '</tr>');
     }
