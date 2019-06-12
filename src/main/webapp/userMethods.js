@@ -16,7 +16,7 @@ function createUser(){
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("brugerliste.html");
+            $("#bodytest").load("userList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);
