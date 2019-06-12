@@ -140,40 +140,42 @@ public class RecipeDAO implements IRecipeDAO{
 	@Override
 	public List<IRecipeDTO> getRecipeList() throws DALException {
 
-		IRecipeDTO recipe = new RecipeDTO();
+		IRecipeDTO recipe;
 		List<IRecipeDTO> recipeList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
 			Statement str = c.createStatement();
 			Statement st = c.createStatement();
-			ResultSet rs = st.executeQuery("SELECT * FROM Ingredienser");
+			ResultSet res;
+			ResultSet rs = st.executeQuery("SELECT * FROM Opskrifter");
 			List<Integer> ingList;
 			List<Double> amountList;
 			List<Integer> pharmaList;
 			List<Double> marginList;
 			while (rs.next())
 			{
+				recipe = new RecipeDTO();
 				recipe.setRecipeId(rs.getInt("opskrift_id"));
 				recipe.setProductId(rs.getInt("produkt_id"));
 				recipe.setDate(rs.getDate("dato"));
 
-				rs = str.executeQuery("SELECT * FROM Opskrift_Ingrediens WHERE opskrift_id = "+ recipe.getRecipeId());
+				res = str.executeQuery("SELECT * FROM Opskrift_Ingrediens WHERE opskrift_id = "+ recipe.getRecipeId());
 				ingList = new ArrayList<>();
 				amountList = new ArrayList<>();
 				marginList = new ArrayList<>();
-				while (rs.next()){
-					ingList.add(rs.getInt("ingrediens_id"));
-					amountList.add(rs.getDouble("mængde"));
-					marginList.add(rs.getDouble("afvigelse"));
+				while (res.next()){
+					ingList.add(res.getInt("ingrediens_id"));
+					amountList.add(res.getDouble("mængde"));
+					marginList.add(res.getDouble("afvigelse"));
 				}
 				recipe.setIngList(ingList);
 				recipe.setAmount(amountList);
 				recipe.setMargin(marginList);
 
-				rs = str.executeQuery("SELECT * FROM Farmaceuter_Opskrifter WHERE opskrift_id = "+ recipe.getRecipeId());
+				res = str.executeQuery("SELECT * FROM Farmaceuter_Opskrifter WHERE opskrift_id = "+ recipe.getRecipeId());
 				pharmaList = new ArrayList<>();
-				while (rs.next()){
-					pharmaList.add(rs.getInt("bruger_id"));
+				while (res.next()){
+					pharmaList.add(res.getInt("bruger_id"));
 				}
 				recipe.setPharmaList(pharmaList);
 
