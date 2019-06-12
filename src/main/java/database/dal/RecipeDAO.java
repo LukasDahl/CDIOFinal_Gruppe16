@@ -7,6 +7,14 @@ import java.util.List;
 
 public class RecipeDAO implements IRecipeDAO{
 
+	private static IRecipeDAO instance;
+
+	public static IRecipeDAO getInstance(){
+		if(instance == null)
+			instance = new RecipeDAO();
+		return instance;
+	}
+
 	private Connection createConnection() throws SQLException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
