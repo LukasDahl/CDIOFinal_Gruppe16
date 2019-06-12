@@ -240,6 +240,13 @@ public class Main {
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							nettoweight = Float.parseFloat(commands[2].substring(1, (commands[2].length() - 1)));
 
+							for (int i = 0; i < recipe.getIngList().size(); i++){
+								if (recipe.getIngList().get(i) == currentIngredient){
+									Double expeded_nettoweight = recipe.getAmount().get(i);
+
+								}
+							}
+
 							// tjek at der er rigtig mængde og insert into produktion
 							System.out.println(nettoweight);
 							c.setWrite("RM20 8 \"Remove brutto\" \"\" \"&3\"");
