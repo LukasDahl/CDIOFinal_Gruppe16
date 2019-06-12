@@ -27,4 +27,8 @@ public interface IRecipeDTO {
 	List<Integer> getIngList();
 
 	void setIngList(List<Integer> ingList);
+
+	List<Double> getMargin();
+
+	void setMargin(List<Double> marginList);
 }

@@ -12,6 +12,7 @@ public class RecipeDTO implements Serializable, IRecipeDTO {
 	private Date date;
 	private List<Integer> pharmaList;
 	private List<Integer> ingList;
+	private List<Double> margin;
 
 	@Override
 	public int getRecipeId() {
@@ -60,6 +61,14 @@ public class RecipeDTO implements Serializable, IRecipeDTO {
 	@Override
 	public void setIngList(List<Integer> ingList) {
 		this.ingList = ingList;
+	}
+	@Override
+	public List<Double> getMargin() {
+		return margin;
+	}
+	@Override
+	public void setMargin(List<Double> marginList) {
+		this.margin = marginList;
 	}
 	@Override
 	public String toString(){
