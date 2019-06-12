@@ -6,7 +6,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAO implements IUserDAO {
@@ -36,8 +35,6 @@ public class UserDAO implements IUserDAO {
 		try (Connection c = createConnection()){
 			Statement statement = c.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM Brugere WHERE bruger_id = " + user.getUserId());
-			LinkedList<Integer> uid = new LinkedList<>();
-			boolean idUsed = false;
 
 			if(rs.next()){
 				throw  new DALException("ID already in use");
@@ -145,7 +142,7 @@ public class UserDAO implements IUserDAO {
 	public void updateUser(IUserDTO user) throws DALException {
 
 		try (Connection c = createConnection()){
-			PreparedStatement st = c.prepareStatement("UPDATE Brugere SET bruger_navn = ?, ini = ?, cpr = ?, isAdministrator = ?, isLaborant = ?, isProduktionsleder = ?, isFarmaceut = ? WHERE bruger_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE Brugere SET bruger_navn = ?, ini = ?, cpr = ?, isAdmin = ?, isLaborant = ?, isProduktionsleder = ?, isFarmaceut = ? WHERE bruger_id = ?");
 			Statement str = c.createStatement();
 			ResultSet rs;
 

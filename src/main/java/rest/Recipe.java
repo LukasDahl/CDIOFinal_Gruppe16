@@ -6,7 +6,6 @@ import database.dto.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +31,7 @@ public class Recipe {
 
 
 
-    public static IRecipeDTO jsonToRecipe(JSONrecipe jrecipe){
+    private static IRecipeDTO jsonToRecipe(JSONrecipe jrecipe){
         IRecipeDTO recipe = new RecipeDTO();
 
 

@@ -37,7 +37,7 @@ public class Ingredient {
     }
 
 
-    public static IIngredientDTO jsonToIng(JSONingredient jing){
+    private static IIngredientDTO jsonToIng(JSONingredient jing){
         IIngredientDTO ing = new IngredientDTO();
         ing.setIngredientId(Integer.parseInt(jing.getId()));
         ing.setIngredientName(jing.getName());
@@ -45,10 +45,9 @@ public class Ingredient {
         return ing;
     }
 
-    public static ArrayList<JSONingredient> ingToJSON(List<IIngredientDTO> ings){
+    private static ArrayList<JSONingredient> ingToJSON(List<IIngredientDTO> ings){
         JSONingredient jing;
         ArrayList<JSONingredient> jings = new ArrayList<>();
-        String role;
         for (IIngredientDTO ing: ings){
             jing = new JSONingredient(""+ing.getIngredientId(), ing.getIngredientName());
             jings.add(jing);

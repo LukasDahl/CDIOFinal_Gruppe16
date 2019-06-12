@@ -5,7 +5,6 @@ import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -35,7 +34,6 @@ public class ProductDAO implements IProductDAO{
 
 
             PreparedStatement st = c.prepareStatement("INSERT INTO Produkter VALUES (?,?)");
-            PreparedStatement ps;
             int productId = product.getProductId();
             String productName = product.getProductName();
 
@@ -101,7 +99,7 @@ public class ProductDAO implements IProductDAO{
     public void updateProduct(IProductDTO product) throws IProductDAO.DALException {
 
         try (Connection c = createConnection()){
-            PreparedStatement st = c.prepareStatement("UPDATE Produkter SET produkt_navn = ? WHERE userID = ?");
+            PreparedStatement st = c.prepareStatement("UPDATE Produkter SET produkt_navn = ? WHERE produkt_id = ?");
             int productId = product.getProductId();
             String productName = product.getProductName();
 
