@@ -33,15 +33,15 @@ public class Main {
 			String[] commands = {"Unknown", "Command"};
 			String text;
 			String product_name = null;
-			List<Integer> ingredientArray;
-			int state = 0, currentIngredient;
+			List<Integer> ingredientArray = null;
+			int state = 0, currentIngredient = 0;
 			int operator;
 			int batch;
 			double taraweight = 0;
 			double nettoweight = 0;
 			double bruttoweight = 0;
 			double expeded_nettoweight = 0;
-			double tolerance;
+			double tolerance = 0;
 			int tararound = 0;
 			int nettoround = 0;
 			int bruttoround = 0;
@@ -210,7 +210,9 @@ public class Main {
 
 
 							try {
+								System.out.println(materialDAO.getMaterial(operator));
 								material = materialDAO.getMaterial(operator);
+								currentIngredient = material.getIngredientId();
 
 								for (int ing: ingredientArray){
 									if (ing == currentIngredient) {
@@ -245,15 +247,21 @@ public class Main {
 							for (int i = 0; i < recipe.getIngList().size(); i++){
 								if (recipe.getIngList().get(i) == currentIngredient){
 									expeded_nettoweight = recipe.getAmount().get(i);
-									//Double tolerance = recipe
+									tolerance = recipe.getMargin().get(i)/100;
 								}
 							}
 
-							if ( expeded_nettoweight * 100-tolerance nettoweight )
-							System.out.println(nettoweight);
-							c.setWrite("RM20 8 \"Remove brutto\" \"\" \"&3\"");
-							state++;
-							state++;
+							if ( expeded_nettoweight * (1 - tolerance) <= nettoweight ) {
+								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
+									c.setWrite("RM20 8 \"Remove netto\" \"\" \"&3\"");
+									state++;
+									state++;
+								} else {
+									c.setWrite("RM20 8 \""+ nettoweight +" for meget\" \"\" \"&3\"");
+								}
+							} else {
+								c.setWrite("RM20 8 \""+ nettoweight +" for lidt\" \"\" \"&3\"");
+							}
 							commands[0] = "Unknown";
 						}
 						break;
@@ -280,14 +288,13 @@ public class Main {
 						}
 						break;
 					case 17:
-						bruttoround = Math.round(bruttoweight * 100);
-						if (bruttoround == 0) {
-							for (String ing : ingredientArray) {
-								færdig = true;
-								if (currentIngredient.equals(ing)) {
-									ing = "tom";
+						if (bruttoweight == 0) {
+							færdig = true;
+							for (int ing : ingredientArray) {
+								if (currentIngredient == ing) {
+									ing = 0;
 								}
-								if (!ing.equals("tom")) {
+								if (ing != 0) {
 									færdig = false;
 								}
 							}
