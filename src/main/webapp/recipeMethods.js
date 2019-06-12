@@ -5,17 +5,17 @@ function setIng(x) {
     for (i = 0; i < y; i++){
         var j = i + 1;
         $("#ingtablebody").append('<tr>' +
-            '<td>'+ j +'</td>' +
+            '<td width="7%">'+ j +'</td>' +
             '<td>' +
-            '    <select id="dropdown'+i+'">' +
+            '    <select id="dropdown'+i+'" style="width: 80px">' +
             '    <option value="0">V&aelig;lg</option>' +
             '    </select>' +
             '</td>' +
             '<td>' +
-            '    <input type="number" id="mængde'+i+'" step="0.0001" min="0.0500" max="20.0000" size="5"/>' +
+            '    <input type="number" id="mængde'+i+'" style="width: 60px" >' +
             '</td>' +
             '<td>' +
-            '   <input type="number" id="afvigelse'+i+'" step="0.1" min="0.1" max="10.0" size="5"/>' +
+            '   <input type="number" id="afvigelse'+i+'" style="width: 60px">' +
             '</td>' +
             '</tr>');
     }
@@ -28,6 +28,7 @@ function getIngNames() {
         for (j=0; j < 6; j++){
             var $dropdown = $("#dropdown" + j);
             $dropdown.empty();
+            $dropdown.append($('<option value="0">V&aelig;lg</option>'));
             $.each(data, function (i, elt) {
                 $dropdown.append($("<option />").val(this.id).text(this.name));
             });
@@ -39,6 +40,7 @@ function getProdNames() {
     $.get('rest/product', function (data, textStatus, req) {
         var $dropdown = $("#productDropdown");
         $dropdown.empty();
+        $dropdown.append($('<option value="0">V&aelig;lg</option>'));
         $.each(data, function (i, elt) {
             $dropdown.append($("<option />").val(this.id).text(this.name));
         });
@@ -72,7 +74,7 @@ function createRecipe() {
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("recipelist.html");
+            $("#bodytest").load("recipeList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);
@@ -80,4 +82,17 @@ function createRecipe() {
     });
 }
 
+function loadRecipes() {
+    $.get('rest/recipe', function (data, textStatus, req) {
+        $("#recipetablebody").empty();
+        $.each(data, function (i, elt) {
+            $('#recipetablebody').append(generateRecipeHTML(elt));
+        });
+    });
+}
 
+function generateRecipeHTML(recipe) {
+    return '<tr><td>' + recipe.id + '</td>' +
+        '<td>' + recipe.product + '</td>' +
+        '<td>' + recipe.antal + '</td>';
+}

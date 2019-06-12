@@ -30,6 +30,14 @@ public class Recipe {
         return Response.ok("Opskrift oprettet").build();
     }
 
+    @GET
+    public ArrayList<JSONrecipe> getRecipeList() throws IDALException.DALException {
+        IRecipeDAO recipeDAO = RecipeDAO.getInstance();
+        List<IRecipeDTO> recipes = recipeDAO.getRecipeList();
+        return recipesToJSON(recipes);
+    }
+
+
 
 
     private static IRecipeDTO jsonToRecipe(JSONrecipe jrecipe){
@@ -65,6 +73,24 @@ public class Recipe {
         recipe.setMargin(margin);
 
         return recipe;
+    }
+
+    private static ArrayList<JSONrecipe> recipesToJSON(List<IRecipeDTO> recipes){
+        JSONrecipe jrecipe;
+        IProductDAO productDAO = new ProductDAO();
+        ArrayList<JSONrecipe> jrecipes = new ArrayList<>();
+        for(IRecipeDTO recipe: recipes){
+            jrecipe = new JSONrecipe();
+            try {
+                jrecipe.setId("" + recipe.getRecipeId());
+                jrecipe.setAntal("" + recipe.getIngList().size());
+                jrecipe.setProduct(productDAO.getProduct(recipe.getProductId()).getProductName());
+            } catch (IDALException.DALException e) {
+                e.printStackTrace();
+            }
+            jrecipes.add(jrecipe);
+        }
+        return jrecipes;
     }
 
 }

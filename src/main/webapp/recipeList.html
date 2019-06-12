@@ -1,0 +1,27 @@
+<script>
+    $(document).ready(function(){
+        $("#newRecipe").click(function(){
+            $("#bodytest").load("newRecipe.html");
+        });
+    });
+</script>
+
+<table style="width:75%" class="center">
+    <thead>
+    <tr>
+        <th>Opskrifts-ID</th>
+        <th>Produktnavn</th>
+        <th>Antal af ingredienser</th>
+    </tr>
+    </thead>
+    <tbody id="recipetablebody">
+    </tbody>
+</table> <br>
+
+<div class="center">
+    <button id="newRecipe" class="center">Tilføj opskrift</button>
+</div>
+
+<script>
+    loadRecipes();
+</script>
