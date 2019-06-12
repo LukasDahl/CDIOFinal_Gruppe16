@@ -1,18 +1,40 @@
 package scale;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
+import database.dal.IDALException;
+import database.dal.*;
+import database.dto.*;
+
 import java.io.IOException;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 public class Main {
 
 	public static void main(String[] args) {
+
 		Connection c = new Connection();
+		UserDAO userDAO = new UserDAO();
+		IUserDTO user;
+		ProdBatchDAO prodBatchDAO = new ProdBatchDAO();
+		IProdBatchDTO prodBatch;
+		RecipeDAO recipeDAO = new RecipeDAO();
+		IRecipeDTO recipe = null;
+		ProductDAO productDAO = new ProductDAO();
+		IProductDTO product;
+		MaterialDAO materialDAO = new MaterialDAO();
+		IMaterialDTO material = null;
+
+
 		boolean exit = false;
 		while(!exit) {
 			String reply;
-			String[] commands = {"Unknown", "Command"}, ingredientArray = {"Salt", "Vand", "Sukker"};
-			String text, currentIngredient = "";
-			int state = 0;
+			String[] commands = {"Unknown", "Command"};
+			String text;
+			String product_name = null;
+			List<Integer> ingredientArray;
+			int state = 0, currentIngredient;
 			int operator;
 			int batch;
 			float taraweight = 0;
@@ -56,35 +78,25 @@ public class Main {
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 
-							String name = "bob";
 							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							if (!name.equals("")) {
-								text = "RM20 8 \"Operator: " + name + "\" \"\" \"&3\"";
-								c.setWrite(text);
-								state++;
-								//c.setWrite("RM20 8 \"Operator: " + name + "\" \"\" \"&3\"");
-								System.out.println("hej");
-								try {
-									Thread.sleep(100);
-								} catch (InterruptedException e) {
-									e.printStackTrace();
+								user = userDAO.getUser(operator);
+								if (user.isPLeader() || user.isLabo() || user.isPharma()){
+									text = "RM20 8 \"Operator: " + user.getUserName() + "\" \"\" \"&3\"";
+									c.setWrite(text);
+									state++;
+								} else {
+									c.setWrite("RM20 8 \"ingen adgang\" \"\" \"&3\"");
 								}
-							} else {
-								c.setWrite("RM20 8 \"Epic fail\" \"\" \"&3\"");
-								state--;
+
+							} catch (IDALException.DALException e) {
+								c.setWrite("RM20 8 \"Findes ikke\" \"\" \"&3\"");
 							}
 						}
-
-
 						commands[0] = "Unknown";
 						break;
 					case 2:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							c.setWrite("RM20 8 \"Indtast batchnr.\" \"\" \"&3\"");
+							c.setWrite("RM20 8 \"Indtast ProdBatchNr.\" \"\" \"&3\"");
 							state++;
 						}
 						commands[0] = "Unknown";
@@ -94,9 +106,14 @@ public class Main {
 							batch = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 
 							try {
-								//select opskrif from produktbatch where id = batch
+								prodBatch = prodBatchDAO.getProdBatch(batch);
+								int opskrift_id = prodBatch.getRecipeId();
+								recipe = recipeDAO.getRecipe(opskrift_id);
+								int product_id = recipe.getProductId();
+								product = productDAO.getProduct(product_id);
+								product_name = product.getProductName();
 								state++;
-								text = "RM20 8 \"Batch: " + batch + "\" \"\" \"&3\"";
+								text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
 								c.setWrite(text);
 								System.out.println("hej2");
 							} catch (Exception e) {
@@ -108,6 +125,8 @@ public class Main {
 						break;
 					case 4:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
+							ingredientArray = recipe.getIngList();
+
 							state++;
 							c.setWrite("T");
 							System.out.println("hej3");
@@ -121,9 +140,6 @@ public class Main {
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
-							//text = "RM20 8 \"Indtast operatornr.\" \"\" \"&3\"";
-							//c.setWrite(text);
-							System.out.println("hej4");
 							text = "RM20 8 \"Placer beholderen\" \"\" \"&3\"";
 							c.setWrite(text);
 							try {
@@ -137,7 +153,6 @@ public class Main {
 						break;
 					case 6:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							System.out.println("hej5");
 							state++;
 							state++;
 							state++;
@@ -190,35 +205,32 @@ public class Main {
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 
-							if (operator == 4) {
-								currentIngredient = "Sukker";
-							} else if (operator == 2) {
-								currentIngredient = "Vand";
-							} else if (operator == 1) {
-								currentIngredient = "Salt";
-							}
 
-							//tjek hvad er det og at der er nok tilbage
-							String name = "select aktiv from råvarebatch where id = operator";
 
-							for (String ing : ingredientArray) {
-								if (ing == currentIngredient) {
-									match = true;
+							try {
+								material = materialDAO.getMaterial(operator);
+
+								for (int ing: ingredientArray){
+									if (ing == currentIngredient) {
+										match = true;
+										state++;
+										c.setWrite("RM20 8 \"placer " + product_name + "\" \"\" \"&3\"");
+									}
 								}
-							}
-							if (match) {
-								state++;
-								c.setWrite("RM20 8 \"placer " + currentIngredient + "\" \"\" \"&3\"");
-							} else {
-								c.setWrite("RM20 8 \"råvare batch ikke fundet.\" \"\" \"&3\"");
-								state--;
-							}
 
+							} catch (IDALException.DALException e) {
+								e.printStackTrace();
+								c.setWrite("RM20 8 \"råvare batch ikke fundet.\" \"\" \"&3\"");
+							}
+							if (!match) {
+								c.setWrite("RM20 8 \"ikke del af opskrift.\" \"\" \"&3\"");
+							}
 						}
 						commands[0] = "Unknown";
 						break;
 					case 12:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
+							currentIngredient = material.getIngredientId();
 							c.setWrite("S");
 							state++;
 							commands[0] = "Unknown";
@@ -227,6 +239,7 @@ public class Main {
 					case 13:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							nettoweight = Float.parseFloat(commands[2].substring(1, (commands[2].length() - 1)));
+
 							// tjek at der er rigtig mængde og insert into produktion
 							System.out.println(nettoweight);
 							c.setWrite("RM20 8 \"Remove brutto\" \"\" \"&3\"");
