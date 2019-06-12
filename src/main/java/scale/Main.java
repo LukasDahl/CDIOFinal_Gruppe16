@@ -37,9 +37,11 @@ public class Main {
 			int state = 0, currentIngredient;
 			int operator;
 			int batch;
-			float taraweight = 0;
-			float nettoweight = 0;
-			float bruttoweight = 0;
+			double taraweight = 0;
+			double nettoweight = 0;
+			double bruttoweight = 0;
+			double expeded_nettoweight = 0;
+			double tolerance;
 			int tararound = 0;
 			int nettoround = 0;
 			int bruttoround = 0;
@@ -163,7 +165,7 @@ public class Main {
 						break;
 					case 7:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
-							taraweight = Float.parseFloat(commands[2].substring(1, (commands[2].length() - 1)));
+							taraweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
 							// insert into produktbatch(produktbatchkomponenten) value(taraweight) where id = id
 							c.setWrite("T");
 						}
@@ -172,7 +174,7 @@ public class Main {
 					case 8:
 						if (commands[0].equals("T") && commands[1].equals("S")) {
 							System.out.println("hej6");
-							taraweight = Float.parseFloat(commands[2].substring(1, (commands[2].length() - 1)));
+							taraweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
 							System.out.println(taraweight);
 							state++;
 							c.setWrite("RM20 8 \"Skriv ingrediens id\" \"\" \"&3\"");
@@ -238,16 +240,16 @@ public class Main {
 						break;
 					case 13:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
-							nettoweight = Float.parseFloat(commands[2].substring(1, (commands[2].length() - 1)));
+							nettoweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
 
 							for (int i = 0; i < recipe.getIngList().size(); i++){
 								if (recipe.getIngList().get(i) == currentIngredient){
-									Double expeded_nettoweight = recipe.getAmount().get(i);
-
+									expeded_nettoweight = recipe.getAmount().get(i);
+									//Double tolerance = recipe
 								}
 							}
 
-							// tjek at der er rigtig mængde og insert into produktion
+							if ( expeded_nettoweight * 100-tolerance nettoweight )
 							System.out.println(nettoweight);
 							c.setWrite("RM20 8 \"Remove brutto\" \"\" \"&3\"");
 							state++;
@@ -272,7 +274,7 @@ public class Main {
 						break;
 					case 16:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
-							bruttoweight = Float.parseFloat(commands[2].substring(2, (commands[2].length() - 1)));
+							bruttoweight = Double.parseDouble(commands[2].substring(2, (commands[2].length() - 1)));
 							state++;
 							commands[0] = "Unknown";
 						}
