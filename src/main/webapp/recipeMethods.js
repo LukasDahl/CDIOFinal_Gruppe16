@@ -26,11 +26,22 @@ function getIngNames() {
     $.get('rest/ingredient', function (data, textStatus, req) {
         var j;
         for (j=0; j < 6; j++){
-        var $dropdown = $("#dropdown" + j);
+            var $dropdown = $("#dropdown" + j);
+            $dropdown.empty();
+            $.each(data, function (i, elt) {
+                $dropdown.append($("<option />").val(this.id).text(this.name));
+            });
+        }
+    });
+}
+
+function getProdNames() {
+    $.get('rest/product', function (data, textStatus, req) {
+        var $dropdown = $("#productDropdown");
+        $dropdown.empty();
         $.each(data, function (i, elt) {
             $dropdown.append($("<option />").val(this.id).text(this.name));
         });
-        }
     });
 }
 

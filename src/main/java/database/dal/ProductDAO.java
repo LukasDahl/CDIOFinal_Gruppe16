@@ -10,6 +10,14 @@ import java.util.ArrayList;
 
 public class ProductDAO implements IProductDAO{
 
+    private static IProductDAO instance;
+
+    public static IProductDAO getInstance(){
+        if(instance == null)
+            instance = new ProductDAO();
+        return instance;
+    }
+
     private Connection createConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -73,7 +81,7 @@ public class ProductDAO implements IProductDAO{
     @Override
     public List<IProductDTO> getProductList() throws IProductDAO.DALException {
 
-        IProductDTO product = new ProductDTO();
+        IProductDTO product;
         List<IProductDTO> productList = new ArrayList<>();
 
         try (Connection c = createConnection()){
@@ -82,6 +90,7 @@ public class ProductDAO implements IProductDAO{
 
             while (rs.next())
             {
+                product = new ProductDTO();
                 product.setProductId(rs.getInt("produkt_id"));
                 product.setProductName(rs.getString("produkt_navn"));
 

@@ -26,7 +26,6 @@ public class Ingredient {
         } catch (IDALException.DALException e) {
             e.printStackTrace();
         }
-        //return Response.status(Response.Status.BAD_REQUEST).entity("Brugernavn ikke gyldigt").build();
         return Response.ok("Ingrediens oprettet").build();
     }
 
