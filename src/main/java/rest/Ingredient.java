@@ -42,7 +42,6 @@ public class Ingredient {
         ing.setIngredientId(Integer.parseInt(jing.getId()));
         ing.setIngredientName(jing.getName());
         ing.setActive(false);
-        ing.setMargin(0.0);
         return ing;
     }
 

@@ -12,10 +12,10 @@ function setIng(x) {
             '    </select>' +
             '</td>' +
             '<td>' +
-            '    <input type="text" name="mængde'+ i +'" size="6"/>' +
+            '    <input type="number" name="mængde'+i+'" step="0.0001" min="0.0500" max="20.0000" size="5"/>' +
             '</td>' +
             '<td>' +
-            '   <input type="text" name="tolerence'+ i +'" size="6">' +
+            '   <input type="number" name="tolerence'+i+'" step="0.1" min="0.1" max="10.0" size="5"/>' +
             '</td>' +
             '</tr>');
     }
@@ -33,3 +33,28 @@ function getIngNames() {
         }
     });
 }
+
+function createRecipe() {
+    var $form = $("#newrecipe");
+    var data = getFormData($form);
+
+
+    var datajson = JSON.stringify(data);
+
+    console.log(datajson)
+    $.ajax({
+        url: 'rest/recipe',
+        method: 'POST',
+
+        contentType: "application/json", // det vi sender er json
+        data: datajson,
+        success: function (datajson) {
+            $("#bodytest").load("recipelist.html");
+        },
+        error: function (jqXHR){
+            alert(jqXHR.responseText);
+        }
+    });
+}
+
+

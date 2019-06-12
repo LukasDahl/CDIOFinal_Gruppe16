@@ -40,12 +40,11 @@ public class IngredientDAO implements IIngredientDAO {
 				throw new DALException("ID already in use");
 			}
 
-			PreparedStatement st = c.prepareStatement("INSERT INTO Ingredienser VALUES (?,?,?,?)");
+			PreparedStatement st = c.prepareStatement("INSERT INTO Ingredienser VALUES (?,?,?)");
 
 			st.setInt(1, ingredient.getIngredientId());
 			st.setString(2, ingredient.getIngredientName());
 			st.setBoolean(3,  ingredient.getActive());
-			st.setDouble(4, ingredient.getMargin());
 			st.executeUpdate();
 
 		} catch (SQLException e) {
@@ -69,7 +68,6 @@ public class IngredientDAO implements IIngredientDAO {
 
 			ingrediens.setIngredientId(rs.getInt("ingrediens_id"));
 			ingrediens.setIngredientName(rs.getString("ingrediens_navn"));
-			ingrediens.setMargin(rs.getDouble("afvigelse"));
 			ingrediens.setActive(rs.getBoolean("isAktiv"));
 
 		} catch (SQLException e) {
@@ -96,7 +94,6 @@ public class IngredientDAO implements IIngredientDAO {
 				ingredient.setIngredientId(rs.getInt("ingrediens_id"));
 				ingredient.setIngredientName(rs.getString("ingrediens_navn"));
 				ingredient.setActive(rs.getBoolean("isAktiv"));
-				ingredient.setMargin(rs.getDouble("afvigelse"));
 
 				ingredientList.add(ingredient);
 			}
@@ -113,16 +110,14 @@ public class IngredientDAO implements IIngredientDAO {
 
 		try {
 			Connection c = createConnection();
-			PreparedStatement st = c.prepareStatement("UPDATE ingredienser SET ingrediens_navn = ?, afvigelse = ?, isAktiv = ? WHERE ingrediens_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE ingredienser SET ingrediens_navn = ?, isAktiv = ? WHERE ingrediens_id = ?");
 			int ingredientId = ingredient.getIngredientId();
 			String ingredientName = ingredient.getIngredientName();
 			boolean active = ingredient.getActive();
-			double margin = ingredient.getMargin();
 
 			st.setString(1,ingredientName);
-			st.setDouble(2,margin);
-			st.setBoolean(3, active);
-			st.setInt(4,ingredientId);
+			st.setBoolean(2, active);
+			st.setInt(3,ingredientId);
 			st.executeUpdate();
 
 			c.close();

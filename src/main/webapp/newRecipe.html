@@ -3,14 +3,14 @@
     <div style="text-align: center;">
         <div style="display: inline-block; text-align: left;">
 
-            <form id="newOpskrift" action="" method="GET">
+            <form id="newrecipe" action="" method="GET">
 
                 ID: <br>
                 <input type="text" id="ID" name="id" value=""><br>
 
                 Produkt: <br>
                 <div class="custom-select" style="width:200px;">
-                    <select>
+                    <select name="product">
                         <option value="0">Select car:</option>
                         <option value="1">Audi</option>
                         <option value="2">BMW</option>
@@ -58,15 +58,15 @@
                             </select>
                         </td>
                         <td>
-                            <input type="text" name="mængde0" size="6"/>
+                            <input type="number" name="mængde0" step="0.0001" min="0.0500" max="20.0000" size="5"/>
                         </td>
                         <td>
-                            <input type="text" name="tolerence0" size="6">
+                            <input type="number" name="tolerence0" step="0.1" min="0.1" max="10.0" size="5"/>
                         </td>
                     </tr>
                     </tbody>
                 </table>
-
+                <INPUT TYPE="button" id="opret" NAME="opret" Value="Opret" onClick="createRecipe();">
             </form>
             &nbsp
         </div>
