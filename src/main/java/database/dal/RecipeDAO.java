@@ -19,7 +19,7 @@ public class RecipeDAO implements IRecipeDAO{
 
 
 	@Override
-	public void createRecipe(IRecipeDTO recipe) throws IRecipeDAO.DALException {
+	public void createRecipe(IRecipeDTO recipe) throws DALException {
 
 		try (Connection c = createConnection()){
 
@@ -71,10 +71,11 @@ public class RecipeDAO implements IRecipeDAO{
 			}
 
 			for(int i = 0; i < recipe.getIngList().size(); i++){
-				ps = c.prepareStatement("INSERT INTO Opskrift_Ingrediens VALUES (?,?,?)");
+				ps = c.prepareStatement("INSERT INTO Opskrift_Ingrediens VALUES (?,?,?,?)");
 				ps.setInt(1, recipe.getRecipeId());
 				ps.setInt(2, recipe.getIngList().get(i));
 				ps.setDouble(3, recipe.getAmount().get(i));
+				ps.setDouble(4, recipe.getMargin().get(i));
 				ps.executeUpdate();
 			}
 
@@ -85,7 +86,7 @@ public class RecipeDAO implements IRecipeDAO{
 
 
 	@Override
-	public IRecipeDTO getRecipe(int recipeId) throws IRecipeDAO.DALException {
+	public IRecipeDTO getRecipe(int recipeId) throws DALException {
 
 		IRecipeDTO recipe = new RecipeDTO();
 
@@ -104,12 +105,15 @@ public class RecipeDAO implements IRecipeDAO{
 			rs = st.executeQuery("SELECT * FROM Opskrift_Ingrediens WHERE opskrift_id = "+ recipeId);
 			List<Integer> ingList = new ArrayList<>();
 			List<Double> amountList = new ArrayList<>();
+			List<Double> marginList = new ArrayList<>();
 			while (rs.next()){
 				ingList.add(rs.getInt("ingrediens_id"));
 				amountList.add(rs.getDouble("mængde"));
+				marginList.add(rs.getDouble("afvigelse"));
 			}
 			recipe.setIngList(ingList);
 			recipe.setAmount(amountList);
+			recipe.setMargin(marginList);
 
 			rs = st.executeQuery("SELECT * FROM Farmaceuter_Opskrifter WHERE opskrift_id = "+ recipeId);
 			List<Integer> pharmaList = new ArrayList<>();
@@ -126,7 +130,7 @@ public class RecipeDAO implements IRecipeDAO{
 
 
 	@Override
-	public List<IRecipeDTO> getRecipeList() throws IRecipeDAO.DALException {
+	public List<IRecipeDTO> getRecipeList() throws DALException {
 
 		IRecipeDTO recipe = new RecipeDTO();
 		List<IRecipeDTO> recipeList = new ArrayList<>();
@@ -138,6 +142,7 @@ public class RecipeDAO implements IRecipeDAO{
 			List<Integer> ingList;
 			List<Double> amountList;
 			List<Integer> pharmaList;
+			List<Double> marginList;
 			while (rs.next())
 			{
 				recipe.setRecipeId(rs.getInt("opskrift_id"));
@@ -147,12 +152,15 @@ public class RecipeDAO implements IRecipeDAO{
 				rs = str.executeQuery("SELECT * FROM Opskrift_Ingrediens WHERE opskrift_id = "+ recipe.getRecipeId());
 				ingList = new ArrayList<>();
 				amountList = new ArrayList<>();
+				marginList = new ArrayList<>();
 				while (rs.next()){
 					ingList.add(rs.getInt("ingrediens_id"));
 					amountList.add(rs.getDouble("mængde"));
+					marginList.add(rs.getDouble("afvigelse"));
 				}
 				recipe.setIngList(ingList);
 				recipe.setAmount(amountList);
+				recipe.setMargin(marginList);
 
 				rs = str.executeQuery("SELECT * FROM Farmaceuter_Opskrifter WHERE opskrift_id = "+ recipe.getRecipeId());
 				pharmaList = new ArrayList<>();
