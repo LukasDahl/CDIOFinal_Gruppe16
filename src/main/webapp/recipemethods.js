@@ -15,7 +15,7 @@ function setIng(x) {
             '    <input type="number" name="mængde'+i+'" step="0.0001" min="0.0500" max="20.0000" size="5"/>' +
             '</td>' +
             '<td>' +
-            '   <input type="number" name="tolerence'+i+'" step="0.1" min="0.1" max="10.0" size="5"/>' +
+            '   <input type="number" name="afvigelse'+i+'" step="0.1" min="0.1" max="10.0" size="5"/>' +
             '</td>' +
             '</tr>');
     }
