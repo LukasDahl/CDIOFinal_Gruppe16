@@ -1,0 +1,26 @@
+<script>
+    $(document).ready(function(){
+        $("#newProduct").click(function(){
+            $("#bodytest").load("newProduct.html");
+        });
+    });
+</script>
+
+<table style="width:75%" class="center">
+    <thead>
+    <tr>
+        <th>Produkt ID</th>
+        <th>Produktnavn</th>
+    </tr>
+    </thead>
+    <tbody id="prodtablebody">
+    </tbody>
+</table> <br>
+
+<div class="center">
+    <button id="newProduct" class="center">Tilføj produkt </button>
+</div>
+
+<script>
+    loadProducts();
+</script>

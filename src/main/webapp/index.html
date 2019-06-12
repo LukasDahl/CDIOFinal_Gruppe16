@@ -8,9 +8,10 @@
 <!--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <script type="text/javascript" src="jquery-3.1.1.js"></script>
     <script type="text/javascript" src="jquery.serialize-object.js"></script>
-    <script type="text/javascript" src="usermethods.js"></script>
-    <script type="text/javascript" src="recipemethods.js"></script>
-    <script type="text/javascript" src="ingredientmethods.js"></script>
+    <script type="text/javascript" src="userMethods.js"></script>
+    <script type="text/javascript" src="recipeMethods.js"></script>
+    <script type="text/javascript" src="ingredientMethods.js"></script>
+    <script type="text/javascript" src="productMethods.js"></script>
 </head>
 
 <body>
@@ -48,6 +49,13 @@
                 });
             });
         </script>
+        <script>
+            $(document).ready(function(){
+                $("#product").click(function(){
+                    $("#bodytest").load("productList.html");
+                });
+            });
+        </script>
         <br>
         <div class="center">
             <button id="useradmin" class="center">Brugeradmin</button>
@@ -60,6 +68,9 @@
         </div>
         <div class="center">
             <button id="materialBatch" class="center">Råvarebatchliste</button>
+        </div>
+        <div class="center">
+            <button id="product" class="center">Produkter</button>
         </div>
 
     </div>
