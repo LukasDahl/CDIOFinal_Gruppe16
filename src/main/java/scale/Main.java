@@ -25,11 +25,13 @@ public class Main {
 		IProductDTO product;
 		MaterialDAO materialDAO = new MaterialDAO();
 		IMaterialDTO material = null;
+		IngredientDAO ingDAO = new IngredientDAO();
+		IIngredientDTO ingredient;
 
 
 		boolean exit = false;
 		while(!exit) {
-			String reply;
+			String reply, ingName;
 			String[] commands = {"Unknown", "Command"};
 			String text;
 			String product_name = null;
@@ -213,6 +215,8 @@ public class Main {
 								System.out.println(materialDAO.getMaterial(operator));
 								material = materialDAO.getMaterial(operator);
 								currentIngredient = material.getIngredientId();
+								//ingredient = ingDAO.getIngredient(operator);
+								//ingName = ingredient.getIngredientName();
 
 								for (int ing: ingredientArray){
 									if (ing == currentIngredient) {
@@ -223,8 +227,9 @@ public class Main {
 								}
 
 							} catch (IDALException.DALException e) {
+								c.setWrite("RM20 8 \"Ikke fundet.\" \"\" \"&3\"");
 								e.printStackTrace();
-								c.setWrite("RM20 8 \"råvare batch ikke fundet.\" \"\" \"&3\"");
+								match = true;
 							}
 							if (!match) {
 								c.setWrite("RM20 8 \"ikke del af opskrift.\" \"\" \"&3\"");
@@ -303,7 +308,7 @@ public class Main {
 								state = 0;
 							} else {
 								c.setWrite("RM20 8 \"OK\" \"\" \"&3\"");
-								state -= 6;
+								state -= 8;
 							}
 						} else {
 							c.setWrite("RM20 8 \"Kasseret\" \"\" \"&3\"");
