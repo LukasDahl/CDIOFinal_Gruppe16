@@ -1,4 +1,4 @@
-package database.dto;
+package rest.jsonObjects;
 
 public class JSONuser {
 

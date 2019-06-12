@@ -2,6 +2,7 @@ package rest;
 
 import database.dal.*;
 import database.dto.*;
+import rest.jsonObjects.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
