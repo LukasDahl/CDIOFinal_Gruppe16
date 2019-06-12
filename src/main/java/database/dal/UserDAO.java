@@ -10,7 +10,21 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class UserDAO implements IUserDAO {
+
+	private static IUserDAO instance;
+
+	public static IUserDAO getInstance(){
+		if(instance == null)
+			instance = new UserDAO();
+		return instance;
+	}
+
 	private Connection createConnection() throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		return DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160068?"
 				+ "user=s160068&password=D8meeg0vOUC5OjertVLZV");
 	}
@@ -35,8 +49,8 @@ public class UserDAO implements IUserDAO {
 
 			st.setInt(1, user.getUserId());
 			st.setString(2, user.getUserName());
-			st.setInt(3, user.getUserIni());
-			st.setInt(4, user.getUserCPR());
+			st.setString(3, user.getIni());
+			st.setString(4, user.getCpr());
 			st.setBoolean(5, user.isAdmin());
 			st.setBoolean(6, user.isLabo());
 			st.setBoolean(7, user.isPLeader());
@@ -82,6 +96,8 @@ public class UserDAO implements IUserDAO {
 
 			user.setUserId(rs.getInt("bruger_id"));
 			user.setUserName(rs.getString("bruger_navn"));
+			user.setIni(rs.getString("ini"));
+			user.setCpr(rs.getString("cpr"));
 			user.setAdmin(rs.getBoolean("isAdmin"));
 			user.setLabo(rs.getBoolean("isLaborant"));
 			user.setPLeader(rs.getBoolean("isProduktionsleder"));
@@ -97,7 +113,7 @@ public class UserDAO implements IUserDAO {
 	@Override
 	public List<IUserDTO> getUserList() throws DALException {
 
-		IUserDTO user = new UserDTO();
+		IUserDTO user;
 		List<IUserDTO> userList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
@@ -107,16 +123,17 @@ public class UserDAO implements IUserDAO {
 
 			while (rs.next())
 			{
+				user = new UserDTO();
 				user.setUserId(rs.getInt("bruger_id"));
 				user.setUserName(rs.getString("bruger_navn"));
+				user.setIni(rs.getString("ini"));
+				user.setCpr(rs.getString("cpr"));
 				user.setAdmin(rs.getBoolean("isAdmin"));
 				user.setLabo(rs.getBoolean("isLaborant"));
 				user.setPLeader(rs.getBoolean("isProduktionsleder"));
 				user.setPharma(rs.getBoolean("isFarmaceut"));
-
 				userList.add(user);
 			}
-
 		} catch (SQLException e) {
 			throw new DALException(e.getMessage());
 		}
@@ -128,16 +145,18 @@ public class UserDAO implements IUserDAO {
 	public void updateUser(IUserDTO user) throws DALException {
 
 		try (Connection c = createConnection()){
-			PreparedStatement st = c.prepareStatement("UPDATE Brugere SET bruger_navn = ?, isAdministrator = ?, isLaborant = ?, isProduktionsleder = ?, isFarmaceut = ? WHERE bruger_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE Brugere SET bruger_navn = ?, ini = ?, cpr = ?, isAdministrator = ?, isLaborant = ?, isProduktionsleder = ?, isFarmaceut = ? WHERE bruger_id = ?");
 			Statement str = c.createStatement();
 			ResultSet rs;
 
 			st.setString(1,user.getUserName());
-			st.setBoolean(2,user.isAdmin());
-			st.setBoolean(3,user.isLabo());
-			st.setBoolean(4,user.isPLeader());
-			st.setBoolean(5,user.isPharma());
-			st.setInt(6,user.getUserId());
+			st.setString(2, user.getIni());
+			st.setString(3, user.getCpr());
+			st.setBoolean(4,user.isAdmin());
+			st.setBoolean(5,user.isLabo());
+			st.setBoolean(6,user.isPLeader());
+			st.setBoolean(7,user.isPharma());
+			st.setInt(8,user.getUserId());
 			st.executeUpdate();
 
 			if(user.isAdmin()){
@@ -169,4 +188,19 @@ public class UserDAO implements IUserDAO {
 			throw new DALException(e.getMessage());
 		}
 	}
+
+	public boolean idAvailable(int id) throws DALException{
+		boolean avail;
+		try (Connection c = createConnection()){
+			Statement st = c.createStatement();
+			ResultSet rs;
+			rs = st.executeQuery("SELECT * FROM Brugere WHERE bruger_id = " + id);
+			avail = !rs.next();
+		} catch (SQLException e) {
+			throw new DALException(e.getMessage());
+		}
+
+		return avail;
+	}
+
 }

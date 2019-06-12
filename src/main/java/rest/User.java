@@ -1,7 +1,7 @@
 package rest;
 
-import csv.dal.*;
-import csv.dto.*;
+import database.dal.*;
+import database.dto.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,12 +30,15 @@ public class User {
 		else if(!user.getCpr().matches("[0-9]{6}-[0-9]{4}")){
 			return Response.status(Response.Status.BAD_REQUEST).entity("Opgiv venligst gyldigt CPR").build();
 		}
+		else if(user.getIni().length() > 4 || user.getIni().length() < 2){
+			return Response.status(Response.Status.BAD_REQUEST).entity("Opgiv venligst gyldige initialer").build();
+		}
 		else{
 			IUserDTO userDTO = jsonToUser(user);
 			IUserDAO userDAO = UserDAO.getInstance();
 			try {
 				userDAO.createUser(userDTO);
-			} catch (IUserDAO.DALException e) {
+			} catch (IDALException.DALException e) {
 				e.printStackTrace();
 			}
 			ID = findNextID(ID);
@@ -60,8 +63,19 @@ public class User {
 	public static ArrayList<JSONuser> userToJSON(List<IUserDTO> users){
 		JSONuser juser;
 		ArrayList<JSONuser> jusers = new ArrayList<>();
+		String role;
 		for (IUserDTO user: users){
-			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), user.getPassword(), user.getRoles().get(0));
+			if (user.isPharma()){
+				role = "Farmaceut";
+			}
+			else if (user.isPLeader()){
+				role = "Produktionsleder";
+			}
+			else {
+				role = "Laborant";
+			}
+
+			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), "", role);
 			jusers.add(juser);
 		}
 		return jusers;
@@ -73,8 +87,29 @@ public class User {
 		user.setUserName(juser.getUsername());
 		user.setIni(juser.getIni());
 		user.setCpr(juser.getCpr());
-		user.setPassword(juser.getPassword());
-		user.addRole(juser.getRole());
+		if (juser.getAdmin().equals("yes")){
+			user.setAdmin(true);
+		}
+		else {
+			user.setAdmin(false);
+		}
+
+		if (juser.getRole().equals("Farmaceut")){
+			user.setPharma(true);
+			user.setPLeader(true);
+			user.setLabo(true);
+		}
+		else if (juser.getRole().equals("Produktionsleder")){
+			user.setPharma(false);
+			user.setPLeader(true);
+			user.setLabo(true);
+		}
+		else{
+			user.setPharma(false);
+			user.setPLeader(false);
+			user.setLabo(true);
+		}
+
 		return user;
 	}
 

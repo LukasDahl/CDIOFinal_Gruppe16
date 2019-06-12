@@ -1,0 +1,28 @@
+<script>
+    $(document).ready(function(){
+        $("#newMaterial").click(function(){
+            $("#bodytest").load("newMaterialBatch.html");
+        });
+    });
+</script>
+
+<table style="width:75%" class="center">
+    <thead>
+    <tr>
+        <th>RåvareID</th>
+        <th>Råvare Navn</th>
+        <th>Mængde</th>
+        <th>Leverandør</th>
+    </tr>
+    </thead>
+    <tbody id="materialtablebody">
+    </tbody>
+</table> <br>
+
+<div class="center">
+    <button id="newMaterial" class="center">Opret batch</button>
+</div>
+
+<script>
+    loadUsers();
+</script>

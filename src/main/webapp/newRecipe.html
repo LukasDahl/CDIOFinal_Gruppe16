@@ -1,0 +1,83 @@
+<div class="border">
+    <h2 class="center">Opret ny opskrift</h2>
+    <div style="text-align: center;">
+        <div style="display: inline-block; text-align: left;">
+
+            <form id="newrecipe" action="" method="GET">
+
+                ID: <br>
+                <input type="text" id="ID" name="id" value=""><br>
+
+                Produkt: <br>
+                <div class="custom-select" style="width:200px;">
+                    <select name="product">
+                        <option value="0">Select car:</option>
+                        <option value="1">Audi</option>
+                        <option value="2">BMW</option>
+                        <option value="3">Citroen</option>
+                        <option value="4">Ford</option>
+                        <option value="5">Honda</option>
+                        <option value="6">Jaguar</option>
+                        <option value="7">Land Rover</option>
+                        <option value="8">Mercedes</option>
+                        <option value="9">Mini</option>
+                        <option value="10">Nissan</option>
+                        <option value="11">Toyota</option>
+                        <option value="12">Volvo</option>
+                    </select>
+                </div>
+
+                Antal ingredienser:
+                <div class="custom-select" style="width:200px;">
+                    <select id="select1">
+                        <option value="0">V&aelig;lg antal:</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </div>
+
+                <table style="width:250px" class="center">
+                    <thead>
+                    <tr>
+                        <th width="10%"></th>
+                        <th width="40%">Ingrediens</th>
+                        <th width="25%">M&aelig;ngde</th>
+                        <th width="25%">Afvigelse</th>
+                    </tr>
+                    </thead>
+                    <tbody id="ingtablebody">
+                    <tr>
+                        <td> 1 </td>
+                        <td>
+                            <select id="dropdown0" >
+                            <option value="0">V&aelig;lg</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input type="number" name="mængde0" step="0.0001" min="0.0500" max="20.0000" size="5"/>
+                        </td>
+                        <td>
+                            <input type="number" name="afvigelse0" step="0.1" min="0.1" max="10.0" size="5"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <INPUT TYPE="button" id="opret" NAME="opret" Value="Opret" onClick="createRecipe();">
+            </form>
+            &nbsp
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $('#select1').change(function(){
+            setIng(this.value);
+        });
+    });
+    getIngNames();
+</script>

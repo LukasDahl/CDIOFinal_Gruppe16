@@ -11,13 +11,13 @@ public interface IUserDTO {
 
 	void setUserName(String userName);
 
-	int getUserIni();
+	String getIni();
 
-	void setUserIni(int userIni);
+	void setIni(String ini);
 
-	int getUserCPR();
+	String getCpr();
 
-	void setUserCPR(int userCPR);
+	void setCpr(String cpr);
 
 	void setAdmin(boolean admin);
 

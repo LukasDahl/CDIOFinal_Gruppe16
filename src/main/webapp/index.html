@@ -9,6 +9,8 @@
     <script type="text/javascript" src="jquery-3.1.1.js"></script>
     <script type="text/javascript" src="jquery.serialize-object.js"></script>
     <script type="text/javascript" src="usermethods.js"></script>
+    <script type="text/javascript" src="recipemethods.js"></script>
+    <script type="text/javascript" src="ingredientmethods.js"></script>
 </head>
 
 <body>
@@ -25,9 +27,39 @@
                 });
             });
         </script>
+        <script>
+            $(document).ready(function(){
+                $("#ingredient").click(function(){
+                    $("#bodytest").load("ingredientlist.html");
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $("#recipe").click(function(){
+                    $("#bodytest").load("newRecipe.html");
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $("#materialBatch").click(function(){
+                    $("#bodytest").load("materialBatchliste.html");
+                });
+            });
+        </script>
         <br>
         <div class="center">
             <button id="useradmin" class="center">Brugeradmin</button>
+        </div>
+        <div class="center">
+            <button id="ingredient" class="center">Ingrediensliste</button>
+        </div>
+        <div class="center">
+            <button id="recipe" class="center">Opskriftliste</button>
+        </div>
+        <div class="center">
+            <button id="materialBatch" class="center">Råvarebatchliste</button>
         </div>
 
     </div>

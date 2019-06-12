@@ -12,6 +12,11 @@ import java.util.ArrayList;
 public class ProductDAO implements IProductDAO{
 
     private Connection createConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         return DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160068?"
                 + "user=s160068&password=D8meeg0vOUC5OjertVLZV");
     }

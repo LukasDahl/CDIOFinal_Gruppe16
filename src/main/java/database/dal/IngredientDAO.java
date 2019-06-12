@@ -7,11 +7,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class IngredientDAO implements IIngredientDAO {
+
 	private Connection createConnection() throws SQLException {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
 		return DriverManager.getConnection("jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160068?"
 				+ "user=s160068&password=D8meeg0vOUC5OjertVLZV");
 	}
 
+
+	private static IIngredientDAO instance;
+
+	public static IIngredientDAO getInstance(){
+		if(instance == null)
+			instance = new IngredientDAO();
+		return instance;
+	}
 
 	@Override
 	public void createIngredient(IIngredientDTO ingredient) throws IIngredientDAO.DALException {
@@ -26,12 +40,11 @@ public class IngredientDAO implements IIngredientDAO {
 				throw new DALException("ID already in use");
 			}
 
-			PreparedStatement st = c.prepareStatement("INSERT INTO Ingredienser VALUES (?,?,?,?)");
+			PreparedStatement st = c.prepareStatement("INSERT INTO Ingredienser VALUES (?,?,?)");
 
 			st.setInt(1, ingredient.getIngredientId());
 			st.setString(2, ingredient.getIngredientName());
 			st.setBoolean(3,  ingredient.getActive());
-			st.setDouble(4, ingredient.getMargin());
 			st.executeUpdate();
 
 		} catch (SQLException e) {
@@ -55,7 +68,6 @@ public class IngredientDAO implements IIngredientDAO {
 
 			ingrediens.setIngredientId(rs.getInt("ingrediens_id"));
 			ingrediens.setIngredientName(rs.getString("ingrediens_navn"));
-			ingrediens.setMargin(rs.getDouble("afvigelse"));
 			ingrediens.setActive(rs.getBoolean("isAktiv"));
 
 		} catch (SQLException e) {
@@ -68,7 +80,7 @@ public class IngredientDAO implements IIngredientDAO {
 	@Override
 	public List<IIngredientDTO> getIngredientList() throws IIngredientDAO.DALException {
 
-		IIngredientDTO ingredient = new IngredientDTO();
+		IIngredientDTO ingredient;
 		List<IIngredientDTO> ingredientList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
@@ -78,10 +90,10 @@ public class IngredientDAO implements IIngredientDAO {
 
 			while (rs.next())
 			{
+				ingredient = new IngredientDTO();
 				ingredient.setIngredientId(rs.getInt("ingrediens_id"));
 				ingredient.setIngredientName(rs.getString("ingrediens_navn"));
 				ingredient.setActive(rs.getBoolean("isAktiv"));
-				ingredient.setMargin(rs.getDouble("afvigelse"));
 
 				ingredientList.add(ingredient);
 			}
@@ -98,16 +110,14 @@ public class IngredientDAO implements IIngredientDAO {
 
 		try {
 			Connection c = createConnection();
-			PreparedStatement st = c.prepareStatement("UPDATE ingredienser SET ingrediens_navn = ?, afvigelse = ?, isAktiv = ? WHERE ingrediens_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE ingredienser SET ingrediens_navn = ?, isAktiv = ? WHERE ingrediens_id = ?");
 			int ingredientId = ingredient.getIngredientId();
 			String ingredientName = ingredient.getIngredientName();
 			boolean active = ingredient.getActive();
-			double margin = ingredient.getMargin();
 
 			st.setString(1,ingredientName);
-			st.setDouble(2,margin);
-			st.setBoolean(3, active);
-			st.setInt(4,ingredientId);
+			st.setBoolean(2, active);
+			st.setInt(3,ingredientId);
 			st.executeUpdate();
 
 			c.close();

@@ -1,0 +1,26 @@
+<script>
+    $(document).ready(function(){
+        $("#newingredient").click(function(){
+            $("#bodytest").load("newingredient.html");
+        });
+    });
+</script>
+
+<table style="width:75%" class="center">
+    <thead>
+    <tr>
+        <th>Ingrediens ID</th>
+        <th>Ingrediens navn</th>
+    </tr>
+    </thead>
+    <tbody id="ingtablebody">
+    </tbody>
+</table> <br>
+
+<div class="center">
+    <button id="newingredient" class="center">Tilføj ingrediens </button>
+</div>
+
+<script>
+    loadIngredients();
+</script>

@@ -1,4 +1,4 @@
-package rest;
+package database.dto;
 
 public class JSONuser {
 
@@ -6,15 +6,15 @@ public class JSONuser {
 	String username;
 	String ini;
 	String cpr;
-	String password;
+	String admin;
 	String role;
 
-	public JSONuser(String id, String username, String ini, String cpr, String password, String role){
+	public JSONuser(String id, String username, String ini, String cpr, String admin,String role){
 		this.id = id;
 		this.username = username;
 		this.ini = ini;
 		this.cpr = cpr;
-		this.password = password;
+		this.admin = admin;
 		this.role = role;
 	}
 
@@ -52,12 +52,12 @@ public class JSONuser {
 		this.ini = ini;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getAdmin() {
+		return admin;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setAdmin(String admin) {
+		this.admin = admin;
 	}
 
 	public String getRole() {
