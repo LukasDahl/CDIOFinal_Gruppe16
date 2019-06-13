@@ -6,18 +6,18 @@
             <form id="newrecipe" action="" method="GET">
 
                 ID: <br>
-                <input type="text" id="ID" name="id" value="" style="width:250px"><br>
+                <input type="text" id="ID" name="id" value=""><br>
 
                 Produkt: <br>
-                <div class="custom-select" style="width:250px;">
-                    <select id="productDropdown" name="product" style="width:250px">
+                <div class="custom-select">
+                    <select id="productDropdown" name="product" class="wide">
                         <option value="0">V&aelig;lg:</option>
                     </select>
                 </div>
 
                 Antal ingredienser:
-                <div class="custom-select" style="width:250px;">
-                    <select id="select1" name="antal" style="width:250px">
+                <div class="custom-select">
+                    <select id="select1" name="antal" class="wide">
                         <option value="0">V&aelig;lg antal:</option>
                         <option value="1">1</option>
                         <option value="2">2</option>
@@ -39,7 +39,7 @@
                     </thead>
                     <tbody id="ingtablebody">
                     </tbody>
-                </table>
+                </table><br>
                 <div class="center">
                     <INPUT TYPE="button" id="opret" NAME="opret" Value="Tilf&oslash;j opskrift" onClick="createRecipe();">
                 </div>
