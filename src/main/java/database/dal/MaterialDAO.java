@@ -7,6 +7,16 @@ import java.util.List;
 
 public class MaterialDAO implements IMaterialDAO {
 
+	private static IMaterialDAO instance;
+
+	public static IMaterialDAO getInstance(){
+		if(instance == null)
+			instance = new MaterialDAO();
+		return instance;
+	}
+
+
+
 	private Connection createConnection() throws SQLException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
