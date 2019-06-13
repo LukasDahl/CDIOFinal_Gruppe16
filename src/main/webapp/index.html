@@ -12,6 +12,7 @@
     <script type="text/javascript" src="recipeMethods.js"></script>
     <script type="text/javascript" src="ingredientMethods.js"></script>
     <script type="text/javascript" src="productMethods.js"></script>
+    <script type="text/javascript" src="prodBatchMethods.js"></script>
 </head>
 
 <body>
@@ -52,6 +53,13 @@
         <div class="dropdown-content">
             <a id="productpage">Produktliste</a>
             <a id="newproductpage">Nyt produkt</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Produktbatch</button>
+        <div class="dropdown-content">
+            <a id="productbatchpage">Batchliste</a>
+            <a id="newproductbatchpage">Ny batch</a>
         </div>
     </div>
 </div>
@@ -128,6 +136,20 @@
         $(document).ready(function(){
             $("#newproductpage").click(function(){
                 $("#bodytest").load("newProduct.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#productbatchpage").click(function(){
+                $("#bodytest").load("productBatchList.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#newproductbatchpage").click(function(){
+                $("#bodytest").load("newProductBatch.html");
             });
         });
     </script>
