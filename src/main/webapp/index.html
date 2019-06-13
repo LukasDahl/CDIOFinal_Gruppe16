@@ -13,13 +13,14 @@
     <script type="text/javascript" src="ingredientMethods.js"></script>
     <script type="text/javascript" src="productMethods.js"></script>
     <script type="text/javascript" src="prodBatchMethods.js"></script>
+    <script type="text/javascript" src="generalMethods.js"></script>
 </head>
 
 <body>
 <div class="navbar">
     <a id="home">Gruppe 16</a>
     <div class="dropdown">
-        <button class="dropbtn">Bruger
+        <button class="dropbtn" id="userMenu">Bruger
         <i class="fa fa-caret-down"></i>
         </button>
         <div class="dropdown-content">
@@ -28,35 +29,35 @@
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Ingrediens</button>
+        <button class="dropbtn" id="ingMenu">Ingrediens</button>
         <div class="dropdown-content">
             <a id="ingpage">Ingrediensliste</a>
             <a id="newingpage">Ny ingrediens</a>
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Opskrift</button>
+        <button class="dropbtn" id="recipeMenu">Opskrift</button>
         <div class="dropdown-content">
             <a id="recipepage">Opskriftsliste</a>
             <a id="newrecipepage">Ny opskrift</a>
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Råvarebatch</button>
+        <button class="dropbtn" id="materialMenu">Råvarebatch</button>
         <div class="dropdown-content">
             <a id="materialpage">Batchliste</a>
             <a id="newmaterialpage">Ny batch</a>
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Produkt</button>
+        <button class="dropbtn" id="prodMenu">Produkt</button>
         <div class="dropdown-content">
             <a id="productpage">Produktliste</a>
             <a id="newproductpage">Nyt produkt</a>
         </div>
     </div>
     <div class="dropdown">
-        <button class="dropbtn">Produktbatch</button>
+        <button class="dropbtn" id="prodBatchMenu">Produktbatch</button>
         <div class="dropdown-content">
             <a id="productbatchpage">Batchliste</a>
             <a id="newproductbatchpage">Ny batch</a>
@@ -73,6 +74,7 @@
         $(document).ready(function(){
             $("#useradminpage").click(function(){
                 $("#bodytest").load("userList.html");
+                colorChosenUser();
             });
         });
     </script>
@@ -80,6 +82,7 @@
         $(document).ready(function(){
             $("#newuserpage").click(function(){
                 $("#bodytest").load("newUser.html");
+                colorChosenUser();
             });
         });
     </script>
@@ -87,6 +90,7 @@
         $(document).ready(function(){
             $("#ingpage").click(function(){
                 $("#bodytest").load("ingredientList.html");
+                colorChosenIng()
             });
         });
     </script>
@@ -94,6 +98,7 @@
         $(document).ready(function(){
             $("#newingpage").click(function(){
                 $("#bodytest").load("newIngredient.html");
+                colorChosenIng()
             });
         });
     </script>
@@ -101,6 +106,7 @@
         $(document).ready(function(){
             $("#recipepage").click(function(){
                 $("#bodytest").load("recipeList.html");
+                colorChosenRecipe()
             });
         });
     </script>
@@ -108,6 +114,7 @@
         $(document).ready(function(){
             $("#newrecipepage").click(function(){
                 $("#bodytest").load("newRecipe.html");
+                colorChosenRecipe()
             });
         });
     </script>
@@ -115,6 +122,7 @@
         $(document).ready(function(){
             $("#materialpage").click(function(){
                 $("#bodytest").load("materialBatchList.html");
+                colorChosenMaterial()
             });
         });
     </script>
@@ -122,6 +130,7 @@
         $(document).ready(function(){
             $("#newmaterialpage").click(function(){
                 $("#bodytest").load("newMaterialBatch.html");
+                colorChosenMaterial()
             });
         });
     </script>
@@ -129,6 +138,7 @@
         $(document).ready(function(){
             $("#productpage").click(function(){
                 $("#bodytest").load("productList.html");
+                colorChosenProd()
             });
         });
     </script>
@@ -136,6 +146,7 @@
         $(document).ready(function(){
             $("#newproductpage").click(function(){
                 $("#bodytest").load("newProduct.html");
+                colorChosenProd()
             });
         });
     </script>
@@ -143,6 +154,7 @@
         $(document).ready(function(){
             $("#productbatchpage").click(function(){
                 $("#bodytest").load("productBatchList.html");
+                colorChosenProdBatch()
             });
         });
     </script>
@@ -150,6 +162,7 @@
         $(document).ready(function(){
             $("#newproductbatchpage").click(function(){
                 $("#bodytest").load("newProductBatch.html");
+                colorChosenProdBatch()
             });
         });
     </script>
@@ -157,6 +170,7 @@
         $(document).ready(function(){
             $("#home").click(function(){
                 $("#bodytest").empty();
+                colorChosenHome()
             });
         });
     </script>
