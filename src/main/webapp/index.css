@@ -214,3 +214,12 @@ input[type=number] {
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+/* Image class */
+.center-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 300px;
+    height: 354px;
+}

@@ -54,3 +54,7 @@ function colorChosenHome() {
     document.getElementById("prodMenu").className = "dropbtn";
     document.getElementById("prodBatchMenu").className = "dropbtn";
 }
+
+function login() {
+
+}

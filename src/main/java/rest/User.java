@@ -61,6 +61,7 @@ public class User {
 		JSONuser juser;
 		ArrayList<JSONuser> jusers = new ArrayList<>();
 		String role;
+		String admin;
 		for (IUserDTO user: users){
 			if (user.isPharma()){
 				role = "Farmaceut";
@@ -72,7 +73,13 @@ public class User {
 				role = "Laborant";
 			}
 
-			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), "", role);
+			if (user.isAdmin()){
+				admin = "Ja";
+			}
+			else{
+				admin = "Nej";
+			}
+			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), admin, role);
 			jusers.add(juser);
 		}
 		return jusers;

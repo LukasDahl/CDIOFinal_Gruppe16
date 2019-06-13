@@ -39,7 +39,8 @@ function generateUserHTML(user) {
         '<td class="list">' + user.username + '</td>' +
         '<td class="list">' + user.ini + '</td>' +
         '<td class="list">' + user.cpr + '</td>' +
-        '<td class="list">' + user.role + '</td>';
+        '<td class="list">' + user.role + '</td>' +
+        '<td class="list">' + user.admin + '</td>';
 }
 
 function getID(){
