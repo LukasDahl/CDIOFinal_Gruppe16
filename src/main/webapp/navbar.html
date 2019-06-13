@@ -1,0 +1,153 @@
+
+<div class="navbar">
+    <a id="home">Gruppe 16</a>
+    <div class="dropdown">
+        <button class="dropbtn" id="userMenu">Bruger
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="ddUser">
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn" id="ingMenu">Ingrediens
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="ddIng">
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn" id="recipeMenu">Opskrift
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="ddRecipe">
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn" id="materialMenu">Råvarebatch
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="ddMaterial">
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn" id="prodMenu">Produkt
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="ddProd">
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn" id="prodBatchMenu">Produktbatch
+            <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="ddProdBatch">
+        </div>
+    </div>
+</div>
+<script>
+    navsetup();
+</script>
+<script>
+    $(document).ready(function(){
+        $("#useradminpage").click(function(){
+            $("#bodytest").load("userList.html");
+            colorChosenUser();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#newuserpage").click(function(){
+            $("#bodytest").load("newUser.html");
+            colorChosenUser();
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#ingpage").click(function(){
+            $("#bodytest").load("ingredientList.html");
+            colorChosenIng()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#newingpage").click(function(){
+            $("#bodytest").load("newIngredient.html");
+            colorChosenIng()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#recipepage").click(function(){
+            $("#bodytest").load("recipeList.html");
+            colorChosenRecipe()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#newrecipepage").click(function(){
+            $("#bodytest").load("newRecipe.html");
+            colorChosenRecipe()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#materialpage").click(function(){
+            $("#bodytest").load("materialBatchList.html");
+            colorChosenMaterial()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#newmaterialpage").click(function(){
+            $("#bodytest").load("newMaterialBatch.html");
+            colorChosenMaterial()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#productpage").click(function(){
+            $("#bodytest").load("productList.html");
+            colorChosenProd()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#newproductpage").click(function(){
+            $("#bodytest").load("newProduct.html");
+            colorChosenProd()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#productbatchpage").click(function(){
+            $("#bodytest").load("productBatchList.html");
+            colorChosenProdBatch()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#newproductbatchpage").click(function(){
+            $("#bodytest").load("newProductBatch.html");
+            colorChosenProdBatch()
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $("#home").click(function(){
+            $("#bodytest").empty();
+            colorChosenHome()
+        });
+    });
+</script>

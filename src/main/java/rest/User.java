@@ -129,4 +129,51 @@ public class User {
 		return id;
 	}
 
+	@Path("login")
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response userPriv(JSONlogin login) {
+
+		IUserDAO userDAO = UserDAO.getInstance();
+		IUserDTO user;
+		int loginint = 0;
+		try {
+			loginint = Integer.parseInt(login.getLogin_ID());
+		}catch (NumberFormatException e){
+			return Response.status(Response.Status.BAD_REQUEST).entity("Giv mig et tal.").build();
+		}
+
+		if (loginint == 999){
+			return Response.ok("5").build();
+		}
+		try {
+			user = userDAO.getUser(loginint);
+		} catch (IDALException.DALException e) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Bruger eksisterer ikke.").build();
+		}
+
+		if (user.isAdmin()){
+			if (user.isPharma()){
+				return Response.ok("5").build();
+			}
+			else if (user.isPLeader()){
+				return Response.ok("3").build();
+			}
+			else{
+				return Response.ok("1").build();
+			}
+		}
+		else{
+			if (user.isPharma()){
+				return Response.ok("6").build();
+			}
+			else if (user.isPLeader()){
+				return Response.ok("4").build();
+			}
+			else{
+				return Response.ok("2").build();
+			}
+		}
+	}
+
 }
