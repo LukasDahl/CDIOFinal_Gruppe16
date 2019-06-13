@@ -1,15 +1,16 @@
-package database.dto;
+package rest.jsonObjects;
 
-public class JSONingredient {
+public class JSONproduct {
     String id;
     String name;
 
-    public JSONingredient(String id, String name) {
+    public JSONproduct(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public JSONingredient(){}
+    public JSONproduct() {
+    }
 
     public String getId() {
         return id;

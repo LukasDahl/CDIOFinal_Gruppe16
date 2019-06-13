@@ -2,6 +2,7 @@ package rest;
 
 import database.dal.*;
 import database.dto.*;
+import rest.jsonObjects.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -25,7 +26,6 @@ public class Ingredient {
         } catch (IDALException.DALException e) {
             e.printStackTrace();
         }
-        //return Response.status(Response.Status.BAD_REQUEST).entity("Brugernavn ikke gyldigt").build();
         return Response.ok("Ingrediens oprettet").build();
     }
 
@@ -37,7 +37,7 @@ public class Ingredient {
     }
 
 
-    public static IIngredientDTO jsonToIng(JSONingredient jing){
+    private static IIngredientDTO jsonToIng(JSONingredient jing){
         IIngredientDTO ing = new IngredientDTO();
         ing.setIngredientId(Integer.parseInt(jing.getId()));
         ing.setIngredientName(jing.getName());
@@ -45,10 +45,9 @@ public class Ingredient {
         return ing;
     }
 
-    public static ArrayList<JSONingredient> ingToJSON(List<IIngredientDTO> ings){
+    private static ArrayList<JSONingredient> ingToJSON(List<IIngredientDTO> ings){
         JSONingredient jing;
         ArrayList<JSONingredient> jings = new ArrayList<>();
-        String role;
         for (IIngredientDTO ing: ings){
             jing = new JSONingredient(""+ing.getIngredientId(), ing.getIngredientName());
             jings.add(jing);

@@ -8,60 +8,126 @@
 <!--    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
     <script type="text/javascript" src="jquery-3.1.1.js"></script>
     <script type="text/javascript" src="jquery.serialize-object.js"></script>
-    <script type="text/javascript" src="usermethods.js"></script>
-    <script type="text/javascript" src="recipemethods.js"></script>
-    <script type="text/javascript" src="ingredientmethods.js"></script>
+    <script type="text/javascript" src="userMethods.js"></script>
+    <script type="text/javascript" src="recipeMethods.js"></script>
+    <script type="text/javascript" src="ingredientMethods.js"></script>
+    <script type="text/javascript" src="productMethods.js"></script>
 </head>
 
 <body>
-
-    <div>
-        <h1 class="center"><b>Administration</b></h1>
-        <h2 class="center"><i>Gruppe 16</i></h2>
+    <div class="center">
+    <div class="dropdown">
+        <button class="dropbtn">Bruger</button>
+        <div class="dropdown-content">
+            <a id="useradminpage">Brugerliste</a>
+            <a id="newuserpage">Ny bruger</a>
+        </div>
     </div>
+    <div class="dropdown">
+        <button class="dropbtn">Ingrediens</button>
+        <div class="dropdown-content">
+            <a id="ingpage">Ingrediensliste</a>
+            <a id="newingpage">Ny ingrediens</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Opskrift</button>
+        <div class="dropdown-content">
+            <a id="recipepage">Opskriftsliste</a>
+            <a id="newrecipepage">Ny opskrift</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Råvarebatch</button>
+        <div class="dropdown-content">
+            <a id="materialpage">Batchliste</a>
+            <a id="newmaterialpage">Ny batch</a>
+        </div>
+    </div>
+    <div class="dropdown">
+        <button class="dropbtn">Produkt</button>
+        <div class="dropdown-content">
+            <a id="productpage">Produktliste</a>
+            <a id="newproductpage">Nyt produkt</a>
+        </div>
+    </div>
+    </div>
+
+    <br><br>
+
     <div id="bodytest">
-        <script>
-            $(document).ready(function(){
-                $("#useradmin").click(function(){
-                    $("#bodytest").load("brugerliste.html");
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function(){
-                $("#ingredient").click(function(){
-                    $("#bodytest").load("ingredientlist.html");
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function(){
-                $("#recipe").click(function(){
-                    $("#bodytest").load("newRecipe.html");
-                });
-            });
-        </script>
-        <script>
-            $(document).ready(function(){
-                $("#materialBatch").click(function(){
-                    $("#bodytest").load("materialBatchliste.html");
-                });
-            });
-        </script>
-        <br>
-        <div class="center">
-            <button id="useradmin" class="center">Brugeradmin</button>
-        </div>
-        <div class="center">
-            <button id="ingredient" class="center">Ingrediensliste</button>
-        </div>
-        <div class="center">
-            <button id="recipe" class="center">Opskriftliste</button>
-        </div>
-        <div class="center">
-            <button id="materialBatch" class="center">Råvarebatchliste</button>
-        </div>
 
     </div>
+
+    <script>
+        $(document).ready(function(){
+            $("#useradminpage").click(function(){
+                $("#bodytest").load("userList.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#newuserpage").click(function(){
+                $("#bodytest").load("newUser.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#ingpage").click(function(){
+                $("#bodytest").load("ingredientList.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#newingpage").click(function(){
+                $("#bodytest").load("newIngredient.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#recipepage").click(function(){
+                $("#bodytest").load("recipeList.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#newrecipepage").click(function(){
+                $("#bodytest").load("newRecipe.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#materialpage").click(function(){
+                $("#bodytest").load("materialBatchList.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#newmaterialpage").click(function(){
+                $("#bodytest").load("newMaterialBatch.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#productpage").click(function(){
+                $("#bodytest").load("productList.html");
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            $("#newproductpage").click(function(){
+                $("#bodytest").load("newProduct.html");
+            });
+        });
+    </script>
 </body>
 </html>

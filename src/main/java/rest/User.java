@@ -2,6 +2,7 @@ package rest;
 
 import database.dal.*;
 import database.dto.*;
+import rest.jsonObjects.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,12 +14,8 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class User {
-	static ArrayList<JSONuser> users = new ArrayList<JSONuser>();
-	static int ID = findNextID(0);
 
-
-
-
+	private static int ID = findNextID(1);
 
 
 	@POST
@@ -60,7 +57,7 @@ public class User {
 		return ID;
 	}
 
-	public static ArrayList<JSONuser> userToJSON(List<IUserDTO> users){
+	private static ArrayList<JSONuser> userToJSON(List<IUserDTO> users){
 		JSONuser juser;
 		ArrayList<JSONuser> jusers = new ArrayList<>();
 		String role;
@@ -81,7 +78,7 @@ public class User {
 		return jusers;
 	}
 
-	public static IUserDTO jsonToUser(JSONuser juser){
+	private static IUserDTO jsonToUser(JSONuser juser){
 		IUserDTO user = new UserDTO();
 		user.setUserId(Integer.parseInt(juser.getId()));
 		user.setUserName(juser.getUsername());
@@ -113,10 +110,11 @@ public class User {
 		return user;
 	}
 
-	public static int findNextID(int id){
+	private static int findNextID(int id){
 		IUserDAO userDAO = UserDAO.getInstance();
 		try {
-			while (!((UserDAO) userDAO).idAvailable(++id)){
+			while (!((UserDAO) userDAO).idAvailable(id)){
+				id++;
 			}
 		} catch (IUserDAO.DALException e) {
 			e.printStackTrace();

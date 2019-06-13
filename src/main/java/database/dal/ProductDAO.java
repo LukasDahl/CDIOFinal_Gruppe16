@@ -5,11 +5,18 @@ import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 
 public class ProductDAO implements IProductDAO{
+
+    private static IProductDAO instance;
+
+    public static IProductDAO getInstance(){
+        if(instance == null)
+            instance = new ProductDAO();
+        return instance;
+    }
 
     private Connection createConnection() throws SQLException {
         try {
@@ -35,7 +42,6 @@ public class ProductDAO implements IProductDAO{
 
 
             PreparedStatement st = c.prepareStatement("INSERT INTO Produkter VALUES (?,?)");
-            PreparedStatement ps;
             int productId = product.getProductId();
             String productName = product.getProductName();
 
@@ -75,7 +81,7 @@ public class ProductDAO implements IProductDAO{
     @Override
     public List<IProductDTO> getProductList() throws IProductDAO.DALException {
 
-        IProductDTO product = new ProductDTO();
+        IProductDTO product;
         List<IProductDTO> productList = new ArrayList<>();
 
         try (Connection c = createConnection()){
@@ -84,6 +90,7 @@ public class ProductDAO implements IProductDAO{
 
             while (rs.next())
             {
+                product = new ProductDTO();
                 product.setProductId(rs.getInt("produkt_id"));
                 product.setProductName(rs.getString("produkt_navn"));
 
@@ -101,7 +108,7 @@ public class ProductDAO implements IProductDAO{
     public void updateProduct(IProductDTO product) throws IProductDAO.DALException {
 
         try (Connection c = createConnection()){
-            PreparedStatement st = c.prepareStatement("UPDATE Produkter SET produkt_navn = ? WHERE userID = ?");
+            PreparedStatement st = c.prepareStatement("UPDATE Produkter SET produkt_navn = ? WHERE produkt_id = ?");
             int productId = product.getProductId();
             String productName = product.getProductName();
 

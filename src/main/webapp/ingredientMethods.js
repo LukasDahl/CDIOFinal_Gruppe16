@@ -12,7 +12,7 @@ function createIngredient(){
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("ingredientlist.html");
+            $("#bodytest").load("ingredientList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);

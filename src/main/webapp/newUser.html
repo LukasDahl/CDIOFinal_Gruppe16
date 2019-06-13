@@ -6,16 +6,16 @@
             <form id="newbruh" action="" method="GET">
 
                 ID: <br>
-                <input type="text" id="ID" name="id" value="" readonly><br>
+                <input type="text" id="ID" name="id" value="" readonly style="width: 250px"><br>
 
                 Brugernavn: <br>
-                <input type="text" name="username"><br>
+                <input type="text" name="username" style="width: 250px"><br>
 
                 Initialer: <br>
-                <input type="text" name="ini"><br>
+                <input type="text" name="ini" style="width: 250px"><br>
 
                 CPR: <br>
-                <input type="text" name="cpr"><br>
+                <input type="text" name="cpr" style="width: 250px"><br>
 
                 Administrator:  <br>
                 <input align="left" type="radio" name="admin" value="yes"> Ja<br>
@@ -25,9 +25,9 @@
                 <input align="left" type="radio" name="role" value="Farmaceut" checked="checked"> Farmaceut<br>
                 <input align="left" type="radio" name="role" value="Produktionsleder"> Produktionsleder<br>
                 <input align="left" type="radio" name="role" value="Laborant"> Laborant<br>
-
-                <INPUT TYPE="button" id="opret" NAME="opret" Value="Opret" onClick="createUser();">
-
+                <div class="center">
+                    <INPUT TYPE="button" id="opret" NAME="opret" Value="Tilf&oslash;j bruger" onClick="createUser();">
+                </div>
             </form>
             &nbsp
         </div>

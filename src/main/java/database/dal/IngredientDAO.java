@@ -3,7 +3,6 @@ package database.dal;
 import database.dto.*;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class IngredientDAO implements IIngredientDAO {
@@ -33,7 +32,6 @@ public class IngredientDAO implements IIngredientDAO {
 		try (Connection c = createConnection()) {
 
 			Statement statement = c.createStatement();
-			LinkedList<Integer> uid = new LinkedList<>();
 
 			ResultSet rs = statement.executeQuery("SELECT * FROM Ingredienser WHERE ingrediens_id = " + ingredient.getIngredientId());
 			if (rs.next()){
@@ -110,7 +108,7 @@ public class IngredientDAO implements IIngredientDAO {
 
 		try {
 			Connection c = createConnection();
-			PreparedStatement st = c.prepareStatement("UPDATE ingredienser SET ingrediens_navn = ?, isAktiv = ? WHERE ingrediens_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE Ingredienser SET ingrediens_navn = ?, isAktiv = ? WHERE ingrediens_id = ?");
 			int ingredientId = ingredient.getIngredientId();
 			String ingredientName = ingredient.getIngredientName();
 			boolean active = ingredient.getActive();
