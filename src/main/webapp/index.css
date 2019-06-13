@@ -15,7 +15,7 @@ table.center {
 .border{
     margin-left:auto;
     margin-right:auto;
-    width: 310px;
+    width: 400px;
     border-width: thin;
     border-color: black;
     border-radius: 0.2cm;
@@ -29,6 +29,52 @@ table, td {
     border-collapse: collapse;
     text-align: left;
 }
+table.list{
+    border-collapse: collapse;
+    width: 75%;
+    margin-left:auto;
+    margin-right:auto;
+}
+td.list, th.list{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+tr.list:nth-child(even){
+    background-color: #eeeeee;
+}
+tr.list:hover{
+    background-color: #ddd;
+}
+th.list{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #095aa3;
+    color: white;
+}
+table.nestedlist{
+    border-collapse: collapse;
+    width: 340px;
+    margin-left:auto;
+    margin-right:auto;
+}
+td.nestedlist, th.nestedlist{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+tr.nestedlist:nth-child(even){
+    background-color: #eeeeee;
+}
+tr.nestedlist:hover{
+    background-color: #ddd;
+}
+th.nestedlist{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #095aa3;
+    color: white;
+}
 th{
     border: 1px solid black;
     border-collapse: collapse;
@@ -38,7 +84,7 @@ th{
     font-weight: normal;
 }
 input[type=button] {
-    width: 250px;
+    width: 340px;
     background-color: #095aa3;
     color: white;
     padding: 14px 20px;
@@ -48,7 +94,7 @@ input[type=button] {
     cursor: pointer;
 }
 input[type=text] {
-    width: 250px;
+    width: 340px;
     margin: 8px 0px;
     display: inline-block;
     box-sizing: border-box;
@@ -58,12 +104,32 @@ input[type=text] {
     border-radius: 4px;
 }
 select.wide{
-    width: 250px;
+    width: 340px;
     margin: 8px 0px;
     display: inline-block;
     box-sizing: border-box;
     background-color: aliceblue;
-    padding: 14px 20px;
+    padding: 14px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+select.narrow{
+    width: 80px;
+    margin: 0px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    padding: 2px 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input[type=number] {
+    width: 60px;
+    margin: 0px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    padding: 2px 3px;
     border: 1px solid #ccc;
     border-radius: 4px;
 }

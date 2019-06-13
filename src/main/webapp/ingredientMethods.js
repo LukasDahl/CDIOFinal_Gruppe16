@@ -30,6 +30,6 @@ function loadIngredients() {
     });
 }
 function generateIngHTML(ing) {
-    return '<tr><td>' + ing.id + '</td>' +
-        '<td>' + ing.name + '</td>';
+    return '<tr class="list"><td class="list">' + ing.id + '</td>' +
+        '<td class="list">' + ing.name + '</td>';
 }

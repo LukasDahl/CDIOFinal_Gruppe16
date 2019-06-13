@@ -35,11 +35,11 @@ function loadUsers() {
 }
 
 function generateUserHTML(user) {
-    return '<tr><td>' + user.id + '</td>' +
-        '<td>' + user.username + '</td>' +
-        '<td>' + user.ini + '</td>' +
-        '<td>' + user.cpr + '</td>' +
-        '<td>' + user.role + '</td>';
+    return '<tr class="list"><td class="list">' + user.id + '</td>' +
+        '<td class="list">' + user.username + '</td>' +
+        '<td class="list">' + user.ini + '</td>' +
+        '<td class="list">' + user.cpr + '</td>' +
+        '<td class="list">' + user.role + '</td>';
 }
 
 function getID(){
