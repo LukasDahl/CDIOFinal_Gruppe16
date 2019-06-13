@@ -34,7 +34,6 @@ public class Recipe {
     public ArrayList<JSONrecipe> getRecipeList() throws IDALException.DALException {
         IRecipeDAO recipeDAO = RecipeDAO.getInstance();
         List<IRecipeDTO> recipes = recipeDAO.getRecipeList();
-        System.out.println(recipes);
         return recipesToJSON(recipes);
     }
 
