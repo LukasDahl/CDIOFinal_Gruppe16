@@ -88,6 +88,12 @@ function loadRecipes() {
         $.each(data, function (i, elt) {
             $('#recipetablebody').append(generateRecipeHTML(elt));
         });
+        $("#recipetablehead").empty();
+        $("#recipetablehead").append('<tr class="list">' +
+            '        <th class="list">Opskrifts-ID</th>' +
+            '        <th class="list">Produktnavn</th>' +
+            '        <th class="list">Antal af ingredienser</th>' +
+            '    </tr>');
     });
 }
 

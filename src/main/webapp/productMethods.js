@@ -27,6 +27,11 @@ function loadProducts() {
         $.each(data, function (i, elt) {
             $('#prodtablebody').append(generateProdHTML(elt));
         });
+        $("#prodtablehead").empty();
+        $("#prodtablehead").append('<tr class="list">' +
+            '        <th class="list">Produkt ID</th>' +
+            '        <th class="list">Produktnavn</th>' +
+            '    </tr>');
     });
 }
 function generateProdHTML(prod) {

@@ -27,6 +27,11 @@ function loadIngredients() {
         $.each(data, function (i, elt) {
             $('#ingtablebody').append(generateIngHTML(elt));
         });
+        $("#ingtablehead").empty();
+        $("#ingtablehead").append('<tr class="list">' +
+            '        <th class="list">Ingrediens ID</th>' +
+            '        <th class="list">Ingrediens navn</th>' +
+            '    </tr>');
     });
 }
 function generateIngHTML(ing) {
