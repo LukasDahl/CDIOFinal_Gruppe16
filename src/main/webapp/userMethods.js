@@ -31,6 +31,15 @@ function loadUsers() {
         $.each(data, function (i, elt) {
             $('#usertablebody').append(generateUserHTML(elt));
         });
+        $("#usertablehead").empty();
+        $("#usertablehead").append('<tr class="list">' +
+            '        <th class="list">ID</th>' +
+            '        <th class="list">Brugernavn</th>' +
+            '        <th class="list">Initialer</th>' +
+            '        <th class="list">CPR</th>' +
+            '        <th class="list">Roller</th>' +
+            '        <th class="list">Admin</th>' +
+            '    </tr>');
     });
 }
 
