@@ -5,9 +5,6 @@ import database.dal.*;
 import database.dto.*;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 public class Main {
@@ -15,22 +12,28 @@ public class Main {
 	public static void main(String[] args) {
 
 		Connection c = new Connection();
-		UserDAO userDAO = new UserDAO();
-		IUserDTO user;
-		ProdBatchDAO prodBatchDAO = new ProdBatchDAO();
-		IProdBatchDTO prodBatch;
-		RecipeDAO recipeDAO = new RecipeDAO();
-		IRecipeDTO recipe = null;
-		ProductDAO productDAO = new ProductDAO();
-		IProductDTO product;
-		MaterialDAO materialDAO = new MaterialDAO();
-		IMaterialDTO material = null;
-		IngredientDAO ingDAO = new IngredientDAO();
-		IIngredientDTO ingredient;
+		try {
+			c.createConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 
-		boolean exit = false;
-		while(!exit) {
+
+		boolean quit = false;
+		while(!quit) {
+			UserDAO userDAO = new UserDAO();
+			IUserDTO user;
+			ProdBatchDAO prodBatchDAO = new ProdBatchDAO();
+			IProdBatchDTO prodBatch;
+			RecipeDAO recipeDAO = new RecipeDAO();
+			IRecipeDTO recipe = null;
+			ProductDAO productDAO = new ProductDAO();
+			IProductDTO product;
+			MaterialDAO materialDAO = new MaterialDAO();
+			IMaterialDTO material = null;
+			IngredientDAO ingDAO = new IngredientDAO();
+			IIngredientDTO ingredient;
 			String reply, ingName;
 			String[] commands = {"Unknown", "Command"};
 			String text;
@@ -44,35 +47,41 @@ public class Main {
 			double bruttoweight = 0;
 			double expeded_nettoweight = 0;
 			double tolerance = 0;
-			int tararound = 0;
-			int nettoround = 0;
-			int bruttoround = 0;
-			boolean færdig = false, match = false;
-			try {
-				c.createConnection();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			boolean færdig, match = false, exit = false;
+
 
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			while (!færdig) {
+			while (!exit) {
 
 				try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-//			c.setWrite("S");
 				reply = c.getRead();
 				if (reply.equals("tom")) ;
 				else commands = reply.split("\\s+");
 
 				switch (state) {
 					case 0:
+						text = "RM30 \"\" \"\" \"\" \"\" \"OK\"";
+						c.setWrite(text);
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						text = "RM39 1";
+						c.setWrite(text);
+						try {
+							Thread.sleep(100);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 						text = "RM20 8 \"Indtast operatornr.\" \"\" \"&3\"";
 						c.setWrite(text);
 						state++;
@@ -119,7 +128,6 @@ public class Main {
 								state++;
 								text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
 								c.setWrite(text);
-								System.out.println("hej2");
 							} catch (Exception e) {
 								c.setWrite("RM20 8 \"produkt batch findes ikke\" \"&3\"");
 								state--;
@@ -133,7 +141,6 @@ public class Main {
 
 							state++;
 							c.setWrite("T");
-							System.out.println("hej3");
 						}
 						commands[0] = "Unknown";
 						break;
@@ -158,71 +165,34 @@ public class Main {
 					case 6:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							state++;
-							state++;
-							state++;
-							state++;
 							c.setWrite("T");
 						}
 						commands[0] = "Unknown";
 						break;
 					case 7:
-						if (commands[0].equals("S") && commands[1].equals("S")) {
-							taraweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
-							// insert into produktbatch(produktbatchkomponenten) value(taraweight) where id = id
-							c.setWrite("T");
+						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
+							state++;
+							c.setWrite("RM20 8 \"Skriv raavarebatch nr\" \"\" \"&3\"");
 						}
 						commands[0] = "Unknown";
 						break;
 					case 8:
-						if (commands[0].equals("T") && commands[1].equals("S")) {
-							System.out.println("hej6");
-							taraweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
-							System.out.println(taraweight);
-							state++;
-							c.setWrite("RM20 8 \"Skriv ingrediens id\" \"\" \"&3\"");
-						}
-						commands[0] = "Unknown";
-						break;
-					case 9:
-						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
-
-							String name = "select name from ingradiens where id = operator";
-							if (!name.equals("")) {
-								state++;
-								text = "RM20 8 \"ingradiens: " + operator + "\" \"\" \"&3\"";
-								c.setWrite(text);
-							} else {
-								c.setWrite("RM20 8 \"ingradiens findes ikke.\" \"\" \"&3\"");
-							}
-						}
-						commands[0] = "Unknown";
-						break;
-					case 10:
-						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
-							state++;
-							c.setWrite("RM20 8 \"Skriv råvare batch\" \"\" \"&3\"");
-						}
-						commands[0] = "Unknown";
-						break;
-					case 11:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 
 
 
 							try {
-								System.out.println(materialDAO.getMaterial(operator));
 								material = materialDAO.getMaterial(operator);
 								currentIngredient = material.getIngredientId();
-								//ingredient = ingDAO.getIngredient(operator);
-								//ingName = ingredient.getIngredientName();
+								ingredient = ingDAO.getIngredient(currentIngredient);
+								ingName = ingredient.getIngredientName();
 
 								for (int ing: ingredientArray){
 									if (ing == currentIngredient) {
 										match = true;
 										state++;
-										c.setWrite("RM20 8 \"placer " + product_name + "\" \"\" \"&3\"");
+										c.setWrite("RM20 8 \"placer " + ingName + "\" \"\" \"&3\"");
 									}
 								}
 
@@ -230,24 +200,32 @@ public class Main {
 								c.setWrite("RM20 8 \"Ikke fundet.\" \"\" \"&3\"");
 								e.printStackTrace();
 								match = true;
+								state--;
 							}
 							if (!match) {
 								c.setWrite("RM20 8 \"ikke del af opskrift.\" \"\" \"&3\"");
+								state--;
 							}
 						}
 						commands[0] = "Unknown";
 						break;
-					case 12:
+					case 9:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							currentIngredient = material.getIngredientId();
-							c.setWrite("S");
 							state++;
 							commands[0] = "Unknown";
 						}
 						break;
-					case 13:
+					case 10:
+						if (commands[0].equals("RM30")) {
+							c.setWrite("S");
+							state++;
+						}
+						break;
+					case 11:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							nettoweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
+
+							currentIngredient = material.getIngredientId();
 
 							for (int i = 0; i < recipe.getIngList().size(); i++){
 								if (recipe.getIngList().get(i) == currentIngredient){
@@ -260,71 +238,63 @@ public class Main {
 								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
 									c.setWrite("RM20 8 \"Remove netto\" \"\" \"&3\"");
 									state++;
-									state++;
 								} else {
-									c.setWrite("RM20 8 \""+ nettoweight +" for meget\" \"\" \"&3\"");
+									c.setWrite("RM20 8 \""+ (nettoweight - expeded_nettoweight) +" for meget\" \"\" \"&3\"");
+									state--;
 								}
 							} else {
-								c.setWrite("RM20 8 \""+ nettoweight +" for lidt\" \"\" \"&3\"");
+								c.setWrite("RM20 8 \""+ ( expeded_nettoweight - nettoweight ) +" for lidt\" \"\" \"&3\"");
+								state--;
 							}
 							commands[0] = "Unknown";
 						}
 						break;
-					case 14:
-						if (commands[0].equals("T") && commands[1].equals("S")) {
-							state++;
-							c.setWrite("RM20 8 \"Remove brutto\" \"\" \"&3\"");
-							commands[0] = "Unknown";
-						}
-
-						break;
-					case 15:
+					case 12:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							c.setWrite("S");
 							state++;
 							commands[0] = "Unknown";
 						}
 						break;
-					case 16:
+					case 13:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							bruttoweight = Double.parseDouble(commands[2].substring(2, (commands[2].length() - 1)));
 							state++;
 							commands[0] = "Unknown";
 						}
 						break;
-					case 17:
+					case 14:
 						if (bruttoweight == 0) {
 							færdig = true;
-							for (int ing : ingredientArray) {
-								if (currentIngredient == ing) {
-									ing = 0;
+							for (int i = 0; i < ingredientArray.size(); i++) {
+								if (currentIngredient == ingredientArray.get(i) ) {
+									ingredientArray.set(i, 0);
 								}
-								if (ing != 0) {
+								if (ingredientArray.get(i) != 0) {
 									færdig = false;
 								}
 							}
 							if (færdig) {
 								c.setWrite("RM20 8 \"du er færdig\" \"\" \"&3\"");
-								state = 0;
+								state++;
 							} else {
-								c.setWrite("RM20 8 \"OK\" \"\" \"&3\"");
+								c.setWrite("RM20 8 \"Registreret\" \"\" \"&3\"");
 								state -= 8;
 							}
 						} else {
-							c.setWrite("RM20 8 \"Kasseret\" \"\" \"&3\"");
+							c.setWrite("RM20 8 \"Netto ikke fjernet\" \"\" \"&3\"");
+							state--;
+							state--;
 						}
-						state++;
 						commands[0] = "Unknown";
 						break;
-					case 18:
+					case 15:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							state = 0;
-							commands[0] = "Unknown";
+							exit = true;
+							break;
 						}
-						break;
 				}
 			}
-			//close con and stuff
 		}
 	}
 }
