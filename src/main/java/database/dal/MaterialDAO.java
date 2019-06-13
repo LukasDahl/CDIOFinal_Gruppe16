@@ -32,7 +32,7 @@ public class MaterialDAO implements IMaterialDAO {
 
 		try(Connection c = createConnection()){
 			Statement statement = c.createStatement();
-			PreparedStatement st = c.prepareStatement("INSERT INTO Råvare_Batches VALUES (?,?,?,?,?,?)");
+			PreparedStatement st = c.prepareStatement("INSERT INTO Råvare_Batches VALUES (?,?,?,?,?,?,?)");
 
 			ResultSet rs = statement.executeQuery("SELECT * FROM Råvare_Batches WHERE råvare_batch_id = " + material.getMaterialBatchId());
 			if (rs.next()){
@@ -50,9 +50,10 @@ public class MaterialDAO implements IMaterialDAO {
 			st.setInt(1, material.getMaterialBatchId());
 			st.setInt(2, material.getIngredientId());
 			st.setInt(3, material.getUserId());
-			st.setDate(4, material.getDate());
-			st.setBoolean(5, material.getOrder());
-			st.setDouble(6, material.getAmount());
+			st.setDouble(4, material.getAmount());
+			st.setDate(5, material.getDate());
+			st.setBoolean(6, material.getOrder());
+			st.setString(7, material.getSupplier());
 			st.executeUpdate();
 
 
@@ -78,6 +79,7 @@ public class MaterialDAO implements IMaterialDAO {
 			material.setAmount(rs.getDouble("mængde"));
 			material.setDate(rs.getDate("dato"));
 			material.setOrder(rs.getBoolean("bestil"));
+			material.setSupplier(rs.getString("leverandør"));
 
 		} catch (SQLException e) {
 			throw new DALException(e.getMessage());
@@ -88,7 +90,7 @@ public class MaterialDAO implements IMaterialDAO {
 
 	@Override
 	public List<IMaterialDTO> getMaterialList() throws DALException {
-		IMaterialDTO material = new MaterialDTO();
+		IMaterialDTO material;
 		List<IMaterialDTO> materialList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
@@ -96,14 +98,15 @@ public class MaterialDAO implements IMaterialDAO {
 			Statement st = c.createStatement();
 			ResultSet rs = st.executeQuery("SELECT * FROM Råvare_Batches");
 
-			while (rs.next())
-			{
+			while (rs.next()) {
+				material = new MaterialDTO();
 				material.setMaterialBatchId(rs.getInt("råvare_batch_id"));
 				material.setIngredientId(rs.getInt("ingrediens_id"));
 				material.setUserId(rs.getInt("bruger_id"));
 				material.setAmount(rs.getDouble("mængde"));
 				material.setDate(rs.getDate("dato"));
 				material.setOrder(rs.getBoolean("bestil"));
+				material.setSupplier(rs.getString("leverandør"));
 
 				materialList.add(material);
 			}

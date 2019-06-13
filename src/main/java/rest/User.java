@@ -16,6 +16,7 @@ import java.util.List;
 public class User {
 
 	private static int ID = findNextID(1);
+	private static int currentUser = 0;
 
 
 	@POST
@@ -48,7 +49,7 @@ public class User {
 	public ArrayList<JSONuser> getUserList() throws IUserDAO.DALException {
 		IUserDAO userDAO = UserDAO.getInstance();
 		List<IUserDTO> users = userDAO.getUserList();
- 		return userToJSON(users);
+ 		return usersToJSON(users);
 	}
 
 	@Path("id")
@@ -57,7 +58,7 @@ public class User {
 		return ID;
 	}
 
-	private static ArrayList<JSONuser> userToJSON(List<IUserDTO> users){
+	private static ArrayList<JSONuser> usersToJSON(List<IUserDTO> users){
 		JSONuser juser;
 		ArrayList<JSONuser> jusers = new ArrayList<>();
 		String role;
@@ -139,13 +140,11 @@ public class User {
 		int loginint = 0;
 		try {
 			loginint = Integer.parseInt(login.getLogin_ID());
+			currentUser = loginint;
 		}catch (NumberFormatException e){
 			return Response.status(Response.Status.BAD_REQUEST).entity("Giv mig et tal.").build();
 		}
 
-		if (loginint == 999){
-			return Response.ok("5").build();
-		}
 		try {
 			user = userDAO.getUser(loginint);
 		} catch (IDALException.DALException e) {
@@ -176,4 +175,45 @@ public class User {
 		}
 	}
 
+	@Path("single")
+	@GET
+	public JSONuser getSingleUser(){
+		IUserDAO userDAO = UserDAO.getInstance();
+		IUserDTO user = new UserDTO();
+		try {
+			user = userDAO.getUser(currentUser);
+		} catch (IDALException.DALException e) {
+			e.printStackTrace();
+		}
+		return userToJSON(user);
+	}
+	private static JSONuser userToJSON(IUserDTO user){
+		JSONuser juser;
+		String role;
+		String admin;
+
+		if (user.isPharma()){
+			role = "Farmaceut";
+		}
+		else if (user.isPLeader()){
+			role = "Produktionsleder";
+		}
+		else {
+			role = "Laborant";
+		}
+
+		if (user.isAdmin()){
+			admin = "Ja";
+		}
+		else{
+			admin = "Nej";
+		}
+		juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), admin, role);
+
+		return juser;
+	}
+
+	public static int getCurrentUser() {
+		return currentUser;
+	}
 }

@@ -101,6 +101,30 @@ function navsetup() {
         default:
             break;
     }
+    loadCurrentUser();
+    homepage();
+}
+
+function homepage() {
+    $("#bodytest").empty().append(homepageHTML());
+}
+
+function homepageHTML() {
+    return '<br><br><img src="medicine-logo.png" alt="Medicine" width="700px" height="900px" class="center-image">'
+}
+
+function loadCurrentUser() {
+    $("#currentuser").append(userpriv)
+    $.get('rest/user/single', function (data, textStatus, req) {
+        $("#currentuser").empty();
+        $('#currentuser').append(currentUserHTML(data));
+
+    });
+
+}
+
+function currentUserHTML(user) {
+    return $('#currentuser').append('' + user.id + ' - ' + user.username + ' - ' + user.role);
 }
 
 function laboAdmin() {

@@ -11,6 +11,7 @@ public class MaterialDTO implements Serializable, IMaterialDTO {
 	private double amount;
 	private Date date;
 	private boolean order;
+	private String supplier;
 
 	@Override
 	public int getMaterialBatchId() {
@@ -60,6 +61,15 @@ public class MaterialDTO implements Serializable, IMaterialDTO {
 	public void setOrder(boolean order) {
 		this.order = order;
 	}
+	@Override
+	public String getSupplier() {
+		return supplier;
+	}
+	@Override
+	public void setSupplier(String supplier) {
+		this.supplier = supplier;
+	}
+
 	@Override
 	public String toString(){
 		return "" + materialBatchId + ingredientId + userId + amount + date.toString() + order;

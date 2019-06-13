@@ -46,7 +46,8 @@ public class Material {
         material.setIngredientId(Integer.parseInt(jmaterial.getIngredientid()));
         material.setAmount(Double.parseDouble(jmaterial.getAmount()));
         material.setOrder(false);
-        material.setUserId(2);
+        material.setUserId(User.getCurrentUser());
+        material.setSupplier(jmaterial.getSupplier());
 
         return material;
     }
@@ -61,7 +62,7 @@ public class Material {
             jmaterial.setIngredientid("" + material.getIngredientId());
             jmaterial.setAmount("" + material.getAmount());
             jmaterial.setDate(material.getDate().toString());
-            jmaterial.setSupplier("Placeholder"); //TODO
+            jmaterial.setSupplier(material.getSupplier()); //TODO
             try {
                 jmaterial.setIngredientname(ingredientDAO.getIngredient(material.getIngredientId()).getIngredientName());
             } catch (IDALException.DALException e) {

@@ -45,3 +45,4 @@ function generateMaterialHTML(material) {
         '<td class="list">' + material.supplier + '</td>' +
         '<td class="list">' + material.date +'</td>';
 }
+

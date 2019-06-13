@@ -9,17 +9,21 @@
                 RåvareID: <br>
                 <input type="text" id="ID" name="id" value=""><br>
 
-                Råvare navn: <br>
-                <input type="text" name="råvarenavn"><br>
+                Ingrediens: <br>
+                <div class="custom-select">
+                    <select id="dropdown0" name="ingredientid" class="wide">
+                        <option value="0">V&aelig;lg:</option>
+                    </select>
+                </div>
 
                 Mængde: <br>
-                <input type="text" name="mængde"><br>
+                <input type="text" name="amount"><br>
 
                 Leverandør: <br>
-                <input type="text" name="leverandør"><br><br>
+                <input type="text" name="supplier"><br><br>
 
                 <div class="center">
-                    <INPUT TYPE="button" id="opret" NAME="opret" Value="Tilf&oslash;j råvarebatch" onClick="">
+                    <INPUT TYPE="button" id="opret" NAME="opret" Value="Tilf&oslash;j råvarebatch" onClick="createMaterial();">
                 </div>
 
             </form>
@@ -27,3 +31,6 @@
         </div>
     </div>
 </div>
+<script>
+    getIngNames();
+</script>

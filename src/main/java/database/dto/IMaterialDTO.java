@@ -28,4 +28,8 @@ public interface IMaterialDTO {
 
 	void setOrder(boolean order);
 
+	String getSupplier();
+
+	void setSupplier(String supplier);
+
 }

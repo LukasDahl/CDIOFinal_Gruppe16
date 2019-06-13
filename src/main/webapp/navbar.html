@@ -43,6 +43,11 @@
         <div class="dropdown-content" id="ddProdBatch">
         </div>
     </div>
+    <div class="userinfo">
+        <button class="infodisplay" id="currentuser">
+        </button>
+
+    </div>
 </div>
 <script>
     navsetup();
@@ -146,8 +151,8 @@
 <script>
     $(document).ready(function(){
         $("#home").click(function(){
-            $("#bodytest").empty();
-            colorChosenHome()
+            homepage();
+            colorChosenHome();
         });
     });
 </script>
