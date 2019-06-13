@@ -30,6 +30,6 @@ function loadProducts() {
     });
 }
 function generateProdHTML(prod) {
-    return '<tr><td>' + prod.id + '</td>' +
-        '<td>' + prod.name + '</td>';
+    return '<tr class="list"><td class="list">' + prod.id + '</td>' +
+        '<td class="list">' + prod.name + '</td>';
 }

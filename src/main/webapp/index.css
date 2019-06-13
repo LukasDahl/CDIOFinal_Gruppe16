@@ -15,7 +15,7 @@ table.center {
 .border{
     margin-left:auto;
     margin-right:auto;
-    width: 290px;
+    width: 400px;
     border-width: thin;
     border-color: black;
     border-radius: 0.2cm;
@@ -24,14 +24,68 @@ table.center {
 .noborder{
     border-style: none;
 }
-table, th, td {
+table, td {
     border: 1px solid black;
     border-collapse: collapse;
     text-align: left;
 }
+table.list{
+    border-collapse: collapse;
+    width: 75%;
+    margin-left:auto;
+    margin-right:auto;
+}
+td.list, th.list{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+tr.list:nth-child(even){
+    background-color: #eeeeee;
+}
+tr.list:hover{
+    background-color: #ddd;
+}
+th.list{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #095aa3;
+    color: white;
+}
+table.nestedlist{
+    border-collapse: collapse;
+    width: 340px;
+    margin-left:auto;
+    margin-right:auto;
+}
+td.nestedlist, th.nestedlist{
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+tr.nestedlist:nth-child(even){
+    background-color: #eeeeee;
+}
+tr.nestedlist:hover{
+    background-color: #ddd;
+}
+th.nestedlist{
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #095aa3;
+    color: white;
+}
+th{
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+    background-color: #0d86f2;
+    color: black;
+    font-weight: normal;
+}
 input[type=button] {
-    width: 150px;
-    background-color: #4CAF50;
+    width: 340px;
+    background-color: #095aa3;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
@@ -39,24 +93,99 @@ input[type=button] {
     border-radius: 4px;
     cursor: pointer;
 }
+input[type=text] {
+    width: 340px;
+    margin: 8px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    padding: 14px 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+select.wide{
+    width: 340px;
+    margin: 8px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    padding: 14px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+select.narrow{
+    width: 80px;
+    margin: 0px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    padding: 2px 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+input[type=number] {
+    width: 60px;
+    margin: 0px 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background-color: aliceblue;
+    padding: 2px 3px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 
-/* Style The Dropdown Button */
-.dropbtn {
-    background-color: #4CAF50;
+/* Navbar container */
+.navbar {
+    overflow: hidden;
+    background-color: #095aa3;
+    font-family: Arial;
+}
+
+/* Links inside the navbar */
+.navbar a {
+    float: left;
+    font-size: 16px;
     color: white;
-    padding: 16px;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* The dropdown container */
+.dropdown {
+    float: left;
+    overflow: hidden;
+}
+
+/* Dropdown button */
+.dropdown .dropbtn {
     font-size: 16px;
     border: none;
-    cursor: pointer;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
 }
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-    position: relative;
-    display: inline-block;
+.dropdown .chosen {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: #0d86f2;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
 }
 
-/* Dropdown Content (Hidden by Default) */
+/* Add a red background color to navbar links on hover */
+.navbar a:hover, .dropdown:hover .dropbtn {
+    background-color: #0d86f2;
+}
+
+/* Dropdown content (hidden by default) */
 .dropdown-content {
     display: none;
     position: absolute;
@@ -68,21 +197,20 @@ input[type=button] {
 
 /* Links inside the dropdown */
 .dropdown-content a {
+    float: none;
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
+    text-align: left;
 }
 
-/* Change color of dropdown links on hover */
-.dropdown-content a:hover {background-color: #aaaaaa}
+/* Add a grey background color to dropdown links on hover */
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
 
 /* Show the dropdown menu on hover */
 .dropdown:hover .dropdown-content {
     display: block;
-}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
 }

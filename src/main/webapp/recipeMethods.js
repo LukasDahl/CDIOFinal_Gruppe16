@@ -5,17 +5,17 @@ function setIng(x) {
     for (i = 0; i < y; i++){
         var j = i + 1;
         $("#ingtablebody").append('<tr>' +
-            '<td width="7%">'+ j +'</td>' +
-            '<td>' +
-            '    <select id="dropdown'+i+'" style="width: 80px">' +
+            '<td width="7%" class="nestedlist">'+ j +'</td>' +
+            '<td class="nestedlist">' +
+            '    <select id="dropdown'+i+'" class="narrow">' +
             '    <option value="0">V&aelig;lg</option>' +
             '    </select>' +
             '</td>' +
-            '<td>' +
-            '    <input type="number" id="mængde'+i+'" style="width: 60px" >' +
+            '<td class="nestedlist">' +
+            '    <input type="number" id="mængde'+i+'">' +
             '</td>' +
-            '<td>' +
-            '   <input type="number" id="afvigelse'+i+'" style="width: 60px">' +
+            '<td class="nestedlist">' +
+            '   <input type="number" id="afvigelse'+i+'">' +
             '</td>' +
             '</tr>');
     }
@@ -92,7 +92,7 @@ function loadRecipes() {
 }
 
 function generateRecipeHTML(recipe) {
-    return '<tr><td>' + recipe.id + '</td>' +
-        '<td>' + recipe.product + '</td>' +
-        '<td>' + recipe.antal + '</td>';
+    return '<tr class="list"><td class="list">' + recipe.id + '</td>' +
+        '<td class="list">' + recipe.product + '</td>' +
+        '<td class="list">' + recipe.antal + '</td>';
 }
