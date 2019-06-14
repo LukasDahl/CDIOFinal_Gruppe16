@@ -52,6 +52,34 @@ public class User {
  		return usersToJSON(users);
 	}
 
+	@Path("update")
+	@POST
+	@Produces(MediaType.TEXT_PLAIN)
+	public Response updateUserJson(JSONuser user) {
+		if(user.getUsername().length() > 20 || user.getUsername().length() < 2) {
+			return Response.status(Response.Status.BAD_REQUEST).entity("Brugernavn ikke gyldigt").build();
+		}
+		else if(!user.getCpr().matches("[0-9]{6}-[0-9]{4}")){
+			return Response.status(Response.Status.BAD_REQUEST).entity("Opgiv venligst gyldigt CPR").build();
+		}
+		else if(user.getIni().length() > 4 || user.getIni().length() < 2){
+			return Response.status(Response.Status.BAD_REQUEST).entity("Opgiv venligst gyldige initialer").build();
+		}
+		else{
+			IUserDTO userDTO = jsonToUser(user);
+			IUserDAO userDAO = UserDAO.getInstance();
+			try {
+				userDAO.updateUser(userDTO);
+			} catch (IDALException.DALException e) {
+				e.printStackTrace();
+			}
+			return Response.ok("Bruger opdateret").build();
+		}
+	}
+
+
+
+
 	@Path("id")
 	@GET
 	public int getID(){

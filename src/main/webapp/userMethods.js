@@ -9,7 +9,6 @@ function createUser(){
     var data = getFormData($form);
     var datajson = JSON.stringify(data);
 
-    console.log(datajson)
     $.ajax({
         url: 'rest/user',
         method: 'POST',
@@ -71,8 +70,11 @@ function getFormData($form){
     return indexed_array;
 }
 function getUserUpdate(i) {
-    $("#bodytest").load("updateUser.html");
-    updateuser = i;
+
+    if (userpriv % 2 === 1) {
+        $("#bodytest").load("updateUser.html");
+        updateuser = i;
+    }
 
 }
 function updateUserData() {
@@ -101,5 +103,21 @@ function updateUserData() {
 }
 
 function updateUser() {
-    //TODO
+    var $form = $("#updatebruh");
+    var data = getFormData($form);
+    var datajson = JSON.stringify(data);
+
+    $.ajax({
+        url: 'rest/user/update',
+        method: 'POST',
+
+        contentType: "application/json", // det vi sender er json
+        data: datajson,
+        success: function (datajson) {
+            $("#bodytest").load("userList.html");
+        },
+        error: function (jqXHR){
+            alert(jqXHR.responseText);
+        }
+    });
 }

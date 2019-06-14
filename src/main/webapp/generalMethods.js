@@ -61,7 +61,6 @@ function loginfunc() {
     var $form = $("#loginform");
     var data = getFormData($form);
     var datajson = JSON.stringify(data);
-    console.log(datajson)
     $.ajax({
         url: 'rest/user/login',
         method: 'POST',
