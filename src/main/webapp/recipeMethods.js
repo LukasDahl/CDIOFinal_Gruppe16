@@ -98,7 +98,42 @@ function loadRecipes() {
 }
 
 function generateRecipeHTML(recipe) {
-    return '<tr class="list"><td class="list">' + recipe.id + '</td>' +
-        '<td class="list">' + recipe.product + '</td>' +
-        '<td class="list">' + recipe.antal + '</td>';
+    return '<tr class="list" id="row' + recipe.id + '"><td class="list" onclick="loadSingleRecipe('+ recipe.id +')">' + recipe.id + '</td>' +
+        '<td class="list" onclick="loadSingleRecipe('+ recipe.id +')">' + recipe.product + '</td>' +
+        '<td class="list" onclick="loadSingleRecipe('+ recipe.id +')">' + recipe.antal + '</td>';
+}
+
+function loadSingleRecipe(recipe) {
+    $.get('rest/recipe/single/'+recipe, function (data, textStatus, req) {
+        $("#bodytest").empty();
+        $('#bodytest').append(generateSingleRecipeHTML(data));
+
+    });
+}
+function generateSingleRecipeHTML(recipe) {
+    var r = '<div class="border">' +
+        '    <h2 class="center">'+ recipe.id + ' - ' + recipe.product + '</h2>' +
+        '       <div style="text-align: center;">' +
+        '           <div style="display: inline-block; text-align: left;">';
+
+    r +='<table class="nestedlist">' +
+        '    <thead>\n' +
+        '         <tr class="list">' +
+        '              <th class="list">Ingrediens</th>' +
+        '              <th class="list">M&aelig;ngde</th>' +
+        '              <th class="list">Afvigelse</th>' +
+        '        </tr>' +
+        '    </thead>' +
+        '    <tbody>';
+
+    $.each(recipe.ingrediens, function (i, elt) {
+        r += '<tr class="list"><td class="list">' + recipe.ingrediens[i] + '<td class="list">' + recipe.mængde[i] + '<td class="list">' + recipe.afvigelse[i]+ '</tr>';
+    });
+
+    r +='    </tbody>' +
+        '</table><br>' +
+        '&nbsp</div>' +
+        '</div>' +
+        '</div>';
+    return r;
 }

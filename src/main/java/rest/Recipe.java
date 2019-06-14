@@ -79,18 +79,44 @@ public class Recipe {
         JSONrecipe jrecipe;
         IProductDAO productDAO = new ProductDAO();
         ArrayList<JSONrecipe> jrecipes = new ArrayList<>();
+        String[] ings;
+        String[] amounts;
+        String[] margins;
         for(IRecipeDTO recipe: recipes){
             jrecipe = new JSONrecipe();
             try {
                 jrecipe.setId("" + recipe.getRecipeId());
                 jrecipe.setAntal("" + recipe.getIngList().size());
                 jrecipe.setProduct(productDAO.getProduct(recipe.getProductId()).getProductName());
+
+                ings = new String[recipe.getIngList().size()];
+                amounts = new String[recipe.getIngList().size()];
+                margins = new String[recipe.getIngList().size()];
+
+                for (int i = 0; i < recipe.getIngList().size(); i++){
+                    ings[i] = "" + recipe.getIngList().get(i);
+                    amounts[i] = "" + recipe.getAmount().get(i);
+                    margins[i] = "" + recipe.getMargin().get(i);
+                }
+
+                jrecipe.setIngrediens(ings);
+                jrecipe.setMængde(amounts);
+                jrecipe.setAfvigelse(margins);
             } catch (IDALException.DALException e) {
                 e.printStackTrace();
             }
             jrecipes.add(jrecipe);
         }
         return jrecipes;
+    }
+
+    @Path("single/{value}")
+    @GET
+    public JSONrecipe getRecipe(@PathParam("value") String id) throws IDALException.DALException {
+        IRecipeDAO recipeDAO = RecipeDAO.getInstance();
+        List<IRecipeDTO> recipes = new ArrayList<>();
+        recipes.add(recipeDAO.getRecipe(Integer.parseInt(id)));
+        return recipesToJSON(recipes).get(0);
     }
 
 }
