@@ -101,21 +101,14 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			Statement statement = c.createStatement();
 			PreparedStatement st = c.prepareStatement("INSERT INTO Produkt_Batches_Råvare_Batches VALUES (?,?,?,?,?)");
 
-
 			List<Integer> matList = new ArrayList<>();
-			for(int mat: prodBatch.getMatList()){
-				matList.add(mat);
-			}
+			matList.addAll(prodBatch.getMatList());
 
 			List<Double> taraList = new ArrayList<>();
-			for(double tara: prodBatch.getTaraList()){
-				taraList.add(tara);
-			}
+			taraList.addAll(prodBatch.getTaraList());
 
 			List<Double> nettoList = new ArrayList<>();
-			for(double netto: prodBatch.getNettoList()){
-				nettoList.add(netto);
-			}
+			nettoList.addAll(prodBatch.getNettoList());
 
 			for(int i = 0; i < prodBatch.getMatList().size(); i++){
 				st.setInt(1, prodBatch.getProdBatchId());
