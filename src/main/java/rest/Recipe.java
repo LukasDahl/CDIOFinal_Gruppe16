@@ -7,6 +7,7 @@ import rest.jsonObjects.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,13 +19,31 @@ public class Recipe {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response addRecipeJson(JSONrecipe jrecipe) {
-        IRecipeDTO recipe = jsonToRecipe(jrecipe);
+        IRecipeDTO recipe = null;
+
+        try {
+            recipe = jsonToRecipe(jrecipe);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+
+        for (int i: recipe.getIngList()){
+            if (i == 0){
+                return Response.status(Response.Status.BAD_REQUEST).entity("Vælg venligst en ingrediens.").build();
+            }
+        }
+
+        if (recipe.getProductId() == 0) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Vælg venligst et produkt.").build();
+        }
+
+
         IRecipeDAO recipeDAO = RecipeDAO.getInstance();
 
         try {
             recipeDAO.createRecipe(recipe);
         } catch (IDALException.DALException e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
 
         return Response.ok("Opskrift oprettet").build();
@@ -40,11 +59,15 @@ public class Recipe {
 
 
 
-    private static IRecipeDTO jsonToRecipe(JSONrecipe jrecipe){
+    private static IRecipeDTO jsonToRecipe(JSONrecipe jrecipe) throws IDALException.DALException {
         IRecipeDTO recipe = new RecipeDTO();
 
+        try {
+            recipe.setRecipeId(Integer.parseInt(jrecipe.getId()));
+        } catch (NumberFormatException e){
+            throw new IDALException.DALException("ID skal være et tal");
+        }
 
-        recipe.setRecipeId(Integer.parseInt(jrecipe.getId()));
         recipe.setProductId(Integer.parseInt(jrecipe.getProduct()));
 
         java.util.Date utilDate = new java.util.Date();
@@ -56,19 +79,28 @@ public class Recipe {
 
         List<Integer> ingredient = new ArrayList<>();
         for (String i: jrecipe.getIngrediens()){
-            ingredient.add(Integer.parseInt(i));
+                ingredient.add(Integer.parseInt(i));
+
         }
         recipe.setIngList(ingredient);
 
         List<Double> amount = new ArrayList<>();
-        for (String i: jrecipe.getMængde()){
-            amount.add(Double.parseDouble(i));
+        for (int i = 0; i < jrecipe.getMængde().length; i++){
+            try {
+                amount.add(Double.parseDouble(jrecipe.getMængde()[i].replace(",",".")));
+            } catch (NumberFormatException e){
+                throw new IDALException.DALException("Fejl i " + (i + 1) + ". ingrediensmængde.");
+            }
         }
         recipe.setAmount(amount);
 
         List<Double> margin = new ArrayList<>();
-        for (String i: jrecipe.getAfvigelse()){
-            margin.add(Double.parseDouble(i));
+        for (int i = 0; i < jrecipe.getAfvigelse().length; i++){
+            try {
+                amount.add(Double.parseDouble(jrecipe.getAfvigelse()[i].replace(",",".")));
+            } catch (NumberFormatException e){
+                throw new IDALException.DALException("Fejl i " + (i + 1) + ". ingrediensafvigelse.");
+            }
         }
         recipe.setMargin(margin);
 
@@ -82,13 +114,15 @@ public class Recipe {
         String[] ings;
         String[] amounts;
         String[] margins;
+        String date;
         for(IRecipeDTO recipe: recipes){
             jrecipe = new JSONrecipe();
             try {
+                date = new SimpleDateFormat("dd-MM-yyyy").format(recipe.getDate());
                 jrecipe.setId("" + recipe.getRecipeId());
                 jrecipe.setAntal("" + recipe.getIngList().size());
                 jrecipe.setProduct(productDAO.getProduct(recipe.getProductId()).getProductName());
-
+                jrecipe.setDato(date);
                 ings = new String[recipe.getIngList().size()];
                 amounts = new String[recipe.getIngList().size()];
                 margins = new String[recipe.getIngList().size()];
@@ -98,10 +132,10 @@ public class Recipe {
                     amounts[i] = "" + recipe.getAmount().get(i);
                     margins[i] = "" + recipe.getMargin().get(i);
                 }
-
                 jrecipe.setIngrediens(ings);
                 jrecipe.setMængde(amounts);
                 jrecipe.setAfvigelse(margins);
+
             } catch (IDALException.DALException e) {
                 e.printStackTrace();
             }

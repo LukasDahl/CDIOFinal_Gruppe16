@@ -38,7 +38,7 @@ public class RecipeDAO implements IRecipeDAO{
 
 
 			if(rs.next()){
-				throw new DALException("recipeID already in use");
+				throw new DALException("Opskrift ID allerede i brug.");
 			}
 
 			if(!proSet.next()){

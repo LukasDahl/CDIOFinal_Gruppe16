@@ -8,14 +8,16 @@ public class JSONrecipe {
     String[] ingrediens;
     String[] mængde;
     String[] afvigelse;
+    String dato;
 
-    public JSONrecipe(String id, String product, String antal, String[] ingrediens, String[] mængde, String[] afvigelse) {
+    public JSONrecipe(String id, String product, String antal, String[] ingrediens, String[] mængde, String[] afvigelse, String dato) {
         this.id = id;
         this.product = product;
         this.antal = antal;
         this.ingrediens = ingrediens;
         this.mængde = mængde;
         this.afvigelse = afvigelse;
+        this.dato = dato;
     }
 
     public JSONrecipe() {
@@ -67,6 +69,14 @@ public class JSONrecipe {
 
     public void setAfvigelse(String[] afvigelse) {
         this.afvigelse = afvigelse;
+    }
+
+    public String getDato() {
+        return dato;
+    }
+
+    public void setDato(String dato) {
+        this.dato = dato;
     }
 }
 

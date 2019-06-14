@@ -93,14 +93,18 @@ function loadRecipes() {
             '        <th class="list">Opskrifts-ID</th>' +
             '        <th class="list">Produktnavn</th>' +
             '        <th class="list">Antal af ingredienser</th>' +
+            '        <th class="list">Oprettelsesdato</th>' +
             '    </tr>');
     });
 }
 
 function generateRecipeHTML(recipe) {
-    return '<tr class="list" id="row' + recipe.id + '"><td class="list" onclick="loadSingleRecipe('+ recipe.id +')">' + recipe.id + '</td>' +
-        '<td class="list" onclick="loadSingleRecipe('+ recipe.id +')">' + recipe.product + '</td>' +
-        '<td class="list" onclick="loadSingleRecipe('+ recipe.id +')">' + recipe.antal + '</td>';
+    return '<tr class="list" id="row' + recipe.id + '" onclick="loadSingleRecipe('+ recipe.id +')">' +
+
+        '<td class="list">' + recipe.id + '</td>' +
+        '<td class="list">' + recipe.product + '</td>' +
+        '<td class="list">' + recipe.antal + '</td>' +
+        '<td class="list">' + recipe.dato + '</td>';
 }
 
 function loadSingleRecipe(recipe) {

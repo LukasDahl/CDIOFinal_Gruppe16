@@ -1,3 +1,4 @@
+var updateuser;
 $(document).ready(function () {
     loadUsers();
 });
@@ -44,7 +45,7 @@ function loadUsers() {
 }
 
 function generateUserHTML(user) {
-    return '<tr class="list"><td class="list">' + user.id + '</td>' +
+    return '<tr class="list" onclick="getUserUpdate('+ user.id +')"><td class="list">' + user.id + '</td>' +
         '<td class="list">' + user.username + '</td>' +
         '<td class="list">' + user.ini + '</td>' +
         '<td class="list">' + user.cpr + '</td>' +
@@ -68,4 +69,37 @@ function getFormData($form){
     });
 
     return indexed_array;
+}
+function getUserUpdate(i) {
+    $("#bodytest").load("updateUser.html");
+    updateuser = i;
+
+}
+function updateUserData() {
+    $.get('rest/user/single/' + updateuser, function (data, textStatus, req) {
+        document.getElementById('ID').value = data.id;
+        document.getElementById('username').value = data.username;
+        document.getElementById('ini').value = data.ini;
+        document.getElementById('cpr').value = data.cpr;
+        if (data.role === "Farmaceut"){
+            document.getElementById('pharma').checked = "checked";
+        }
+        else if (data.role === "Produktionsleder"){
+            document.getElementById('pleader').checked = "checked";
+        }
+        else {
+            document.getElementById('labo').checked = "checked";
+        }
+        if (data.admin === "Ja"){
+            document.getElementById('adminyes').checked = "checked";
+        }
+        else {
+            document.getElementById('adminno').checked = "checked";
+        }
+        updateuser = 0;
+    });
+}
+
+function updateUser() {
+    //TODO
 }

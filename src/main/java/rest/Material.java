@@ -7,6 +7,7 @@ import rest.jsonObjects.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,12 +57,14 @@ public class Material {
         JSONmaterial jmaterial;
         ArrayList<JSONmaterial> jmaterials = new ArrayList<>();
         IIngredientDAO ingredientDAO = IngredientDAO.getInstance();
+        String date;
         for (IMaterialDTO material: materials){
+            date = new SimpleDateFormat("dd-MM-yyyy").format(material.getDate());
             jmaterial = new JSONmaterial();
             jmaterial.setId("" + material.getMaterialBatchId());
             jmaterial.setIngredientid("" + material.getIngredientId());
             jmaterial.setAmount("" + material.getAmount());
-            jmaterial.setDate(material.getDate().toString());
+            jmaterial.setDate(date);
             jmaterial.setSupplier(material.getSupplier()); //TODO
             try {
                 jmaterial.setIngredientname(ingredientDAO.getIngredient(material.getIngredientId()).getIngredientName());

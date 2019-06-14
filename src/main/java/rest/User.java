@@ -187,6 +187,21 @@ public class User {
 		}
 		return userToJSON(user);
 	}
+
+	@Path("single/{value}")
+	@GET
+	public JSONuser getSingleUserByID(@PathParam("value") String id){
+		IUserDAO userDAO = UserDAO.getInstance();
+		IUserDTO user = new UserDTO();
+		try {
+			user = userDAO.getUser(Integer.parseInt(id));
+		} catch (IDALException.DALException e) {
+			e.printStackTrace();
+		}
+		return userToJSON(user);
+	}
+
+
 	private static JSONuser userToJSON(IUserDTO user){
 		JSONuser juser;
 		String role;
