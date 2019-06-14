@@ -16,6 +16,10 @@ public interface IProdBatchDTO {
 
 	void setRecipeId(int recipeId);
 
+	int getOpId();
+
+	void setOpId(int opId);
+
 	Date getDate();
 
 	void setDate(Date date);
@@ -27,4 +31,12 @@ public interface IProdBatchDTO {
 	List<Integer> getLabList();
 
 	void setLabList(List<Integer> labList);
+
+	List<Double> getNettoList();
+
+	void setNettoList(List<Double> nettoList);
+
+	List<Double> getTaraList();
+
+	void setTaraList(List<Double> taraList);
 }

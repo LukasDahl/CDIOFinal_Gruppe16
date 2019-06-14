@@ -78,20 +78,51 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			st.executeUpdate();
 
 
-			PreparedStatement ps;
-			for(int labTech: prodBatch.getLabList()){
-				ps = c.prepareStatement("INSERT INTO Laboranter_Produkt_Batches VALUES (?,?)");
-				ps.setInt(1, labTech);
-				ps.setInt(2, prodBatch.getProdBatchId());
-				ps.executeUpdate();
+			//PreparedStatement ps;
+			//for(int labTech: prodBatch.getLabList()){
+			//	ps = c.prepareStatement("INSERT INTO Laboranter_Produkt_Batches VALUES (?,?)");
+			//	ps.setInt(1, labTech);
+			//	ps.setInt(2, prodBatch.getProdBatchId());
+			//	ps.executeUpdate();
+			//}
+
+
+		}
+		catch (SQLException e) {
+			throw new DALException(e.getMessage());
+		}
+	}
+
+
+	@Override
+	public void finishProdBatch(IProdBatchDTO prodBatch) throws DALException {
+
+		try(Connection c = createConnection()){
+			Statement statement = c.createStatement();
+			PreparedStatement st = c.prepareStatement("INSERT INTO Produkt_Batches_Råvare_Batches VALUES (?,?,?,?,?)");
+
+
+			List<Integer> matList = new ArrayList<>();
+			for(int mat: prodBatch.getMatList()){
+				matList.add(mat);
 			}
 
-			PreparedStatement pre;
-			for(int mat: prodBatch.getMatList()){
-				pre = c.prepareStatement("INSERT INTO Produkt_Batches_Råvare_Batches VALUES (?,?)");
-				pre.setInt(1, prodBatch.getProdBatchId());
-				pre.setInt(2, mat);
-				pre.executeUpdate();
+			List<Double> taraList = new ArrayList<>();
+			for(double tara: prodBatch.getTaraList()){
+				taraList.add(tara);
+			}
+
+			List<Double> nettoList = new ArrayList<>();
+			for(double netto: prodBatch.getNettoList()){
+				nettoList.add(netto);
+			}
+
+			for(int i = 0; i < prodBatch.getMatList().size(); i++){
+				st.setInt(1, prodBatch.getProdBatchId());
+				st.setInt(2, matList.get(i));
+				st.setDouble(3, taraList.get(i));
+				st.setDouble(4, nettoList.get(i));
+				st.setInt(5, prodBatch.getOpId());
 			}
 		}
 		catch (SQLException e) {
