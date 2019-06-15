@@ -50,6 +50,9 @@ public class Material {
         material.setMaterialBatchId(Integer.parseInt(jmaterial.getId()));
         java.util.Date utilDate = new java.util.Date();
         material.setDate(new java.sql.Date(utilDate.getTime()));
+        if (Integer.parseInt(jmaterial.getIngredientid()) ==0 ){
+            throw new IDALException.DALException("Vælg venligst en ingrediens.");
+        }
         material.setIngredientId(Integer.parseInt(jmaterial.getIngredientid()));
         try {
             material.setAmount(Double.parseDouble(jmaterial.getAmount()));
