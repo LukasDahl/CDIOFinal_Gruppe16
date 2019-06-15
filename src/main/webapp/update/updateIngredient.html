@@ -1,0 +1,23 @@
+<div class="border">
+    <h2 class="center">Opret ny ingrediens</h2>
+
+    <div style="text-align: center;">
+        <div style="display: inline-block; text-align: left;">
+
+            <form id="updateIngredient" action="" method="GET">
+
+                Ingrediens ID: <br>
+                <input type="text" id="ID" name="id" value="" readonly><br>
+
+                Ingrediens navn: <br>
+                <input type="text" id="name" name="name"><br><br>
+
+                <div class="center">
+                    <INPUT TYPE="button" id="opret" NAME="opret" Value="Opret" onClick="updateIngredient();">
+                </div>
+            </form>
+            &nbsp
+        </div>
+    </div>
+</div>
+<script>updateIngredientData()</script>

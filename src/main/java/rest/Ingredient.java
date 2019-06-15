@@ -46,6 +46,21 @@ public class Ingredient {
         return ingToJSON(ings).get(0);
     }
 
+    @Path("update")
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response updateIngJson(JSONingredient ing) {
+
+        IIngredientDTO ingDTO = jsonToIng(ing);
+        IIngredientDAO ingDAO = IngredientDAO.getInstance();
+        try {
+            ingDAO.updateIngredient(ingDTO);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok("Ingrediens opdateret").build();
+    }
+
 
     private static IIngredientDTO jsonToIng(JSONingredient jing){
         IIngredientDTO ing = new IngredientDTO();

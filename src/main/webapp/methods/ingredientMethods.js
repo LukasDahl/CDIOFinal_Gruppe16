@@ -35,6 +35,43 @@ function loadIngredients() {
     });
 }
 function generateIngHTML(ing) {
-    return '<tr class="list"><td class="list">' + ing.id + '</td>' +
+    return '<tr class="list" onclick="getIngredientUpdate(' + ing.id + ')"><td class="list">' + ing.id + '</td>' +
         '<td class="list">' + ing.name + '</td>';
+}
+
+function getIngredientUpdate(i) {
+
+    if (userpriv > 4) {
+        $("#bodytest").load("update/updateIngredient.html");
+        updateid = i;
+    }
+
+}
+
+function updateIngredientData() {
+    $.get('rest/ingredient/single/' + updateid, function (data, textStatus, req) {
+        document.getElementById('ID').value = data.id;
+        document.getElementById('name').value = data.name;
+        updateid = 0;
+    });
+}
+
+function updateIngredient() {
+    var $form = $("#updateIngredient");
+    var data = getFormData($form);
+    var datajson = JSON.stringify(data);
+
+    $.ajax({
+        url: 'rest/ingredient/update',
+        method: 'POST',
+
+        contentType: "application/json", // det vi sender er json
+        data: datajson,
+        success: function (datajson) {
+            $("#bodytest").load("list/ingredientList.html");
+        },
+        error: function (jqXHR){
+            alert(jqXHR.responseText);
+        }
+    });
 }
