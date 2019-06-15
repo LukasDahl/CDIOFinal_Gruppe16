@@ -36,6 +36,30 @@ public class Product {
         return productToJSON(products);
     }
 
+    @Path("single/{value}")
+    @GET
+    public JSONproduct getSingleProduct(@PathParam("value") String id) throws IDALException.DALException {
+        IProductDAO productDAO = ProductDAO.getInstance();
+        IProductDTO product = productDAO.getProduct(Integer.parseInt(id));
+        List<IProductDTO> products = new ArrayList<>();
+        products.add(product);
+        return productToJSON(products).get(0);
+    }
+
+    @Path("update")
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response updateProductJson(JSONproduct jproduct) {
+        IProductDTO product = jsonToProduct(jproduct);
+        IProductDAO productDAO = ProductDAO.getInstance();
+        try {
+            productDAO.updateProduct(product);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok("Produkt opdateret").build();
+    }
+
 
     private static IProductDTO jsonToProduct(JSONproduct jproduct){
         IProductDTO product = new ProductDTO();

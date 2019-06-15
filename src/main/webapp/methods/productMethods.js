@@ -35,6 +35,43 @@ function loadProducts() {
     });
 }
 function generateProdHTML(prod) {
-    return '<tr class="list"><td class="list">' + prod.id + '</td>' +
+    return '<tr class="list" onclick="getProductUpdate(' + prod.id + ')"><td class="list">' + prod.id + '</td>' +
         '<td class="list">' + prod.name + '</td>';
+}
+
+function getProductUpdate(i) {
+
+    if (userpriv > 4) {
+        $("#bodytest").load("update/updateProduct.html");
+        updateid = i;
+    }
+
+}
+
+function updateProductData() {
+    $.get('rest/product/single/' + updateid, function (data, textStatus, req) {
+        document.getElementById('ID').value = data.id;
+        document.getElementById('name').value = data.name;
+        updateid = 0;
+    });
+}
+
+function updateProduct() {
+    var $form = $("#updateProduct");
+    var data = getFormData($form);
+    var datajson = JSON.stringify(data);
+
+    $.ajax({
+        url: 'rest/product/update',
+        method: 'POST',
+
+        contentType: "application/json", // det vi sender er json
+        data: datajson,
+        success: function (datajson) {
+            $("#bodytest").load("list/productList.html");
+        },
+        error: function (jqXHR){
+            alert(jqXHR.responseText);
+        }
+    });
 }

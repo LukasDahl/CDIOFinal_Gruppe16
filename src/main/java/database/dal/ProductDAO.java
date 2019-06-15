@@ -112,8 +112,9 @@ public class ProductDAO implements IProductDAO{
             int productId = product.getProductId();
             String productName = product.getProductName();
 
-            st.setInt(1,productId);
-            st.setString(2,productName);
+            st.setString(1,productName);
+            st.setInt(2,productId);
+
             st.executeUpdate();
 
         } catch (SQLException e) {
