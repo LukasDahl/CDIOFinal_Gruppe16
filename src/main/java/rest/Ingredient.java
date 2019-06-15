@@ -36,6 +36,17 @@ public class Ingredient {
         return ingToJSON(ings);
     }
 
+    @Path("single/{value}")
+    @GET
+    public JSONingredient getSingleIng(@PathParam("value") String id) throws IDALException.DALException {
+        IIngredientDAO ingDAO = IngredientDAO.getInstance();
+        IIngredientDTO ing = ingDAO.getIngredient(Integer.parseInt(id));
+        List<IIngredientDTO> ings = new ArrayList<>();
+        ings.add(ing);
+        System.out.println("123");
+        return ingToJSON(ings).get(0);
+    }
+
 
     private static IIngredientDTO jsonToIng(JSONingredient jing){
         IIngredientDTO ing = new IngredientDTO();

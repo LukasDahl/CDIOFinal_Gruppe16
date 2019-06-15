@@ -15,9 +15,9 @@ table.center {
 .border{
     margin-left:auto;
     margin-right:auto;
-    width: 400px;
+    width: 390px;
     border-width: thin;
-    border-color: black;
+    border-color: #ddd;
     border-radius: 0.2cm;
     border-style: solid;
 }
@@ -114,7 +114,7 @@ select.wide{
     border-radius: 4px;
 }
 select.narrow{
-    width: 80px;
+    width: 100px;
     margin: 0px 0px;
     display: inline-block;
     box-sizing: border-box;
@@ -124,7 +124,7 @@ select.narrow{
     border-radius: 4px;
 }
 input[type=number] {
-    width: 60px;
+    width: 80px;
     margin: 0px 0px;
     display: inline-block;
     box-sizing: border-box;

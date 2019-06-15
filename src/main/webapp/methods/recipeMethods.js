@@ -6,15 +6,15 @@ function setIng(x) {
         var j = i + 1;
         $("#ingtablebody").append('<tr>' +
             '<td width="7%" class="nestedlist">'+ j +'</td>' +
-            '<td class="nestedlist">' +
+            '<td class="nestedlist" width="35%">' +
             '    <select id="dropdown'+i+'" class="narrow">' +
             '    <option value="0">V&aelig;lg</option>' +
             '    </select>' +
             '</td>' +
-            '<td class="nestedlist">' +
+            '<td class="nestedlist" width="29%">' +
             '    <input type="number" id="mængde'+i+'">' +
             '</td>' +
-            '<td class="nestedlist">' +
+            '<td class="nestedlist" width="29%">' +
             '   <input type="number" id="afvigelse'+i+'">' +
             '</td>' +
             '</tr>');

@@ -149,8 +149,19 @@ public class Recipe {
     public JSONrecipe getRecipe(@PathParam("value") String id) throws IDALException.DALException {
         IRecipeDAO recipeDAO = RecipeDAO.getInstance();
         List<IRecipeDTO> recipes = new ArrayList<>();
-        recipes.add(recipeDAO.getRecipe(Integer.parseInt(id)));
-        return recipesToJSON(recipes).get(0);
+        IRecipeDTO recipe = recipeDAO.getRecipe(Integer.parseInt(id));
+        recipes.add(recipe);
+        IIngredientDAO ingredientDAO = IngredientDAO.getInstance();
+        List<String> ings = new ArrayList<>();
+        for(int i: recipe.getIngList()){
+            ings.add("" + ingredientDAO.getIngredient(i).getIngredientName());
+        }
+        JSONrecipe jrecipe =  recipesToJSON(recipes).get(0);
+        for (int i = 0; i < jrecipe.getIngrediens().length; i++){
+            jrecipe.getIngrediens()[i] += " - " + ings.get(i);
+        }
+
+        return jrecipe;
     }
 
 }
