@@ -12,7 +12,7 @@ function createProductBatch(){
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("productBatchList.html");
+            $("#bodytest").load("list/productBatchList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);

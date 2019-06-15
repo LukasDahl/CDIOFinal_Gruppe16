@@ -16,7 +16,7 @@ function createUser(){
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("userList.html");
+            $("#bodytest").load("list/userList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);
@@ -72,7 +72,7 @@ function getFormData($form){
 function getUserUpdate(i) {
 
     if (userpriv % 2 === 1) {
-        $("#bodytest").load("updateUser.html");
+        $("#bodytest").load("update/updateUser.html");
         updateuser = i;
     }
 
@@ -114,7 +114,7 @@ function updateUser() {
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("userList.html");
+            $("#bodytest").load("list/userList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);

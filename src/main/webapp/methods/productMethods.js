@@ -12,7 +12,7 @@ function createProduct(){
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("productList.html");
+            $("#bodytest").load("list/productList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);

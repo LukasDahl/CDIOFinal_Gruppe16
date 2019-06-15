@@ -12,7 +12,7 @@ function createMaterial(){
         contentType: "application/json", // det vi sender er json
         data: datajson,
         success: function (datajson) {
-            $("#bodytest").load("materialBatchList.html");
+            $("#bodytest").load("list/materialBatchList.html");
         },
         error: function (jqXHR){
             alert(jqXHR.responseText);
