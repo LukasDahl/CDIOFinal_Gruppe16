@@ -44,6 +44,36 @@ public class Material {
     }
 
 
+    @Path("single/{value}")
+    @GET
+    public JSONmaterial getSingleMaterial(@PathParam("value") String id) throws IDALException.DALException {
+        IMaterialDAO materialDAO = MaterialDAO.getInstance();
+        IMaterialDTO material = materialDAO.getMaterial(Integer.parseInt(id));
+        List<IMaterialDTO> materials = new ArrayList<>();
+        materials.add(material);
+        return materialsToJSON(materials).get(0);
+    }
+
+    @Path("update")
+    @POST
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response updateMaterialJson(JSONmaterial jmaterial) {
+        IMaterialDTO material = null;
+        try {
+            material = jsonToMaterial(jmaterial);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        IMaterialDAO materialDAO = MaterialDAO.getInstance();
+
+        try {
+            materialDAO.updateMaterial(material);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok("Råvarebatch oprettet").build();
+    }
+
     private static IMaterialDTO jsonToMaterial(JSONmaterial jmaterial) throws IDALException.DALException {
         IMaterialDTO material = new MaterialDTO();
 

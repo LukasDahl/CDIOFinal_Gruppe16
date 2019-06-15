@@ -122,10 +122,11 @@ public class MaterialDAO implements IMaterialDAO {
 	public void updateMaterial(IMaterialDTO material) throws DALException {
 		try (Connection c = createConnection()){
 
-			PreparedStatement st = c.prepareStatement("UPDATE Råvare_Batches SET mængde = ? WHERE råvare_batch_id = ?");
+			PreparedStatement st = c.prepareStatement("UPDATE Råvare_Batches SET mængde = ?, ingrediens_id = ? WHERE råvare_batch_id = ?");
 
 			st.setDouble(1,material.getAmount());
-			st.setInt(2,material.getMaterialBatchId());
+			st.setInt(2,material.getIngredientId());
+			st.setInt(3,material.getMaterialBatchId());
 			st.executeUpdate();
 
 		} catch (SQLException e) {

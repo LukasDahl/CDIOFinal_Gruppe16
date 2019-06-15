@@ -43,7 +43,6 @@ public class Ingredient {
         IIngredientDTO ing = ingDAO.getIngredient(Integer.parseInt(id));
         List<IIngredientDTO> ings = new ArrayList<>();
         ings.add(ing);
-        System.out.println("123");
         return ingToJSON(ings).get(0);
     }
 

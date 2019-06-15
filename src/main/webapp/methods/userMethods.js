@@ -1,4 +1,4 @@
-var updateuser;
+var updateid;
 $(document).ready(function () {
     loadUsers();
 });
@@ -73,12 +73,12 @@ function getUserUpdate(i) {
 
     if (userpriv % 2 === 1) {
         $("#bodytest").load("update/updateUser.html");
-        updateuser = i;
+        updateid = i;
     }
 
 }
 function updateUserData() {
-    $.get('rest/user/single/' + updateuser, function (data, textStatus, req) {
+    $.get('rest/user/single/' + updateid, function (data, textStatus, req) {
         document.getElementById('ID').value = data.id;
         document.getElementById('username').value = data.username;
         document.getElementById('ini').value = data.ini;
@@ -98,7 +98,7 @@ function updateUserData() {
         else {
             document.getElementById('adminno').checked = "checked";
         }
-        updateuser = 0;
+        updateid = 0;
     });
 }
 
