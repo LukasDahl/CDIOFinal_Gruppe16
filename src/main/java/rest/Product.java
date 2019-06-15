@@ -24,7 +24,7 @@ public class Product {
         try {
             productDAO.createProduct(product);
         } catch (IDALException.DALException e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         return Response.ok("Produkt oprettet").build();
     }

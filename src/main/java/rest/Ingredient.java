@@ -24,7 +24,7 @@ public class Ingredient {
         try {
             ingDAO.createIngredient(ingDTO);
         } catch (IDALException.DALException e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         return Response.ok("Ingrediens oprettet").build();
     }

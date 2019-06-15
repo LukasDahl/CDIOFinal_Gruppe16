@@ -36,7 +36,7 @@ public class MaterialDAO implements IMaterialDAO {
 
 			ResultSet rs = statement.executeQuery("SELECT * FROM Råvare_Batches WHERE råvare_batch_id = " + material.getMaterialBatchId());
 			if (rs.next()){
-				throw new DALException("ID already in use");
+				throw new DALException("ID er allerede i brug.");
 			}
 			rs = statement.executeQuery("SELECT * FROM Produktionsledere WHERE bruger_id = " + material.getUserId());
 			if(!rs.next()){

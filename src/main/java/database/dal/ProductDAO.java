@@ -37,7 +37,7 @@ public class ProductDAO implements IProductDAO{
             ResultSet rs = statement.executeQuery("SELECT * FROM Produkter WHERE produkt_id = " + product.getProductId());
 
             if (rs.next()) {
-                throw new DALException("ID already in use");
+                throw new DALException("ID er allerede i brug.");
             }
 
 

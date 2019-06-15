@@ -1,5 +1,6 @@
 package rest;
 
+
 import database.dal.*;
 import database.dto.*;
 import rest.jsonObjects.*;
@@ -19,13 +20,18 @@ public class Material {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response addMaterialJson(JSONmaterial jmaterial) {
-        IMaterialDTO material = jsonToMaterial(jmaterial);
+        IMaterialDTO material = null;
+        try {
+            material = jsonToMaterial(jmaterial);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         IMaterialDAO materialDAO = MaterialDAO.getInstance();
 
         try {
             materialDAO.createMaterial(material);
         } catch (IDALException.DALException e) {
-            e.printStackTrace();
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         return Response.ok("Råvarebatch oprettet").build();
     }
@@ -38,14 +44,18 @@ public class Material {
     }
 
 
-    private static IMaterialDTO jsonToMaterial(JSONmaterial jmaterial){
+    private static IMaterialDTO jsonToMaterial(JSONmaterial jmaterial) throws IDALException.DALException {
         IMaterialDTO material = new MaterialDTO();
 
         material.setMaterialBatchId(Integer.parseInt(jmaterial.getId()));
         java.util.Date utilDate = new java.util.Date();
         material.setDate(new java.sql.Date(utilDate.getTime()));
         material.setIngredientId(Integer.parseInt(jmaterial.getIngredientid()));
-        material.setAmount(Double.parseDouble(jmaterial.getAmount()));
+        try {
+            material.setAmount(Double.parseDouble(jmaterial.getAmount()));
+        } catch (NumberFormatException e){
+            throw new IDALException.DALException("Mængde skal være et tal.");
+        }
         material.setOrder(false);
         material.setUserId(User.getCurrentUser());
         material.setSupplier(jmaterial.getSupplier());
@@ -65,7 +75,7 @@ public class Material {
             jmaterial.setIngredientid("" + material.getIngredientId());
             jmaterial.setAmount("" + material.getAmount());
             jmaterial.setDate(date);
-            jmaterial.setSupplier(material.getSupplier()); //TODO
+            jmaterial.setSupplier(material.getSupplier());
             try {
                 jmaterial.setIngredientname(ingredientDAO.getIngredient(material.getIngredientId()).getIngredientName());
             } catch (IDALException.DALException e) {

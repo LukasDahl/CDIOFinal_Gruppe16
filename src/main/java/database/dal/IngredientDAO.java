@@ -35,7 +35,7 @@ public class IngredientDAO implements IIngredientDAO {
 
 			ResultSet rs = statement.executeQuery("SELECT * FROM Ingredienser WHERE ingrediens_id = " + ingredient.getIngredientId());
 			if (rs.next()){
-				throw new DALException("ID already in use");
+				throw new DALException("ID er allerede i brug.");
 			}
 
 			PreparedStatement st = c.prepareStatement("INSERT INTO Ingredienser VALUES (?,?,?)");
