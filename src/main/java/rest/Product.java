@@ -19,7 +19,12 @@ public class Product {
     @Produces(MediaType.TEXT_PLAIN)
     public Response addProductJson(JSONproduct jproduct) {
 
-        IProductDTO product = jsonToProduct(jproduct);
+        IProductDTO product = null;
+        try {
+            product = jsonToProduct(jproduct);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         IProductDAO productDAO = ProductDAO.getInstance();
         try {
             productDAO.createProduct(product);
@@ -50,7 +55,12 @@ public class Product {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateProductJson(JSONproduct jproduct) {
-        IProductDTO product = jsonToProduct(jproduct);
+        IProductDTO product = null;
+        try {
+            product = jsonToProduct(jproduct);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         IProductDAO productDAO = ProductDAO.getInstance();
         try {
             productDAO.updateProduct(product);
@@ -61,9 +71,13 @@ public class Product {
     }
 
 
-    private static IProductDTO jsonToProduct(JSONproduct jproduct){
+    private static IProductDTO jsonToProduct(JSONproduct jproduct) throws IDALException.DALException {
         IProductDTO product = new ProductDTO();
+        try {
         product.setProductId(Integer.parseInt(jproduct.getId()));
+        } catch (NumberFormatException e){
+            throw new IDALException.DALException("ID skal være et tal.");
+        }
         product.setProductName(jproduct.getName());
         return product;
     }

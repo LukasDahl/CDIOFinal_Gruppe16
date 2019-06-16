@@ -77,7 +77,11 @@ public class Material {
     private static IMaterialDTO jsonToMaterial(JSONmaterial jmaterial) throws IDALException.DALException {
         IMaterialDTO material = new MaterialDTO();
 
+        try {
         material.setMaterialBatchId(Integer.parseInt(jmaterial.getId()));
+        } catch (NumberFormatException e){
+            throw new IDALException.DALException("ID skal være et tal.");
+        }
         java.util.Date utilDate = new java.util.Date();
         material.setDate(new java.sql.Date(utilDate.getTime()));
         if (Integer.parseInt(jmaterial.getIngredientid()) ==0 ){

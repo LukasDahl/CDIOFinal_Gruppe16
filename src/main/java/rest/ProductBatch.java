@@ -75,12 +75,19 @@ public class ProductBatch {
 	private static ArrayList<JSONproductbatch> prodbatchToJSON(List<IProdBatchDTO> prodbatches) {
 		JSONproductbatch jprodbatch;
 		ArrayList<JSONproductbatch> jprodbatches = new ArrayList<>();
+		IRecipeDAO recipeDAO = RecipeDAO.getInstance();
+		IProductDAO productDAO = ProductDAO.getInstance();
 		String date;
 		for (IProdBatchDTO prodbatch : prodbatches) {
 			date = new SimpleDateFormat("dd-MM-yyyy").format(prodbatch.getDate());
 			jprodbatch = new JSONproductbatch();
 			jprodbatch.setId("" + prodbatch.getProdBatchId());
 			jprodbatch.setRecipeid("" + prodbatch.getRecipeId());
+			try {
+				jprodbatch.setProductName(productDAO.getProduct(recipeDAO.getRecipe(prodbatch.getRecipeId()).getProductId()).getProductName());
+			} catch (IDALException.DALException e) {
+				e.printStackTrace();
+			}
 			jprodbatch.setDate(date);
 
 			jprodbatches.add(jprodbatch);
