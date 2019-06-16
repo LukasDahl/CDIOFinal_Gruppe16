@@ -27,4 +27,12 @@ public interface IProdBatchDTO {
 	List<Integer> getLabList();
 
 	void setLabList(List<Integer> labList);
+
+	List<Double> getNettoList();
+
+	void setNettoList(List<Double> nettoList);
+
+	List<Double> getTaraList();
+
+	void setTaraList(List<Double> taraList);
 }

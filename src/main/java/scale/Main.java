@@ -25,7 +25,7 @@ public class Main {
 			UserDAO userDAO = new UserDAO();
 			IUserDTO user;
 			ProdBatchDAO prodBatchDAO = new ProdBatchDAO();
-			IProdBatchDTO prodBatch;
+			IProdBatchDTO prodBatch = null;
 			RecipeDAO recipeDAO = new RecipeDAO();
 			IRecipeDTO recipe = null;
 			ProductDAO productDAO = new ProductDAO();
@@ -37,13 +37,14 @@ public class Main {
 			String reply, ingName;
 			String[] commands = {"Unknown", "Command"};
 			String text;
-			String product_name = null;
+			String product_name;
 			List<Integer> ingredientArray = null;
+			List<Integer> matlist = null, lablist = null;
+			List<Double> nettolist = null, taralist = null;
 			int state = 0, currentIngredient = 0;
 			int operator;
 			int batch;
-			double taraweight = 0;
-			double nettoweight = 0;
+			double nettoweight;
 			double bruttoweight = 0;
 			double expeded_nettoweight = 0;
 			double tolerance = 0;
@@ -90,6 +91,7 @@ public class Main {
 					case 1:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
+							lablist.add(operator);
 
 							try {
 								user = userDAO.getUser(operator);
@@ -171,6 +173,7 @@ public class Main {
 						break;
 					case 7:
 						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
+							taralist.add(Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
 							state++;
 							c.setWrite("RM20 8 \"Skriv raavarebatch nr\" \"\" \"&3\"");
 						}
@@ -179,7 +182,7 @@ public class Main {
 					case 8:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
-
+							matlist.add(operator);
 
 
 							try {
@@ -237,6 +240,7 @@ public class Main {
 							if ( expeded_nettoweight * (1 - tolerance) <= nettoweight ) {
 								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
 									c.setWrite("RM20 8 \"Remove netto\" \"\" \"&3\"");
+									nettolist.add(nettoweight);
 									state++;
 								} else {
 									c.setWrite("RM20 8 \""+ (nettoweight - expeded_nettoweight) +" for meget\" \"\" \"&3\"");
@@ -290,6 +294,15 @@ public class Main {
 						break;
 					case 15:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
+							prodBatch.setLabList(lablist);
+							prodBatch.setMatList(matlist);
+							prodBatch.setNettoList(nettolist);
+							prodBatch.setTaraList(taralist);
+							try {
+								prodBatchDAO.finishProdBatch(prodBatch);
+							} catch (IDALException.DALException e) {
+								e.printStackTrace();
+							}
 							exit = true;
 							break;
 						}
