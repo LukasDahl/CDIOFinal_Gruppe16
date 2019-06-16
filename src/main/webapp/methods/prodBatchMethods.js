@@ -23,6 +23,10 @@ function createProductBatch(){
 
 function loadProductBatches() {
     $.get('rest/productBatch', function (data, textStatus, req) {
+        $("#prodBatchtablehead").empty();
+        $("#prodBatchtablehead").append('<th class="list">Produktbatch ID</th>' +
+            '        <th class="list">Opskrift ID</th>' +
+            '        <th class="list">Dato</th>')
         $("#prodBatchtablebody").empty();
         $.each(data, function (i, elt) {
             $('#prodBatchtablebody').append(generateProdBatchHTML(elt));
@@ -30,8 +34,9 @@ function loadProductBatches() {
     });
 }
 function generateProdBatchHTML(prod) {
-    return '<tr class="list"><td class="list">' + prod.id + '</td>' +
-        '<td class="list">' + prod.name + '</td>';
+    return '<tr class="list"><td class="list">' + prod.id + '</td>' +'' +
+        '<td class="list">' + prod.recipeid + '</td>' +
+        '<td class="list">' + prod.date + '</td>';
 }
 
 function getRecipeNames() {

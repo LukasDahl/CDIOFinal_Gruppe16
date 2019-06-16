@@ -19,7 +19,12 @@ public class Ingredient {
     @Produces(MediaType.TEXT_PLAIN)
     public Response addIngJson(JSONingredient ing) {
 
-        IIngredientDTO ingDTO = jsonToIng(ing);
+        IIngredientDTO ingDTO = new IngredientDTO();
+        try {
+            ingDTO = jsonToIng(ing);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         IIngredientDAO ingDAO = IngredientDAO.getInstance();
         try {
             ingDAO.createIngredient(ingDTO);
@@ -50,8 +55,12 @@ public class Ingredient {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateIngJson(JSONingredient ing) {
-
-        IIngredientDTO ingDTO = jsonToIng(ing);
+        IIngredientDTO ingDTO = new IngredientDTO();
+        try {
+            ingDTO = jsonToIng(ing);
+        } catch (IDALException.DALException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
         IIngredientDAO ingDAO = IngredientDAO.getInstance();
         try {
             ingDAO.updateIngredient(ingDTO);
@@ -62,9 +71,13 @@ public class Ingredient {
     }
 
 
-    private static IIngredientDTO jsonToIng(JSONingredient jing){
+    private static IIngredientDTO jsonToIng(JSONingredient jing) throws IDALException.DALException {
         IIngredientDTO ing = new IngredientDTO();
-        ing.setIngredientId(Integer.parseInt(jing.getId()));
+        try{
+            ing.setIngredientId(Integer.parseInt(jing.getId()));
+        } catch (NumberFormatException e){
+            throw new IDALException.DALException("ID skal være et tal.");
+        }
         ing.setIngredientName(jing.getName());
         ing.setActive(false);
         return ing;

@@ -7,6 +7,14 @@ import java.util.List;
 
 public class ProdBatchDAO implements IProdBatchDAO {
 
+	private static IProdBatchDAO instance;
+
+	public static IProdBatchDAO getInstance(){
+		if(instance == null)
+			instance = new ProdBatchDAO();
+		return instance;
+	}
+
 	private Connection createConnection() throws SQLException {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
