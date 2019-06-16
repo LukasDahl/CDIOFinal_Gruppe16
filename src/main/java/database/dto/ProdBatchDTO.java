@@ -11,6 +11,8 @@ public class ProdBatchDTO implements Serializable, IProdBatchDTO {
 	private Date date;
 	private List<Integer> matList;
 	private List<Integer> labList;
+	private List<Double> nettoList;
+	private List<Double> taraList;
 
 	@Override
 	public int getProdBatchId(){
@@ -60,6 +62,27 @@ public class ProdBatchDTO implements Serializable, IProdBatchDTO {
 	public void setLabList(List<Integer> labList) {
 		this.labList = labList;
 	}
+
+	@Override
+	public List<Double> getNettoList() {
+		return nettoList;
+	}
+
+	@Override
+	public void setNettoList(List<Double> nettoList ) {
+		this.nettoList = nettoList;
+	}
+
+	@Override
+	public List<Double> getTaraList() {
+		return taraList;
+	}
+
+	@Override
+	public void setTaraList(List<Double> taraList) {
+		this.taraList = taraList;
+	}
+
 	@Override
 	public String toString(){
 //		String out = "" + prodBatchId;

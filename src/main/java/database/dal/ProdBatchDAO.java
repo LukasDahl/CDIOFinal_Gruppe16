@@ -23,7 +23,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 
 		try(Connection c = createConnection()){
 			Statement statement = c.createStatement();
-			PreparedStatement st = c.prepareStatement("INSERT INTO Produkt_Batches VALUES (?,?,?,?)");
+			PreparedStatement st = c.prepareStatement("INSERT INTO Produkt_Batches VALUES (?,?,?,?,?)");
 
 			ResultSet rs = statement.executeQuery("SELECT * FROM Produkt_Batches WHERE produkt_batch_id = " + prodBatch.getProdBatchId());
 			if (rs.next()){
@@ -37,22 +37,23 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			if(!rs.next()){
 				throw new DALException("Recipe does not exist");
 			}
-			Statement MatCheck = c.createStatement();
-			ResultSet matCheck;
-			for(int check: prodBatch.getMatList()){
-				matCheck = MatCheck.executeQuery("SELECT råvare_batch_id FROM Råvare_Batches WHERE råvare_batch_id = " + check);
-				if(!matCheck.next()){
-					throw new DALException("One of the Pharmaceuts does not exist, or is not a Pharmaceut");
-				}
-			}
-			Statement LabCheck = c.createStatement();
-			ResultSet labCheck;
-			for(int check: prodBatch.getLabList()){
-				labCheck = LabCheck.executeQuery("SELECT bruger_id FROM Laboranter WHERE bruger_id = " + check);
-				if(!labCheck.next()){
-					throw new DALException("One of the Lab-Techs does not exist, or is not a Lab-Tech");
-				}
-			}
+			//Statement MatCheck = c.createStatement();
+			//ResultSet matCheck;
+			//for(int check: prodBatch.getMatList()){
+			//	matCheck = MatCheck.executeQuery("SELECT råvare_batch_id FROM Råvare_Batches WHERE råvare_batch_id = " + check);
+			//	if(!matCheck.next()){
+			//		throw new DALException("One of the Pharmaceuts does not exist, or is not a Pharmaceut");
+			//	}
+			//}
+
+			//Statement LabCheck = c.createStatement();
+			//ResultSet labCheck;
+			//for(int check: prodBatch.getLabList()){
+			//	labCheck = LabCheck.executeQuery("SELECT bruger_id FROM Laboranter WHERE bruger_id = " + check);
+			//	if(!labCheck.next()){
+			//		throw new DALException("One of the Lab-Techs does not exist, or is not a Lab-Tech");
+			//	}
+			//}
 
 			rs  = statement.executeQuery("SELECT * FROM Opskrift_Ingrediens WHERE opskrift_id = " + prodBatch.getRecipeId());
 
@@ -63,30 +64,12 @@ public class ProdBatchDAO implements IProdBatchDAO {
 				amountList.add(rs.getDouble("mængde"));
 			}
 
-			for (int i = 0; i < ingList.size(); i++){
-				rs = statement.executeQuery("select t.råvare_batch_id, t.ingrediens_id, t.mængde from Råvare_Batches t inner join (select råvare_batch_id, max(dato) as MaxDate from Råvare_Batches group by råvare_batch_id ) tm on t.råvare_batch_id = tm.råvare_batch_id and t.dato = tm.MaxDate WHERE ingrediens_id = " + ingList.get(i));
-				rs.next();
-				amountList.set(i, rs.getDouble("mængde") - amountList.get(i));
-				statement.executeUpdate("UPDATE Råvare_Batches SET mængde = " + amountList.get(i) + " WHERE råvare_batch_id = " + rs.getInt("råvare_batch_id"));
-			}
-
-
 			st.setInt(1, prodBatch.getProdBatchId());
 			st.setInt(2, prodBatch.getRecipeId());
 			st.setInt(3, prodBatch.getUserId());
 			st.setDate(4, prodBatch.getDate());
+			st.setInt(5, 0);
 			st.executeUpdate();
-
-
-			//PreparedStatement ps;
-			//for(int labTech: prodBatch.getLabList()){
-			//	ps = c.prepareStatement("INSERT INTO Laboranter_Produkt_Batches VALUES (?,?)");
-			//	ps.setInt(1, labTech);
-			//	ps.setInt(2, prodBatch.getProdBatchId());
-			//	ps.executeUpdate();
-			//}
-
-
 		}
 		catch (SQLException e) {
 			throw new DALException(e.getMessage());
@@ -104,6 +87,9 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			List<Integer> matList = new ArrayList<>();
 			matList.addAll(prodBatch.getMatList());
 
+			List<Integer> labList = new ArrayList<>();
+			labList.addAll(prodBatch.getLabList());
+
 			List<Double> taraList = new ArrayList<>();
 			taraList.addAll(prodBatch.getTaraList());
 
@@ -115,8 +101,25 @@ public class ProdBatchDAO implements IProdBatchDAO {
 				st.setInt(2, matList.get(i));
 				st.setDouble(3, taraList.get(i));
 				st.setDouble(4, nettoList.get(i));
-				st.setInt(5, prodBatch.getOpId());
+				st.setInt(5, labList.get(i));
 			}
+
+			for (int i = 0; i < matList.size(); i++){
+				statement.executeUpdate("UPDATE Råvare_Batches SET mængde = mængde - " + nettoList.get(i) + " WHERE råvare_id = " + matList.get(i));
+			}
+
+			statement.executeUpdate("UPDATE Produkt_Batches SET status = 1 WHERE produkt_batch_id = " + prodBatch.getProdBatchId());
+
+			PreparedStatement ps;
+			for(int labTech: prodBatch.getLabList()){
+				ps = c.prepareStatement("INSERT INTO Laboranter_Produkt_Batches VALUES (?,?)");
+				ps.setInt(1, labTech);
+				ps.setInt(2, prodBatch.getProdBatchId());
+				ps.executeUpdate();
+			}
+
+
+
 		}
 		catch (SQLException e) {
 			throw new DALException(e.getMessage());

@@ -16,10 +16,6 @@ public interface IProdBatchDTO {
 
 	void setRecipeId(int recipeId);
 
-	int getOpId();
-
-	void setOpId(int opId);
-
 	Date getDate();
 
 	void setDate(Date date);
