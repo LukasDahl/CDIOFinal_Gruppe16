@@ -91,24 +91,33 @@ public class User {
 		ArrayList<JSONuser> jusers = new ArrayList<>();
 		String role;
 		String admin;
+		String aktiv;
 		for (IUserDTO user: users){
 			if (user.isPharma()){
 				role = "Farmaceut";
+				aktiv = "Aktiv";
 			}
 			else if (user.isPLeader()){
 				role = "Produktionsleder";
+				aktiv = "Aktiv";
 			}
-			else {
+			else if (user.isLabo()){
 				role = "Laborant";
+				aktiv = "Aktiv";
+			}
+			else{
+				role = "Ingen";
+				aktiv = "Inaktiv";
 			}
 
 			if (user.isAdmin()){
 				admin = "Ja";
+				aktiv = "Aktiv";
 			}
 			else{
 				admin = "Nej";
 			}
-			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), admin, role);
+			juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), admin, role, aktiv);
 			jusers.add(juser);
 		}
 		return jusers;
@@ -137,10 +146,15 @@ public class User {
 			user.setPLeader(true);
 			user.setLabo(true);
 		}
-		else{
+		else if (juser.getRole().equals("Laborant")){
 			user.setPharma(false);
 			user.setPLeader(false);
 			user.setLabo(true);
+		}
+		else {
+			user.setPharma(false);
+			user.setPLeader(false);
+			user.setLabo(false);
 		}
 
 		return user;
@@ -208,12 +222,14 @@ public class User {
 	public JSONuser getSingleUser(){
 		IUserDAO userDAO = UserDAO.getInstance();
 		IUserDTO user = new UserDTO();
+		List<IUserDTO> users = new ArrayList<>();
 		try {
 			user = userDAO.getUser(currentUser);
 		} catch (IDALException.DALException e) {
 			e.printStackTrace();
 		}
-		return userToJSON(user);
+		users.add(user);
+		return usersToJSON(users).get(0);
 	}
 
 	@Path("single/{value}")
@@ -221,40 +237,16 @@ public class User {
 	public JSONuser getSingleUserByID(@PathParam("value") String id){
 		IUserDAO userDAO = UserDAO.getInstance();
 		IUserDTO user = new UserDTO();
+		List<IUserDTO> users = new ArrayList<>();
 		try {
 			user = userDAO.getUser(Integer.parseInt(id));
 		} catch (IDALException.DALException e) {
 			e.printStackTrace();
 		}
-		return userToJSON(user);
+		users.add(user);
+		return usersToJSON(users).get(0);
 	}
 
-
-	private static JSONuser userToJSON(IUserDTO user){
-		JSONuser juser;
-		String role;
-		String admin;
-
-		if (user.isPharma()){
-			role = "Farmaceut";
-		}
-		else if (user.isPLeader()){
-			role = "Produktionsleder";
-		}
-		else {
-			role = "Laborant";
-		}
-
-		if (user.isAdmin()){
-			admin = "Ja";
-		}
-		else{
-			admin = "Nej";
-		}
-		juser = new JSONuser("" + user.getUserId(), user.getUserName(), user.getIni(), user.getCpr(), admin, role);
-
-		return juser;
-	}
 
 	public static int getCurrentUser() {
 		return currentUser;

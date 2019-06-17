@@ -8,14 +8,16 @@ public class JSONuser {
 	String cpr;
 	String admin;
 	String role;
+	String aktiv;
 
-	public JSONuser(String id, String username, String ini, String cpr, String admin,String role){
+	public JSONuser(String id, String username, String ini, String cpr, String admin,String role,String aktiv){
 		this.id = id;
 		this.username = username;
 		this.ini = ini;
 		this.cpr = cpr;
 		this.admin = admin;
 		this.role = role;
+		this.aktiv = aktiv;
 	}
 
 	public JSONuser(){}
@@ -66,5 +68,13 @@ public class JSONuser {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getAktiv() {
+		return aktiv;
+	}
+
+	public void setAktiv(String aktiv) {
+		this.aktiv = aktiv;
 	}
 }

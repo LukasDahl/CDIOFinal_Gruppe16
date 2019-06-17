@@ -39,6 +39,7 @@ function loadUsers() {
             '        <th class="list">CPR</th>' +
             '        <th class="list">Roller</th>' +
             '        <th class="list">Admin</th>' +
+            '        <th class="list">Aktiv</th>' +
             '    </tr>');
     });
 }
@@ -49,7 +50,17 @@ function generateUserHTML(user) {
         '<td class="list">' + user.ini + '</td>' +
         '<td class="list">' + user.cpr + '</td>' +
         '<td class="list">' + user.role + '</td>' +
-        '<td class="list">' + user.admin + '</td>';
+        '<td class="list">' + user.admin + '</td>' +
+        '<td class="list" bgcolor="#' + activeColor(user.aktiv) + '">' + user.aktiv + '</td>';
+}
+
+function activeColor(active) {
+    if (active === "Aktiv"){
+        return "8fbc8f";
+    }
+    else {
+        return "cs5c5c";
+    }
 }
 
 function getID(){
@@ -89,9 +100,13 @@ function updateUserData() {
         else if (data.role === "Produktionsleder"){
             document.getElementById('pleader').checked = "checked";
         }
-        else {
+        else if (data.role ==="Laborant") {
             document.getElementById('labo').checked = "checked";
         }
+        else {
+            document.getElementById('inaktiv').checked = "checked";
+        }
+
         if (data.admin === "Ja"){
             document.getElementById('adminyes').checked = "checked";
         }
