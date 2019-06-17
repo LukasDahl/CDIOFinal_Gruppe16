@@ -60,6 +60,7 @@ public class Material {
     public Response updateMaterialJson(JSONmaterial jmaterial) {
         IMaterialDTO material = null;
         try {
+            jmaterial.setIngredientid("" + 1);
             material = jsonToMaterial(jmaterial);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
