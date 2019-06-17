@@ -36,3 +36,10 @@
         }
     });
 </script>
+<script>
+    $(document).ready(function(){
+        $('#ID').on('input',function(){
+            document.getElementById('ID').value = document.getElementById('ID').value.replace(/\D/g,'');
+        });
+    });
+</script>

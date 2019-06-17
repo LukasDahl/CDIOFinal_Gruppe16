@@ -12,10 +12,10 @@
                 <input type="text" name="username"><br>
 
                 Initialer: <br>
-                <input type="text" name="ini"><br>
+                <input type="text" name="ini" id="ini"><br>
 
                 CPR: <br>
-                <input type="text" name="cpr"><br> <br>
+                <input type="text" name="cpr" id="cpr"><br> <br>
 
                 Administrator:  <br>
                 <input align="left" type="radio" name="admin" value="yes"> Ja<br>
@@ -42,5 +42,27 @@
             event.preventDefault();
             createUser();
         }
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $('#cpr').on('input',function(){
+            document.getElementById('cpr').value = document.getElementById('cpr').value.replace(/\D/g,'');
+            if (document.getElementById('cpr').value.length > 6){
+                document.getElementById('cpr').value = insert(document.getElementById('cpr').value, "-", 6)
+            }
+            if (document.getElementById('cpr').value.length > 11){
+                document.getElementById('cpr').value = document.getElementById('cpr').value.substring(0,11);
+            }
+        });
+    });
+    $(document).ready(function(){
+        $('#ini').on('input',function(){
+            document.getElementById('ini').value = document.getElementById('ini').value.replace(/[^a-zA-ZæøåÆØÅ]/g,'');
+            document.getElementById('ini').value = document.getElementById('ini').value.toUpperCase();
+            if (document.getElementById('ini').value.length > 4){
+                document.getElementById('ini').value = document.getElementById('ini').value.substring(0,4);
+            }
+        });
     });
 </script>
