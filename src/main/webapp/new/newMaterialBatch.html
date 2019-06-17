@@ -17,7 +17,7 @@
                 </div>
 
                 Mængde: <br>
-                <input type="text" name="amount"><br>
+                <input type="text" name="amount" id="amount"><br>
 
                 Leverandør: <br>
                 <input type="text" name="supplier"><br><br>
@@ -46,6 +46,13 @@
     $(document).ready(function(){
         $('#ID').on('input',function(){
             document.getElementById('ID').value = document.getElementById('ID').value.replace(/\D/g,'');
+        });
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $('#amount').on('input',function(){
+            document.getElementById('amount').value = document.getElementById('amount').value.replace(/[^.,\d]/g,'');
         });
     });
 </script>
