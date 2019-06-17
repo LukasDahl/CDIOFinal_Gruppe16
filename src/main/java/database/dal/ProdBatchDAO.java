@@ -90,7 +90,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 
 		try(Connection c = createConnection()){
 			Statement statement = c.createStatement();
-			PreparedStatement st = c.prepareStatement("INSERT INTO Produkt_Batches_Råvare_Batches VALUES (?,?,?,?,?)");
+			PreparedStatement st;
 
 			List<Integer> matList = new ArrayList<>();
 			matList.addAll(prodBatch.getMatList());
@@ -105,15 +105,17 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			nettoList.addAll(prodBatch.getNettoList());
 
 			for(int i = 0; i < prodBatch.getMatList().size(); i++){
+				st = c.prepareStatement("INSERT INTO Produkt_Batches_Råvare_Batches VALUES (?,?,?,?,?, DEFAULT)");
 				st.setInt(1, prodBatch.getProdBatchId());
 				st.setInt(2, matList.get(i));
 				st.setDouble(3, taraList.get(i));
 				st.setDouble(4, nettoList.get(i));
-				st.setInt(5, labList.get(i));
+				st.setInt(5, labList.get(0));
+				st.executeUpdate();
 			}
 
 			for (int i = 0; i < matList.size(); i++){
-				statement.executeUpdate("UPDATE Råvare_Batches SET mængde = mængde - " + nettoList.get(i) + " WHERE råvare_id = " + matList.get(i));
+				statement.executeUpdate("UPDATE Råvare_Batches SET mængde = mængde - " + nettoList.get(i) + " WHERE råvare_batch_id = " + matList.get(i));
 			}
 
 			statement.executeUpdate("UPDATE Produkt_Batches SET status = 1 WHERE produkt_batch_id = " + prodBatch.getProdBatchId());

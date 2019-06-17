@@ -5,6 +5,7 @@ import database.dal.*;
 import database.dto.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -38,9 +39,9 @@ public class Main {
 			String[] commands = {"Unknown", "Command"};
 			String text;
 			String product_name;
-			List<Integer> ingredientArray = null;
-			List<Integer> matlist = null, lablist = null;
-			List<Double> nettolist = null, taralist = null;
+			List<Integer> ingredientArray = new ArrayList<>();
+			List<Integer> matlist = new ArrayList<>(), lablist = new ArrayList<>();
+			List<Double> nettolist = new ArrayList<>(), taralist = new ArrayList<>();
 			int state = 0, currentIngredient = 0;
 			int operator;
 			int batch;
@@ -91,6 +92,7 @@ public class Main {
 					case 1:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
+							System.out.println(operator);
 							lablist.add(operator);
 
 							try {
