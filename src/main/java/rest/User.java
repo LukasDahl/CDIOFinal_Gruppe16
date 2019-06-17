@@ -22,7 +22,7 @@ public class User {
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response addUserJson(JSONuser user) {
-		if(user.getUsername().length() > 20 || user.getUsername().length() < 2) {
+		if(user.getUsername().length() > 35 || user.getUsername().length() < 2) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Brugernavn ikke gyldigt").build();
 		}
 		else if(!user.getCpr().matches("[0-9]{6}-[0-9]{4}")){
@@ -56,7 +56,7 @@ public class User {
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response updateUserJson(JSONuser user) {
-		if(user.getUsername().length() > 20 || user.getUsername().length() < 2) {
+		if(user.getUsername().length() > 35 || user.getUsername().length() < 2) {
 			return Response.status(Response.Status.BAD_REQUEST).entity("Brugernavn ikke gyldigt").build();
 		}
 		else if(!user.getCpr().matches("[0-9]{6}-[0-9]{4}")){

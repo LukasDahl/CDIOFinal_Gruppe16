@@ -35,14 +35,14 @@ function loadIngredients() {
     });
 }
 function generateIngHTML(ing) {
-    return '<tr class="list" onclick="getIngredientUpdate(' + ing.id + ')"><td class="list">' + ing.id + '</td>' +
+    return '<tr class="list" onclick="getIngredientHistory(' + ing.id + ')"><td class="list">' + ing.id + '</td>' +
         '<td class="list">' + ing.name + '</td>';
 }
 
-function getIngredientUpdate(i) {
+function getIngredientHistory(i) {
 
     if (userpriv > 4) {
-        $("#bodytest").load("update/updateIngredient.html");
+        $("#bodytest").load("list/ingredientHistoryList.html");
         updateid = i;
     }
 
