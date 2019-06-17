@@ -181,7 +181,7 @@ input[type=number] {
 }
 
 /* Add a red background color to navbar links on hover */
-.navbar a:hover, .dropdown:hover .dropbtn {
+.navbar a:hover, .dropdown:hover .dropbtn, .userinfo:hover {
     background-color: #0d86f2;
 }
 

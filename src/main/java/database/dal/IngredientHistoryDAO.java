@@ -51,7 +51,7 @@ public class IngredientHistoryDAO implements IIngredientHistoryDAO {
         try (Connection c = createConnection()){
 
             Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM Ingrediens_Historik WHERE ingrediens_id = " + ingredientId);
+            ResultSet rs = st.executeQuery("SELECT * FROM Ingrediens_Historik WHERE ingrediens_id = " + ingredientId + " ORDER by ts DESC");
 
             while (rs.next()) {
                 ingredient = new IngredientHistoryDTO();

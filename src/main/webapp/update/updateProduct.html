@@ -21,4 +21,14 @@
         </div>
     </div>
 </div>
-<script>updateProductData()</script>
+<script>
+    updateProductData()
+</script>
+<script>
+    $("#updateProduct").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            updateProduct();
+        }
+    });
+</script>

@@ -58,3 +58,11 @@
     getIngNames();
     getProdNames();
 </script>
+<script>
+    $("#newrecipe").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            createRecipe();
+        }
+    });
+</script>

@@ -33,4 +33,14 @@
         </div>
     </div>
 </div>
-<script>getID();</script>
+<script>
+    getID();
+</script>
+<script>
+    $("#newbruh").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            createUser();
+        }
+    });
+</script>

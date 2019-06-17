@@ -25,13 +25,22 @@
 
             <h3 class="center"> Indtast bruger ID:</h3>
             <div class="center">
-                <input type="text" name="login_ID" value="999"><br>
+                <input type="text" name="login_ID" value="999" id="id"><br>
                 <input TYPE="button" id="login" NAME="login" Value="Login" onClick="loginfunc();">
             </div>
         </form>
     </div>
 
     <br><br>
+
+    <script>
+        $("#loginform").keypress(function(event) {
+            if (event.keyCode === 13) {
+                event.preventDefault();
+                loginfunc();
+            }
+        });
+    </script>
 
     <div id="bodytest">
 

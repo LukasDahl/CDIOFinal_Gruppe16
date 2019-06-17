@@ -20,4 +20,14 @@
         </div>
     </div>
 </div>
-<script>updateIngredientData()</script>
+<script>
+    updateIngredientData()
+</script>
+<script>
+    $("#updateIngredient").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            updateIngredient();
+        }
+    });
+</script>

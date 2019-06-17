@@ -34,4 +34,14 @@
         </div>
     </div>
 </div>
-<script>updateUserData()</script>
+<script>
+    updateUserData()
+</script>
+<script>
+    $("#updatebruh").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            updateUser();
+        }
+    });
+</script>

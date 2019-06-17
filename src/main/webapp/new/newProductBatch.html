@@ -27,5 +27,12 @@
 </div>
 <script>
     getRecipeNames();
-
+</script>
+<script>
+    $("#newProdBatch").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            createProductBatch();
+        }
+    });
 </script>

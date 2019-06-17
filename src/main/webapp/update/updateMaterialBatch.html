@@ -35,3 +35,11 @@
     getIngNames();
     updateMaterialData();
 </script>
+<script>
+    $("#updateMaterial").keypress(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            updateMaterial();
+        }
+    });
+</script>
