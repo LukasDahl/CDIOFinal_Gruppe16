@@ -20,7 +20,7 @@
                 <input type="text" name="amount" id="amount"><br>
 
                 Leverandør: <br>
-                <input type="text" name="supplier"><br><br>
+                <input type="text" name="supplier" id="supplier"><br><br>
 
                 <div class="center">
                     <INPUT TYPE="button" id="opret" NAME="opret" Value="Opret" onClick="createMaterial();">
@@ -53,6 +53,14 @@
     $(document).ready(function(){
         $('#amount').on('input',function(){
             document.getElementById('amount').value = document.getElementById('amount').value.replace(/[^.,\d]/g,'');
+        });
+    });
+    $(document).ready(function(){
+        $('#supplier').on('input',function(){
+            document.getElementById('supplier').value = document.getElementById('supplier').value.replace(/[^a-zA-ZæøåÆØÅ" "]/g,'');
+            if (document.getElementById('supplier').value.length > 35){
+                document.getElementById('supplier').value = document.getElementById('supplier').value.substring(0,35);
+            }
         });
     });
 </script>
