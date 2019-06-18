@@ -20,7 +20,7 @@ public class Recipe {
     @Produces(MediaType.TEXT_PLAIN)
     public Response addRecipeJson(JSONrecipe jrecipe) {
         IRecipeDTO recipe = null;
-
+        System.out.printf(jrecipe.getAfvigelse()[0]);
         try {
             recipe = jsonToRecipe(jrecipe);
         } catch (IDALException.DALException e) {
@@ -36,7 +36,6 @@ public class Recipe {
         if (recipe.getProductId() == 0) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Vælg venligst et produkt.").build();
         }
-
 
         IRecipeDAO recipeDAO = RecipeDAO.getInstance();
 
@@ -100,7 +99,7 @@ public class Recipe {
         List<Double> margin = new ArrayList<>();
         for (int i = 0; i < jrecipe.getAfvigelse().length; i++){
             try {
-                amount.add(Double.parseDouble(jrecipe.getAfvigelse()[i].replace(",",".")));
+                margin.add(Double.parseDouble(jrecipe.getAfvigelse()[i].replace(",",".")));
             } catch (NumberFormatException e){
                 throw new IDALException.DALException("Fejl i " + (i + 1) + ". ingrediensafvigelse.");
             }
