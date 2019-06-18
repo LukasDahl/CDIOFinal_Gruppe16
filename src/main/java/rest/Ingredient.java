@@ -19,6 +19,9 @@ public class Ingredient {
     @Produces(MediaType.TEXT_PLAIN)
     public Response addIngJson(JSONingredient ing) {
 
+        if(ing.getName().length() > 35 || ing.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Ingrediensnavn ikke gyldigt").build();
+        }
         IIngredientDTO ingDTO = new IngredientDTO();
         try {
             ingDTO = jsonToIng(ing);
@@ -55,6 +58,9 @@ public class Ingredient {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateIngJson(JSONingredient ing) {
+        if(ing.getName().length() > 35 || ing.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Ingrediensnavn ikke gyldigt").build();
+        }
         IIngredientDTO ingDTO = new IngredientDTO();
         try {
             ingDTO = jsonToIng(ing);

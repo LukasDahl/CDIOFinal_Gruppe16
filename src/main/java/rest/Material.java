@@ -21,6 +21,9 @@ public class Material {
     @Produces(MediaType.TEXT_PLAIN)
     public Response addMaterialJson(JSONmaterial jmaterial) {
         IMaterialDTO material = null;
+        if(jmaterial.getSupplier().length() > 35 || jmaterial.getSupplier().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Leverandørnavn ikke gyldigt.").build();
+        }
         try {
             material = jsonToMaterial(jmaterial);
         } catch (IDALException.DALException e) {
