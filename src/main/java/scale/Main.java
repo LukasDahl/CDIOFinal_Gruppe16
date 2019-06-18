@@ -91,22 +91,28 @@ public class Main {
 						break;
 					case 1:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
-							System.out.println(operator);
-							lablist.add(0, operator);
 
 							try {
-								user = userDAO.getUser(operator);
-								if (user.isPLeader() || user.isLabo() || user.isPharma()){
-									text = "RM20 8 \"Operator: " + user.getUserName() + "\" \"\" \"&3\"";
-									c.setWrite(text);
-									state++;
-								} else {
-									c.setWrite("RM20 8 \"ingen adgang\" \"\" \"&3\"");
-								}
+								operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
+								System.out.println(operator);
+								lablist.add(0, operator);
 
-							} catch (IDALException.DALException e) {
-								c.setWrite("RM20 8 \"Findes ikke\" \"\" \"&3\"");
+								try {
+									user = userDAO.getUser(operator);
+									if (user.isPLeader() || user.isLabo() || user.isPharma()) {
+										text = "RM20 8 \"Operator: " + user.getUserName() + "\" \"\" \"&3\"";
+										c.setWrite(text);
+										state++;
+									} else {
+										c.setWrite("RM20 8 \"ingen adgang\" \"\" \"&3\"");
+									}
+
+								} catch (IDALException.DALException e) {
+									c.setWrite("RM20 8 \"Findes ikke\" \"\" \"&3\"");
+								}
+							}catch (Exception e){
+								text = "RM20 8 \"Indtast operatornr.\" \"\" \"&3\"";
+								c.setWrite(text);
 							}
 						}
 						commands[0] = "Unknown";
@@ -120,52 +126,56 @@ public class Main {
 						break;
 					case 3:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							batch = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 
 							try {
-								prodBatch = prodBatchDAO.getProdBatch(batch);
-								int opskrift_id = prodBatch.getRecipeId();
-								recipe = recipeDAO.getRecipe(opskrift_id);
-								int product_id = recipe.getProductId();
-								product = productDAO.getProduct(product_id);
-								product_name = product.getProductName();
+
+								batch = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
+
+								try {
+									prodBatch = prodBatchDAO.getProdBatch(batch);
+									int opskrift_id = prodBatch.getRecipeId();
+									recipe = recipeDAO.getRecipe(opskrift_id);
+									int product_id = recipe.getProductId();
+									product = productDAO.getProduct(product_id);
+									product_name = product.getProductName();
 
 
+									ingredientArray = recipe.getIngList();
+									int ingSize = ingredientArray.size();
 
-								ingredientArray = recipe.getIngList();
-								int ingSize = ingredientArray.size();
-
-								for (int i=0; i < ingSize; i++){
-									for (int ing: prodBatch.getMatList()){
-										if (ing == ingredientArray.get(i)){
-											ingredientArray.remove(i);
+									for (int i = 0; i < ingSize; i++) {
+										for (int ing : prodBatch.getMatList()) {
+											if (ing == ingredientArray.get(i)) {
+												ingredientArray.remove(i);
+											}
 										}
 									}
-								}
-								if (ingredientArray.size() == 0) {
-									text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
-									c.setWrite(text);
-									state--;
-								} else if (ingredientArray.size() == ingSize){
-									state++;
-									text = "RM20 8 \"Start " + product_name + "\" \"\" \"&3\"";
-									c.setWrite(text);
-									try {
-										prodBatchDAO.closeProdBatch(prodBatch,1);
-									} catch (IDALException.DALException e) {
-										e.printStackTrace();
+									if (ingredientArray.size() == 0) {
+										text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
+										c.setWrite(text);
+										state--;
+									} else if (ingredientArray.size() == ingSize) {
+										state++;
+										text = "RM20 8 \"Start " + product_name + "\" \"\" \"&3\"";
+										c.setWrite(text);
+										try {
+											prodBatchDAO.closeProdBatch(prodBatch, 1);
+										} catch (IDALException.DALException e) {
+											e.printStackTrace();
+										}
+									} else {
+										state++;
+										text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
+										c.setWrite(text);
 									}
-								} else {
-									state++;
-									text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
-									c.setWrite(text);
+
+
+								} catch (Exception e) {
+									c.setWrite("RM20 8 \"produkt batch findes ikke\" \"&3\"");
+									state--;
 								}
-
-
-
-							} catch (Exception e) {
-								c.setWrite("RM20 8 \"produkt batch findes ikke\" \"&3\"");
-								state--;
+							} catch (Exception e){
+								c.setWrite("RM20 8 \"Indtast ProdBatchNr.\" \"\" \"&3\"");
 							}
 						}
 						commands[0] = "Unknown";
@@ -212,30 +222,38 @@ public class Main {
 						break;
 					case 8:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
-							matlist.add(0, operator);
-
-
 							try {
-								material = materialDAO.getMaterial(operator);
-								currentIngredient = material.getIngredientId();
-								ingredient = ingDAO.getIngredient(currentIngredient);
-								ingName = ingredient.getIngredientName();
 
-								for (int ing: ingredientArray){
-									if (ing == currentIngredient) {
-										match = true;
-										state++;
-										c.setWrite("RM20 8 \"placer " + ingName + "\" \"\" \"&3\"");
+
+								operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
+								matlist.add(0, operator);
+
+								try {
+									material = materialDAO.getMaterial(operator);
+									currentIngredient = material.getIngredientId();
+									ingredient = ingDAO.getIngredient(currentIngredient);
+									ingName = ingredient.getIngredientName();
+
+									for (int ing: ingredientArray){
+										if (ing == currentIngredient) {
+											match = true;
+											state++;
+											c.setWrite("RM20 8 \"placer " + ingName + "\" \"\" \"&3\"");
+										}
 									}
-								}
 
-							} catch (IDALException.DALException e) {
-								c.setWrite("RM20 8 \"Ikke fundet.\" \"\" \"&3\"");
+								} catch (IDALException.DALException e) {
+									c.setWrite("RM20 8 \"Ikke fundet.\" \"\" \"&3\"");
+									e.printStackTrace();
+									match = true;
+									state--;
+								}
+							} catch (Exception e){
+								c.setWrite("RM20 8 \"Skriv raavarebatch nr \" \"\" \"&3\"");
 								e.printStackTrace();
 								match = true;
-								state--;
 							}
+
 							if (!match) {
 								c.setWrite("RM20 8 \"ikke del af opskrift.\" \"\" \"&3\"");
 								state--;
