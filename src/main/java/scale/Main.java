@@ -93,7 +93,7 @@ public class Main {
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 							System.out.println(operator);
-							lablist.add(operator);
+							lablist.add(0, operator);
 
 							try {
 								user = userDAO.getUser(operator);
@@ -129,9 +129,40 @@ public class Main {
 								int product_id = recipe.getProductId();
 								product = productDAO.getProduct(product_id);
 								product_name = product.getProductName();
-								state++;
-								text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
-								c.setWrite(text);
+
+
+
+								ingredientArray = recipe.getIngList();
+								int ingSize = ingredientArray.size();
+
+								for (int i=0; i < ingSize; i++){
+									for (int ing: prodBatch.getMatList()){
+										if (ing == ingredientArray.get(i)){
+											ingredientArray.remove(i);
+										}
+									}
+								}
+								if (ingredientArray.size() == 0) {
+									text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
+									c.setWrite(text);
+									state--;
+								} else if (ingredientArray.size() == ingSize){
+									state++;
+									text = "RM20 8 \"Start " + product_name + "\" \"\" \"&3\"";
+									c.setWrite(text);
+									try {
+										prodBatchDAO.closeProdBatch(prodBatch,1);
+									} catch (IDALException.DALException e) {
+										e.printStackTrace();
+									}
+								} else {
+									state++;
+									text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
+									c.setWrite(text);
+								}
+
+
+
 							} catch (Exception e) {
 								c.setWrite("RM20 8 \"produkt batch findes ikke\" \"&3\"");
 								state--;
@@ -141,8 +172,6 @@ public class Main {
 						break;
 					case 4:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							ingredientArray = recipe.getIngList();
-
 							state++;
 							c.setWrite("T");
 						}
@@ -175,7 +204,7 @@ public class Main {
 						break;
 					case 7:
 						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
-							taralist.add(Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
+							taralist.add(0, Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
 							state++;
 							c.setWrite("RM20 8 \"Skriv raavarebatch nr\" \"\" \"&3\"");
 						}
@@ -184,7 +213,7 @@ public class Main {
 					case 8:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
-							matlist.add(operator);
+							matlist.add(0, operator);
 
 
 							try {
@@ -242,7 +271,7 @@ public class Main {
 							if ( expeded_nettoweight * (1 - tolerance) <= nettoweight ) {
 								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
 									c.setWrite("RM20 8 \"Remove netto\" \"\" \"&3\"");
-									nettolist.add(nettoweight);
+									nettolist.add(0, nettoweight);
 									state++;
 								} else {
 									c.setWrite("RM20 8 \""+ (nettoweight - expeded_nettoweight) +" for meget\" \"\" \"&3\"");
@@ -282,10 +311,24 @@ public class Main {
 							}
 							if (færdig) {
 								c.setWrite("RM20 8 \"du er færdig\" \"\" \"&3\"");
+								try {
+									prodBatchDAO.closeProdBatch(prodBatch, 2);
+								} catch (IDALException.DALException e) {
+									e.printStackTrace();
+								}
 								state++;
 							} else {
 								c.setWrite("RM20 8 \"Registreret\" \"\" \"&3\"");
 								state -= 8;
+								prodBatch.setLabList(lablist);
+								prodBatch.setMatList(matlist);
+								prodBatch.setNettoList(nettolist);
+								prodBatch.setTaraList(taralist);
+								try {
+									prodBatchDAO.finishProdBatch(prodBatch);
+								} catch (IDALException.DALException e) {
+									e.printStackTrace();
+								}
 							}
 						} else {
 							c.setWrite("RM20 8 \"Netto ikke fjernet\" \"\" \"&3\"");
@@ -296,15 +339,6 @@ public class Main {
 						break;
 					case 15:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							prodBatch.setLabList(lablist);
-							prodBatch.setMatList(matlist);
-							prodBatch.setNettoList(nettolist);
-							prodBatch.setTaraList(taralist);
-							try {
-								prodBatchDAO.finishProdBatch(prodBatch);
-							} catch (IDALException.DALException e) {
-								e.printStackTrace();
-							}
 							exit = true;
 							break;
 						}

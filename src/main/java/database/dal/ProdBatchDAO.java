@@ -119,7 +119,6 @@ public class ProdBatchDAO implements IProdBatchDAO {
 				statement.executeUpdate("UPDATE Råvare_Batches SET mængde = mængde - " + nettoList.get(i) + " WHERE råvare_batch_id = " + matList.get(i));
 			}
 
-			statement.executeUpdate("UPDATE Produkt_Batches SET status = 1 WHERE produkt_batch_id = " + prodBatch.getProdBatchId());
 
 			PreparedStatement ps;
 			for(int labTech: prodBatch.getLabList()){
@@ -131,6 +130,23 @@ public class ProdBatchDAO implements IProdBatchDAO {
 
 
 
+		}
+		catch (SQLException e) {
+			throw new DALException(e.getMessage());
+		}
+	}
+
+
+
+	@Override
+	public void closeProdBatch(IProdBatchDTO prodBatch, int state) throws DALException {
+
+		try(Connection c = createConnection()){
+			Statement statement = c.createStatement();
+
+
+
+			statement.executeUpdate("UPDATE Produkt_Batches SET status = "+ state +" WHERE produkt_batch_id = " + prodBatch.getProdBatchId());
 		}
 		catch (SQLException e) {
 			throw new DALException(e.getMessage());
