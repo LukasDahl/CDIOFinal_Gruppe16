@@ -82,10 +82,14 @@ public class Material {
         IMaterialDTO material = new MaterialDTO();
 
         try {
-        material.setMaterialBatchId(Integer.parseInt(jmaterial.getId()));
+            material.setMaterialBatchId(Integer.parseInt(jmaterial.getId()));
         } catch (NumberFormatException e){
             throw new IDALException.DALException("ID skal være et tal.");
         }
+        if (Integer.parseInt(jmaterial.getId()) == 0){
+            throw new IDALException.DALException("ID må ikke være 0.");
+        }
+
         java.util.Date utilDate = new java.util.Date();
         material.setDate(new java.sql.Date(utilDate.getTime()));
         if (Integer.parseInt(jmaterial.getIngredientid()) ==0 ){
@@ -93,7 +97,7 @@ public class Material {
         }
         material.setIngredientId(Integer.parseInt(jmaterial.getIngredientid()));
         try {
-            material.setAmount(Double.parseDouble(jmaterial.getAmount()));
+            material.setAmount(Double.parseDouble(jmaterial.getAmount().replace(",",".")));
         } catch (NumberFormatException e){
             throw new IDALException.DALException("Mængde skal være et tal.");
         }

@@ -83,6 +83,9 @@ public class Product {
         } catch (NumberFormatException e){
             throw new IDALException.DALException("ID skal være et tal.");
         }
+        if (Integer.parseInt(jproduct.getId()) == 0){
+            throw new IDALException.DALException("ID må ikke være 0.");
+        }
         product.setProductName(jproduct.getName());
         return product;
     }

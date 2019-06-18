@@ -111,6 +111,9 @@ public class ProductBatch {
 		} catch (NumberFormatException e){
 			throw new IDALException.DALException("ID skal være et tal.");
 		}
+		if (Integer.parseInt(jprodbatch.getId()) == 0){
+			throw new IDALException.DALException("ID må ikke være 0.");
+		}
 		if (Integer.parseInt(jprodbatch.getRecipeid()) == 0) {
 			throw new IDALException.DALException("Vælg venligst en opskrift");
 		}

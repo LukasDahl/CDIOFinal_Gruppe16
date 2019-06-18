@@ -79,10 +79,13 @@ public class Ingredient {
 
     private static IIngredientDTO jsonToIng(JSONingredient jing) throws IDALException.DALException {
         IIngredientDTO ing = new IngredientDTO();
-        try{
+        try {
             ing.setIngredientId(Integer.parseInt(jing.getId()));
         } catch (NumberFormatException e){
             throw new IDALException.DALException("ID skal være et tal.");
+        }
+        if (Integer.parseInt(jing.getId()) == 0){
+            throw new IDALException.DALException("ID må ikke være 0.");
         }
         ing.setIngredientName(jing.getName());
         ing.setActive(false);
