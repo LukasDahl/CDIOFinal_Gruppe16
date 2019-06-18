@@ -16,13 +16,26 @@
       </driver-properties>
     </data-source>
     <data-source source="LOCAL" name="s160068-Linux" uuid="b22eb632-605a-463e-bc10-c9392a003965">
-      <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com/s160068</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="CONVERT_TO_NULL" />
+        <property name="tinyInt1isBit" value="false" />
+        <property name="characterEncoding" value="utf8" />
+        <property name="characterSetResults" value="utf8" />
+        <property name="yearIsDateType" value="false" />
+      </driver-properties>
+    </data-source>
+    <data-source source="LOCAL" name="s160068-Windows" uuid="889d38d9-573c-49f1-a121-5d555cc41d65">
+      <driver-ref>mysql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://ec2-52-30-211-3.eu-west-1.compute.amazonaws.com:3306/s160068</jdbc-url>
+      <driver-properties>
+        <property name="autoReconnect" value="true" />
+        <property name="zeroDateTimeBehavior" value="convertToNull" />
         <property name="tinyInt1isBit" value="false" />
         <property name="characterEncoding" value="utf8" />
         <property name="characterSetResults" value="utf8" />

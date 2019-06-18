@@ -34,7 +34,9 @@ function loadProductBatches() {
     });
 }
 function generateProdBatchHTML(prod) {
-    return '<tr class="list"><td class="list">' + prod.id +  '</td>' +
+    return '<tr class="list"  onclick="loadSingleProdBatch('+ prod.id + ')"> ' +
+
+        '<td class="list">' + prod.id +  '</td>' +
         '<td class="list">' + prod.recipeid + ' - ' + prod.productName + '</td>' +
         '<td class="list">' + prod.date + '</td>';
 }
@@ -48,4 +50,36 @@ function getRecipeNames() {
             $dropdown.append($("<option />").val(this.id).text(this.id + " " + this.product));
         });
     });
+}
+
+function loadSingleProdBatch(prodBatch) {
+    $.get('rest/productBatch/single/'+prodBatch, function (data, textStatus, req) {
+        $("#bodytest").empty();
+        $('#bodytest').append(generateSingleProdBatchHTML(data));
+
+    });
+}
+function generateSingleProdBatchHTML(prodBatch) {
+    var r = '' +
+        '    <h2 class="center">Produktbatch: '+ prodBatch.id + '</h2>';
+
+    r +='<table class="list">' +
+        '    <thead>' +
+        '         <tr class="list">' +
+        '              <th class="list">R&aring;vare</th>' +
+        '              <th class="list">M&aelig;ngde</th>' +
+        '              <th class="list">Leverand&oslash;r</th>' +
+        '              <th class="list">Vejet af</th>' +
+        '              <th class="list">Tidspunkt</th>' +
+        '        </tr>' +
+        '    </thead>' +
+        '    <tbody>';
+
+    $.each(prodBatch.materials, function (i, elt) {
+        r += '<tr class="list"><td class="list">' + prodBatch.materials[i] + ' - ' + prodBatch.ingnames[i] + '<td class="list">' + prodBatch.amounts[i] + '<td class="list">' + prodBatch.suppliers[i] + '<td class="list">' + prodBatch.labos[i] + '<td class="list">' + prodBatch.dates[i]+ '</tr>';
+    });
+
+    r +='    </tbody>' +
+        '</table><br>';
+    return r;
 }

@@ -24,16 +24,17 @@ public class IngredientHistory {
         return inghisToJSON(ings);
    }
 
-    private static ArrayList<JSONingredientHistory> inghisToJSON(List<IIngredientHistoryDTO> ings){
+    private static ArrayList<JSONingredientHistory> inghisToJSON(List<IIngredientHistoryDTO> ings) throws IDALException.DALException {
         JSONingredientHistory jing;
         String date;
         ArrayList<JSONingredientHistory> jings = new ArrayList<>();
+        IUserDAO userDAO = UserDAO.getInstance();
         for (IIngredientHistoryDTO ing: ings){
             date = new SimpleDateFormat("dd-MM-yyyy").format(ing.getDate());
             jing = new JSONingredientHistory();
             jing.setId("" + ing.getIngredientId());
             jing.setName(ing.getIngredientName());
-            jing.setUserID("" + ing.getUserId());
+            jing.setUserID(userDAO.getUser(ing.getUserId()).getIni());
 
             jing.setDate(date);
             jings.add(jing);

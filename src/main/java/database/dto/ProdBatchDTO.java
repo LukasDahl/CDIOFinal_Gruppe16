@@ -2,6 +2,7 @@ package database.dto;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class ProdBatchDTO implements Serializable, IProdBatchDTO {
@@ -13,6 +14,7 @@ public class ProdBatchDTO implements Serializable, IProdBatchDTO {
 	private List<Integer> labList;
 	private List<Double> nettoList;
 	private List<Double> taraList;
+	private List<Timestamp> dateList;
 
 	@Override
 	public int getProdBatchId(){
@@ -81,6 +83,16 @@ public class ProdBatchDTO implements Serializable, IProdBatchDTO {
 	@Override
 	public void setTaraList(List<Double> taraList) {
 		this.taraList = taraList;
+	}
+
+	@Override
+	public List<Timestamp> getDateList() {
+		return dateList;
+	}
+
+	@Override
+	public void setDateList(List<Timestamp> dateList) {
+		this.dateList = dateList;
 	}
 
 	@Override

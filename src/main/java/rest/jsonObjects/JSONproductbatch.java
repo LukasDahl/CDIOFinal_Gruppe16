@@ -6,14 +6,13 @@ public class JSONproductbatch {
     String recipeid;
     String status;
     String date;
-
-    public JSONproductbatch(String id, String productName, String recipeid, String status, String date) {
-        this.id = id;
-        this.productName = productName;
-        this.recipeid = recipeid;
-        this.status = status;
-        this.date = date;
-    }
+    String user_id;
+    String[] materials;
+    String[] ingnames;
+    String[] amounts;
+    String[] suppliers;
+    String[] labos;
+    String[] dates;
 
     public JSONproductbatch() {
     }
@@ -56,5 +55,61 @@ public class JSONproductbatch {
 
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String[] getMaterials() {
+        return materials;
+    }
+
+    public void setMaterials(String[] materials) {
+        this.materials = materials;
+    }
+
+    public String[] getIngnames() {
+        return ingnames;
+    }
+
+    public void setIngnames(String[] ingnames) {
+        this.ingnames = ingnames;
+    }
+
+    public String[] getAmounts() {
+        return amounts;
+    }
+
+    public void setAmounts(String[] amounts) {
+        this.amounts = amounts;
+    }
+
+    public String[] getSuppliers() {
+        return suppliers;
+    }
+
+    public void setSuppliers(String[] suppliers) {
+        this.suppliers = suppliers;
+    }
+
+    public String[] getLabos() {
+        return labos;
+    }
+
+    public void setLabos(String[] labos) {
+        this.labos = labos;
+    }
+
+    public String[] getDates() {
+        return dates;
+    }
+
+    public void setDates(String[] dates) {
+        this.dates = dates;
     }
 }

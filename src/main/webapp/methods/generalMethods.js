@@ -122,7 +122,7 @@ function loadCurrentUser() {
 }
 
 function currentUserHTML(user) {
-    return $('#currentuser').append('' + user.id + ' - ' + user.username + ' - ' + user.role);
+    return $('#currentuser').append('' + user.id + ' - ' + user.ini + ' - ' + user.role);
 }
 
 function laboAdmin() {

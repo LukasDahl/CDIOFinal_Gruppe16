@@ -1,6 +1,7 @@
 package database.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface IProdBatchDTO {
@@ -35,4 +36,8 @@ public interface IProdBatchDTO {
 	List<Double> getTaraList();
 
 	void setTaraList(List<Double> taraList);
+
+	List<Timestamp> getDateList();
+
+	void setDateList(List<Timestamp> dateList);
 }

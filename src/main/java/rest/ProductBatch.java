@@ -18,7 +18,7 @@ public class ProductBatch {
 
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
-	public Response addProdBatchJson(JSONproductbatch jprodbatch) {
+	public Response addProdBatchJson(JSONproductbatchSimple jprodbatch) {
 		IProdBatchDTO prodbatch;
 		try {
 			prodbatch = jsonToProdbatch(jprodbatch);
@@ -48,12 +48,62 @@ public class ProductBatch {
 	public JSONproductbatch getSingleProdBatch(@PathParam("value") String id) throws IDALException.DALException {
 		IProdBatchDAO prodBatchDAO = ProdBatchDAO.getInstance();
 		IProdBatchDTO prodbatch = prodBatchDAO.getProdBatch(Integer.parseInt(id));
-		List<IProdBatchDTO> prodbatches = new ArrayList<>();
-		prodbatches.add(prodbatch);
-		return prodbatchToJSON(prodbatches).get(0);
+		IMaterialDAO materialDAO = MaterialDAO.getInstance();
+		IIngredientDAO ingredientDAO = IngredientDAO.getInstance();
+		IUserDAO userDAO = UserDAO.getInstance();
+
+		List<IIngredientDTO> ings = ingredientDAO.getIngredientList();
+		List<IMaterialDTO> materials = materialDAO.getMaterialList();
+		List<IUserDTO> users = userDAO.getUserList();
+
+		JSONproductbatch jprodbatch = new JSONproductbatch();
+
+		jprodbatch.setId("" + prodbatch.getProdBatchId());
+		jprodbatch.setRecipeid("" + prodbatch.getRecipeId());
+		jprodbatch.setUser_id("" + prodbatch.getUserId());
+
+		jprodbatch.setDate(new SimpleDateFormat("dd-MM-yyyy").format(prodbatch.getDate()));
+
+		String[] materialids = new String[prodbatch.getMatList().size()];
+		String[] ingnames = new String[prodbatch.getMatList().size()];
+		String[] amounts = new String[prodbatch.getMatList().size()];
+		String[] suppliers = new String[prodbatch.getMatList().size()];
+		String[] labos = new String[prodbatch.getMatList().size()];
+		String[] dates = new String[prodbatch.getMatList().size()];
+
+		for (int i = 0; i < prodbatch.getMatList().size(); i++){
+			materialids[i] = "" + prodbatch.getMatList().get(i);
+			amounts[i] = "" + prodbatch.getNettoList().get(i);
+			dates[i] = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(prodbatch.getDateList().get(i));
+			for (int j = 0; j < materials.size(); j++) {
+				if (materials.get(j).getMaterialBatchId() == prodbatch.getMatList().get(i)) {
+					for (int k = 0; k < ings.size(); k++) {
+						if (ings.get(k).getIngredientId() == materials.get(j).getIngredientId()){
+							ingnames[i] = ings.get(k).getIngredientName();
+						}
+					}
+					suppliers[i] = materials.get(j).getSupplier();
+				}
+			}
+			System.out.printf(prodbatch.getLabList().size() + "");
+			for (int j = 0; j < users.size(); j++) {
+				if (users.get(j).getUserId() == prodbatch.getLabList().get(i)){
+					labos[i] = users.get(j).getIni();
+				}
+
+			}
+		}
+		jprodbatch.setMaterials(materialids);
+		jprodbatch.setIngnames(ingnames);
+		jprodbatch.setAmounts(amounts);
+		jprodbatch.setSuppliers(suppliers);
+		jprodbatch.setLabos(labos);
+		jprodbatch.setDates(dates);
+
+		return jprodbatch;
 	}
 
-	private static IProdBatchDTO jsonToProdbatch(JSONproductbatch jprodbatch) throws IDALException.DALException {
+	private static IProdBatchDTO jsonToProdbatch(JSONproductbatchSimple jprodbatch) throws IDALException.DALException {
 		IProdBatchDTO prodbatch = new ProdBatchDTO();
 
 		try {

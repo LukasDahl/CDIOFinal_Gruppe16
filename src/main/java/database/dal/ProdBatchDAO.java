@@ -1,6 +1,7 @@
 package database.dal;
 
 import database.dto.*;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,17 +154,19 @@ public class ProdBatchDAO implements IProdBatchDAO {
 
 			rs = st.executeQuery("SELECT * FROM Produkt_Batches_Råvare_Batches WHERE produkt_batch_id = "+ prodBatchId);
 			List<Integer> matList = new ArrayList<>();
+			List<Double> amountList = new ArrayList<>();
+			List<Integer> userList = new ArrayList<>();
+			List<Timestamp> tsList = new ArrayList<>();
 			while (rs.next()){
 				matList.add(rs.getInt("råvare_batch_id"));
+				amountList.add(rs.getDouble("nettovægt"));
+				userList.add(rs.getInt("operatør_id"));
+				tsList.add(rs.getTimestamp("ts"));
 			}
 			prodBatch.setMatList(matList);
-
-			rs = st.executeQuery("SELECT * FROM Laboranter_Produkt_Batches WHERE produkt_batch_id = "+ prodBatchId);
-			List<Integer> labList = new ArrayList<>();
-			while (rs.next()){
-				labList.add(rs.getInt("bruger_id"));
-			}
-			prodBatch.setLabList(labList);
+			prodBatch.setNettoList(amountList);
+			prodBatch.setLabList(userList);
+			prodBatch.setDateList(tsList);
 
 		} catch (SQLException e) {
 			throw new DALException(e.getMessage());
@@ -174,7 +177,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 
 	@Override
 	public List<IProdBatchDTO> getProdBatchList() throws DALException {
-		IProdBatchDTO prodBatch = new ProdBatchDTO();
+		IProdBatchDTO prodBatch;
 		List<IProdBatchDTO> prodBatchList = new ArrayList<>();
 
 		try (Connection c = createConnection()){
@@ -184,6 +187,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 
 			while (rs.next())
 			{
+				prodBatch = new ProdBatchDTO();
 				prodBatch.setProdBatchId(rs.getInt("produkt_batch_id"));
 				prodBatch.setRecipeId(rs.getInt("opskrift_id"));
 				prodBatch.setUserId(rs.getInt("bruger_id"));
