@@ -102,7 +102,7 @@ function generateSingleProdBatchHTML(prodBatch) {
         '    <tbody>';
 
     $.each(prodBatch.materials, function (i, elt) {
-        r += '<tr class="list"><td class="list">' + prodBatch.materials[i] + ' - ' + prodBatch.ingnames[i] + '<td class="list">' + prodBatch.amounts[i] + '<td class="list">' + prodBatch.suppliers[i] + '<td class="list">' + prodBatch.labos[i] + '<td class="list">' + prodBatch.dates[i]+ '</tr>';
+        r += '<tr class="list"><td class="list">' + prodBatch.materials[i] + ' - ' + prodBatch.ingnames[i] + '<td class="list">' + prodBatch.amounts[i] + ' kg<td class="list">' + prodBatch.suppliers[i] + '<td class="list">' + prodBatch.labos[i] + '<td class="list">' + prodBatch.dates[i]+ '</tr>';
     });
 
     r +='    </tbody>' +

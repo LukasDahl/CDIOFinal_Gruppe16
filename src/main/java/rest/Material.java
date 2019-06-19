@@ -8,6 +8,7 @@ import rest.jsonObjects.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class Material {
+
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -118,7 +121,7 @@ public class Material {
             jmaterial = new JSONmaterial();
             jmaterial.setId("" + material.getMaterialBatchId());
             jmaterial.setIngredientid("" + material.getIngredientId());
-            jmaterial.setAmount("" + material.getAmount());
+            jmaterial.setAmount("" + df.format(material.getAmount()));
             jmaterial.setDate(date);
             jmaterial.setSupplier(material.getSupplier());
             try {

@@ -7,6 +7,7 @@ import rest.jsonObjects.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class Recipe {
+
+    private static DecimalFormat df = new DecimalFormat("0.000");
+    private static DecimalFormat df2 = new DecimalFormat("0.00");
 
     @POST
     @Produces(MediaType.TEXT_PLAIN)
@@ -131,8 +135,8 @@ public class Recipe {
 
                 for (int i = 0; i < recipe.getIngList().size(); i++){
                     ings[i] = "" + recipe.getIngList().get(i);
-                    amounts[i] = "" + recipe.getAmount().get(i);
-                    margins[i] = "" + recipe.getMargin().get(i);
+                    amounts[i] = "" + df.format(recipe.getAmount().get(i));
+                    margins[i] = "" + df2.format(recipe.getMargin().get(i));
                 }
                 jrecipe.setIngrediens(ings);
                 jrecipe.setMængde(amounts);

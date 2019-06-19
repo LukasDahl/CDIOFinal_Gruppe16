@@ -131,7 +131,7 @@ function generateSingleRecipeHTML(recipe) {
         '    <tbody>';
 
     $.each(recipe.ingrediens, function (i, elt) {
-        r += '<tr class="list"><td class="list">' + recipe.ingrediens[i] + '<td class="list">' + recipe.mængde[i] + '<td class="list">' + recipe.afvigelse[i]+ '</tr>';
+        r += '<tr class="list"><td class="list">' + recipe.ingrediens[i] + '<td class="list">' + recipe.mængde[i] + ' kg<td class="list">' + recipe.afvigelse[i]+ ' &#37;</tr>';
     });
 
     r +='    </tbody>' +
