@@ -23,14 +23,20 @@ public class Ingredient {
             return Response.status(Response.Status.BAD_REQUEST).entity("Ingrediensnavn ikke gyldigt").build();
         }
         IIngredientDTO ingDTO = new IngredientDTO();
+        IIngredientHistoryDTO inghisDTO = new IngredientHistoryDTO();
         try {
             ingDTO = jsonToIng(ing);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         IIngredientDAO ingDAO = IngredientDAO.getInstance();
+        IIngredientHistoryDAO inghisDAO = IngredientHistoryDAO.getInstance();
+        inghisDTO.setUserId(User.getCurrentUser());
+        inghisDTO.setIngredientName(ingDTO.getIngredientName());
+        inghisDTO.setIngredientId(ingDTO.getIngredientId());
         try {
             ingDAO.createIngredient(ingDTO);
+            inghisDAO.createIngredientEntry(inghisDTO);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -62,14 +68,20 @@ public class Ingredient {
             return Response.status(Response.Status.BAD_REQUEST).entity("Ingrediensnavn ikke gyldigt").build();
         }
         IIngredientDTO ingDTO = new IngredientDTO();
+        IIngredientHistoryDTO inghisDTO = new IngredientHistoryDTO();
         try {
             ingDTO = jsonToIng(ing);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         IIngredientDAO ingDAO = IngredientDAO.getInstance();
+        IIngredientHistoryDAO inghisDAO = IngredientHistoryDAO.getInstance();
+        inghisDTO.setUserId(User.getCurrentUser());
+        inghisDTO.setIngredientName(ingDTO.getIngredientName());
+        inghisDTO.setIngredientId(ingDTO.getIngredientId());
         try {
             ingDAO.updateIngredient(ingDTO);
+            inghisDAO.createIngredientEntry(inghisDTO);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
