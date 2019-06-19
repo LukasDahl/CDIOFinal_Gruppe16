@@ -19,15 +19,24 @@ public class Ingredient {
     @Produces(MediaType.TEXT_PLAIN)
     public Response addIngJson(JSONingredient ing) {
 
+        if(ing.getName().length() > 35 || ing.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Ingrediensnavn ikke gyldigt").build();
+        }
         IIngredientDTO ingDTO = new IngredientDTO();
+        IIngredientHistoryDTO inghisDTO = new IngredientHistoryDTO();
         try {
             ingDTO = jsonToIng(ing);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         IIngredientDAO ingDAO = IngredientDAO.getInstance();
+        IIngredientHistoryDAO inghisDAO = IngredientHistoryDAO.getInstance();
+        inghisDTO.setUserId(User.getCurrentUser());
+        inghisDTO.setIngredientName(ingDTO.getIngredientName());
+        inghisDTO.setIngredientId(ingDTO.getIngredientId());
         try {
             ingDAO.createIngredient(ingDTO);
+            inghisDAO.createIngredientEntry(inghisDTO);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -55,15 +64,24 @@ public class Ingredient {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateIngJson(JSONingredient ing) {
+        if(ing.getName().length() > 35 || ing.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Ingrediensnavn ikke gyldigt").build();
+        }
         IIngredientDTO ingDTO = new IngredientDTO();
+        IIngredientHistoryDTO inghisDTO = new IngredientHistoryDTO();
         try {
             ingDTO = jsonToIng(ing);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
         IIngredientDAO ingDAO = IngredientDAO.getInstance();
+        IIngredientHistoryDAO inghisDAO = IngredientHistoryDAO.getInstance();
+        inghisDTO.setUserId(User.getCurrentUser());
+        inghisDTO.setIngredientName(ingDTO.getIngredientName());
+        inghisDTO.setIngredientId(ingDTO.getIngredientId());
         try {
             ingDAO.updateIngredient(ingDTO);
+            inghisDAO.createIngredientEntry(inghisDTO);
         } catch (IDALException.DALException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -73,10 +91,13 @@ public class Ingredient {
 
     private static IIngredientDTO jsonToIng(JSONingredient jing) throws IDALException.DALException {
         IIngredientDTO ing = new IngredientDTO();
-        try{
+        try {
             ing.setIngredientId(Integer.parseInt(jing.getId()));
         } catch (NumberFormatException e){
             throw new IDALException.DALException("ID skal være et tal.");
+        }
+        if (Integer.parseInt(jing.getId()) == 0){
+            throw new IDALException.DALException("ID må ikke være 0.");
         }
         ing.setIngredientName(jing.getName());
         ing.setActive(false);

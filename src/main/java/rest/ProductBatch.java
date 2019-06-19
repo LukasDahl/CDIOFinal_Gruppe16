@@ -61,6 +61,7 @@ public class ProductBatch {
 		jprodbatch.setId("" + prodbatch.getProdBatchId());
 		jprodbatch.setRecipeid("" + prodbatch.getRecipeId());
 		jprodbatch.setUser_id("" + prodbatch.getUserId());
+		jprodbatch.setStatus("" + prodbatch.getStatus());
 
 		jprodbatch.setDate(new SimpleDateFormat("dd-MM-yyyy").format(prodbatch.getDate()));
 
@@ -111,6 +112,9 @@ public class ProductBatch {
 		} catch (NumberFormatException e){
 			throw new IDALException.DALException("ID skal være et tal.");
 		}
+		if (Integer.parseInt(jprodbatch.getId()) == 0){
+			throw new IDALException.DALException("ID må ikke være 0.");
+		}
 		if (Integer.parseInt(jprodbatch.getRecipeid()) == 0) {
 			throw new IDALException.DALException("Vælg venligst en opskrift");
 		}
@@ -133,6 +137,7 @@ public class ProductBatch {
 			jprodbatch = new JSONproductbatch();
 			jprodbatch.setId("" + prodbatch.getProdBatchId());
 			jprodbatch.setRecipeid("" + prodbatch.getRecipeId());
+			jprodbatch.setStatus("" + prodbatch.getStatus());
 			try {
 				jprodbatch.setProductName(productDAO.getProduct(recipeDAO.getRecipe(prodbatch.getRecipeId()).getProductId()).getProductName());
 			} catch (IDALException.DALException e) {

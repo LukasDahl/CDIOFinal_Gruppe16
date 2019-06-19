@@ -21,6 +21,10 @@ public interface IProdBatchDTO {
 
 	void setDate(Date date);
 
+	int getStatus();
+
+	void setStatus(int status);
+
 	List<Integer> getMatList();
 
 	void setMatList(List<Integer> matList);

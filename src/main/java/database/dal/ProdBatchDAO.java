@@ -167,6 +167,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			prodBatch.setRecipeId(rs.getInt("opskrift_id"));
 			prodBatch.setUserId(rs.getInt("bruger_id"));
 			prodBatch.setDate(rs.getDate("dato"));
+			prodBatch.setStatus(rs.getInt("status"));
 
 			rs = st.executeQuery("SELECT * FROM Produkt_Batches_Råvare_Batches WHERE produkt_batch_id = "+ prodBatchId);
 			List<Integer> matList = new ArrayList<>();
@@ -208,7 +209,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 				prodBatch.setRecipeId(rs.getInt("opskrift_id"));
 				prodBatch.setUserId(rs.getInt("bruger_id"));
 				prodBatch.setDate(rs.getDate("dato"));
-
+				prodBatch.setStatus(rs.getInt("status"));
 				prodBatchList.add(prodBatch);
 			}
 		} catch (SQLException e) {

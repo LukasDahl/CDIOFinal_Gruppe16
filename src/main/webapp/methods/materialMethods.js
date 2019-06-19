@@ -29,8 +29,8 @@ function loadMaterials() {
         });
         $("#materialtablehead").empty();
         $("#materialtablehead").append('<tr class="list">' +
-            '        <th class="list">RåvareID</th>' +
-            '        <th class="list">Navn</th>' +
+            '        <th class="list">Batch ID</th>' +
+            '        <th class="list">Ingrediens</th>' +
             '        <th class="list">Mængde</th>' +
             '        <th class="list">Leverandør</th>' +
             '        <th class="list">Dato</th>' +
@@ -40,7 +40,7 @@ function loadMaterials() {
 }
 function generateMaterialHTML(material) {
     return '<tr class="list" onclick="getMaterialUpdate('+ material.id +')"><td class="list">' + material.id + '</td>' +
-        '<td class="list">' + material.ingredientid + " " + material.ingredientname + '</td>' +
+        '<td class="list">' + material.ingredientid + " - " + material.ingredientname + '</td>' +
         '<td class="list">' + material.amount + '</td>' +
         '<td class="list">' + material.supplier + '</td>' +
         '<td class="list">' + material.date +'</td>';

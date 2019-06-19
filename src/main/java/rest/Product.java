@@ -18,7 +18,9 @@ public class Product {
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     public Response addProductJson(JSONproduct jproduct) {
-
+        if(jproduct.getName().length() > 35 || jproduct.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Produktnavn ikke gyldigt").build();
+        }
         IProductDTO product = null;
         try {
             product = jsonToProduct(jproduct);
@@ -56,6 +58,9 @@ public class Product {
     @Produces(MediaType.TEXT_PLAIN)
     public Response updateProductJson(JSONproduct jproduct) {
         IProductDTO product = null;
+        if(jproduct.getName().length() > 35 || jproduct.getName().length() < 2) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Produktnavn ikke gyldigt").build();
+        }
         try {
             product = jsonToProduct(jproduct);
         } catch (IDALException.DALException e) {
@@ -77,6 +82,9 @@ public class Product {
         product.setProductId(Integer.parseInt(jproduct.getId()));
         } catch (NumberFormatException e){
             throw new IDALException.DALException("ID skal være et tal.");
+        }
+        if (Integer.parseInt(jproduct.getId()) == 0){
+            throw new IDALException.DALException("ID må ikke være 0.");
         }
         product.setProductName(jproduct.getName());
         return product;
