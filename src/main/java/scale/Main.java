@@ -40,6 +40,8 @@ public class Main {
 			String text;
 			String product_name;
 			List<Integer> ingredientArray = new ArrayList<>();
+			List<Double> weightArray = new ArrayList<>();
+			List<Double> toloranceArray = new ArrayList<>();
 			List<Integer> matlist = new ArrayList<>(), lablist = new ArrayList<>();
 			List<Double> nettolist = new ArrayList<>(), taralist = new ArrayList<>();
 			int state = 0, currentIngredient = 0;
@@ -143,40 +145,32 @@ public class Main {
 									product_name = product.getProductName();
 									System.out.println("ind");
 
-
-									ingredientArray = recipe.getIngList();
-
-									int ingSize = ingredientArray.size();
-									List<Integer> currentIngList = prodBatch.getMatList();
-									int iIndex;
-
-									for (iIndex = 0; iIndex < ingSize; iIndex++) {
-										for (int ing : currentIngList) {
-											material = materialDAO.getMaterial(ing);
-											if (material.getIngredientId() == ingredientArray.get(iIndex)) {
-												ingredientArray.remove(iIndex);
-												iIndex--;
-											}
-										}
-									}
-									if (ingredientArray.size() == 0) {
-										System.out.println("2");
-										text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
+									if (prodBatch.getStatus() == 2){
+										text = "RM20 8 \"Allerede vejet\" \"\" \"&3\"";
 										c.setWrite(text);
 										state--;
-									} else if (ingredientArray.size() == ingSize) {
+									} else if (prodBatch.getStatus() == 1 ){
+
+										recipe = recipeDAO.getRecipe(prodBatch.getProdBatchId());
+										ingredientArray = recipe.getIngList();
+										weightArray = recipe.getAmount();
+										toloranceArray = recipe.getMargin();
+
+										List<Integer> currentIngList = prodBatch.getMatList();
+
+										for (int i = 0; i < currentIngList.size(); i++) {
+											ingredientArray.remove(0);
+											weightArray.remove(0);
+											toloranceArray.remove(0);
+										}
+										text = "RM20 8 \"Fortsæt " + product_name + "\" \"\" \"&3\"";
+										c.setWrite(text);
 										state++;
+									} else {
+										ingredientArray = recipe.getIngList();
 										text = "RM20 8 \"Start " + product_name + "\" \"\" \"&3\"";
 										c.setWrite(text);
-										try {
-											prodBatchDAO.closeProdBatch(prodBatch, 1);
-										} catch (IDALException.DALException e) {
-											e.printStackTrace();
-										}
-									} else {
 										state++;
-										text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
-										c.setWrite(text);
 									}
 								} catch (Exception e) {
 									System.out.println("inde");
@@ -206,7 +200,7 @@ public class Main {
 					case 5:
 						if (commands[0].equals("T") && commands[1].equals("S")) {
 							try {
-								currentIngredient = ingredientArray.get(ing_index);
+								currentIngredient = ingredientArray.get(0);
 								ingredient = ingDAO.getIngredient(currentIngredient);
 								ingName = ingredient.getIngredientName();
 								text = "RM20 8 \"Placer beholder til \" \""+ ingName +"\" \"&3\"";
@@ -242,12 +236,10 @@ public class Main {
 								operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 								matlist.add(0, operator);
 
-								for (int i = 0; i < recipe.getIngList().size(); i++){
-									if (recipe.getIngList().get(i) == currentIngredient){
-										expeded_nettoweight = recipe.getAmount().get(i);
-										tolerance = recipe.getMargin().get(i)/100;
-									}
-								}
+
+								expeded_nettoweight = weightArray.get(0);
+								tolerance = toloranceArray.get(0)/100;
+
 
 
 								try {
@@ -301,7 +293,7 @@ public class Main {
 					case 11:
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							nettoweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
-
+							System.out.println("vi er inde");
 							currentIngredient = material.getIngredientId();
 
 
