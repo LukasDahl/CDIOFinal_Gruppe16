@@ -91,7 +91,7 @@ public class Main {
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						text = "RM20 8 \"Indtast operatørnr.\" \"Tryk OK\" \"&3\"";
+						text = "RM20 8 \"Indtast operatørnr.\" \"Tryk derefter OK\" \"&3\"";
 						c.setWrite(clean(text));
 						state++;
 						commands[0] = "Unknown";
@@ -119,7 +119,7 @@ public class Main {
 									c.setWrite(clean("RM20 8 \"Findes ikke\" \"Tryk OK\" \"&3\""));
 								}
 							}catch (Exception e){
-								text = "RM20 8 \"Indtast operatørnr.\" \"Tryk OK\" \"&3\"";
+								text = "RM20 8 \"Indtast operatørnr.\" \"Tryk derefter OK\" \"&3\"";
 								c.setWrite(clean(text));
 							}
 						}
@@ -127,7 +127,7 @@ public class Main {
 						break;
 					case 2:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk OK\" \"&3\""));
+							c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk derefter OK\" \"&3\""));
 							state++;
 						}
 						commands[0] = "Unknown";
@@ -167,14 +167,14 @@ public class Main {
 											weightArray.remove(0);
 											toloranceArray.remove(0);
 										}
-										text = "RM20 8 \"Fortsaet " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
+										text = "RM20 8 \"Fortsaet: " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
 										c.setWrite(clean(text));
 										state++;
 									} else {
 										ingredientArray = recipe.getIngList();
 										weightArray = recipe.getAmount();
 										toloranceArray = recipe.getMargin();
-										text = "RM20 8 \"Start " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
+										text = "RM20 8 \"Start: " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
 										c.setWrite(clean(text));
 										state++;
 									}
@@ -191,7 +191,7 @@ public class Main {
 								}
 							} catch (Exception e){
 								System.out.println("hvad sker der her");
-								c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk OK\" \"&3\""));
+								c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk derefter OK\" \"&3\""));
 							}
 						}
 						commands[0] = "Unknown";
@@ -233,7 +233,7 @@ public class Main {
 							taralist.add(0, Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
 							state++;
 
-							c.setWrite(clean("RM20 8 \"Skriv råvarebatch nr\" \"Tryk OK\" \"&3\""));
+							c.setWrite(clean("RM20 8 \"Indtast råvarebatch nr\" \"Tryk derefter OK\" \"&3\""));
 						}
 						commands[0] = "Unknown";
 						break;
@@ -256,7 +256,7 @@ public class Main {
 									if (currentIngredient == material.getIngredientId()) {
 										if (material.getAmount() >= expeded_nettoweight) {
 											state++;
-											c.setWrite(clean("RM20 8 \"Placer " + ingName + "\" \"Tryk OK\" \"&3\""));
+											c.setWrite(clean("RM20 8 \"Placer " + ingName + "\" \"Tryk derefter OK\" \"&3\""));
 										} else {
 											c.setWrite(clean("RM20 8 \"Ikke nok " + ingName + "\" \"Tryk OK\" \"&3\""));
 											state--;
@@ -271,7 +271,7 @@ public class Main {
 									state--;
 								}
 							} catch (Exception e){
-								c.setWrite(clean("RM20 8 \"Skriv raavarebatch nr \" \"Tryk OK\" \"&3\""));
+								c.setWrite(clean("RM20 8 \"Indtast raavarebatch nr \" \"Tryk derefter OK\" \"&3\""));
 								e.printStackTrace();
 							}
 						}
@@ -305,18 +305,18 @@ public class Main {
 							currentIngredient = material.getIngredientId();
 
 
-							if ( expeded_nettoweight * (1 - tolerance) <= nettoweight ) {
-								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
-									c.setWrite(clean("RM20 8 \"Fjern beholderen\" \"Tryk OK\" \"&3\""));
+							if ( expeded_nettoweight * (1.0 - (tolerance/100.0)) <= nettoweight ) {
+								if ( nettoweight <= expeded_nettoweight * (1.0 + (tolerance/100.0))) {
+									c.setWrite(clean("RM20 8 \"Fjern beholderen\" \"Tryk derefter OK\" \"&3\""));
 									nettolist.add(0, nettoweight);
 									state++;
 								} else {
-									c.setWrite(clean("RM20 8 \"For meget\" \"Tryk OK\" \"&3\""));
-									state--;
+									c.setWrite(clean("RM20 8 \"For meget. Tjek vægt.\" \"Tryk derefter OK\" \"&3\""));
+									state -= 2;
 								}
 							} else {
-								c.setWrite(clean("RM20 8 \"For lidt\" \"Tryk OK\" \"&3\""));
-								state--;
+								c.setWrite(clean("RM20 8 \"For lidt . Tjek vægt.\" \"Tryk derefter OK\" \"&3\""));
+								state -= 2;
 							}
 							commands[0] = "Unknown";
 						}
