@@ -90,7 +90,7 @@ function getUserUpdate(i) {
 }
 function updateUserData() {
     $.get('rest/user/single/' + updateid, function (data, textStatus, req) {
-        document.getElementById('ID').value = data.id;
+        document.getElementById('ID').value = data.id   ;
         document.getElementById('username').value = data.username;
         document.getElementById('ini').value = data.ini;
         document.getElementById('cpr').value = data.cpr;

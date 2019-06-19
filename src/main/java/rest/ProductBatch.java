@@ -61,6 +61,7 @@ public class ProductBatch {
 		jprodbatch.setId("" + prodbatch.getProdBatchId());
 		jprodbatch.setRecipeid("" + prodbatch.getRecipeId());
 		jprodbatch.setUser_id("" + prodbatch.getUserId());
+		jprodbatch.setStatus("" + prodbatch.getStatus());
 
 		jprodbatch.setDate(new SimpleDateFormat("dd-MM-yyyy").format(prodbatch.getDate()));
 
@@ -136,6 +137,7 @@ public class ProductBatch {
 			jprodbatch = new JSONproductbatch();
 			jprodbatch.setId("" + prodbatch.getProdBatchId());
 			jprodbatch.setRecipeid("" + prodbatch.getRecipeId());
+			jprodbatch.setStatus("" + prodbatch.getStatus());
 			try {
 				jprodbatch.setProductName(productDAO.getProduct(recipeDAO.getRecipe(prodbatch.getRecipeId()).getProductId()).getProductName());
 			} catch (IDALException.DALException e) {

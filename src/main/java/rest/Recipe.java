@@ -76,7 +76,7 @@ public class Recipe {
         recipe.setDate(new java.sql.Date(utilDate.getTime()));
 
         List<Integer> pharmaList = new ArrayList<>();
-        pharmaList.add(2);
+        pharmaList.add(User.getCurrentUser());
         recipe.setPharmaList(pharmaList);
 
         List<Integer> ingredient = new ArrayList<>();

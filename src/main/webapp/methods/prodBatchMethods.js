@@ -26,7 +26,8 @@ function loadProductBatches() {
         $("#prodBatchtablehead").empty();
         $("#prodBatchtablehead").append('<th class="list">Produktbatch ID</th>' +
             '        <th class="list">Opskrift</th>' +
-            '        <th class="list">Dato</th>')
+            '        <th class="list">Dato</th>' +
+            '        <th class="list">Status</th>')
         $("#prodBatchtablebody").empty();
         $.each(data, function (i, elt) {
             $('#prodBatchtablebody').append(generateProdBatchHTML(elt));
@@ -38,7 +39,31 @@ function generateProdBatchHTML(prod) {
 
         '<td class="list">' + prod.id +  '</td>' +
         '<td class="list">' + prod.recipeid + ' - ' + prod.productName + '</td>' +
-        '<td class="list">' + prod.date + '</td>';
+        '<td class="list">' + prod.date + '</td>' +
+        '<td class="list" bgcolor="#' + statusColor(prod.status) + '">' + statusName(prod.status) + '</td>';
+}
+
+function statusColor(status) {
+    if (status == 0){
+        return "cs5c5c";
+    }
+    else if (status == 1) {
+        return "ffe699";
+    }
+    else {
+        return "8fbc8f";
+    }
+}
+function statusName(status) {
+    if (status == 0){
+        return "Startet";
+    }
+    else if (status == 1) {
+        return "Under produktion";
+    }
+    else {
+        return "Afsluttet";
+    }
 }
 
 function getRecipeNames() {
@@ -61,7 +86,8 @@ function loadSingleProdBatch(prodBatch) {
 }
 function generateSingleProdBatchHTML(prodBatch) {
     var r = '' +
-        '    <h2 class="center">Produktbatch: '+ prodBatch.id + '</h2>';
+        '    <h2 class="center">Produktbatch: '+ prodBatch.id + '</h2>' +
+        '    <h3 class="center">Status: ' + statusName(prodBatch.status) + '</h3>';
 
     r +='<table class="list">' +
         '    <thead>' +

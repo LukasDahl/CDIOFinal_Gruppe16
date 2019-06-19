@@ -10,6 +10,7 @@ public class ProdBatchDTO implements Serializable, IProdBatchDTO {
 	private int userId;
 	private int recipeId;
 	private Date date;
+	private int status;
 	private List<Integer> matList;
 	private List<Integer> labList;
 	private List<Double> nettoList;
@@ -47,6 +48,14 @@ public class ProdBatchDTO implements Serializable, IProdBatchDTO {
 	@Override
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	@Override
+	public int getStatus() {
+		return status;
+	}
+	@Override
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	@Override
 	public List<Integer> getMatList(){
