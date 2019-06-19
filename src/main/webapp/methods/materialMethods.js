@@ -41,7 +41,7 @@ function loadMaterials() {
 function generateMaterialHTML(material) {
     return '<tr class="list" onclick="getMaterialUpdate('+ material.id +')"><td class="list">' + material.id + '</td>' +
         '<td class="list">' + material.ingredientid + " - " + material.ingredientname + '</td>' +
-        '<td class="list">' + material.amount + '</td>' +
+        '<td class="list">' + material.amount + ' kg</td>' +
         '<td class="list">' + material.supplier + '</td>' +
         '<td class="list">' + material.date +'</td>';
 }

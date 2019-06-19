@@ -7,6 +7,7 @@ import rest.jsonObjects.*;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,8 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class ProductBatch {
+
+	private static DecimalFormat df = new DecimalFormat("0.000");
 
 	@POST
 	@Produces(MediaType.TEXT_PLAIN)
@@ -74,7 +77,7 @@ public class ProductBatch {
 
 		for (int i = 0; i < prodbatch.getMatList().size(); i++){
 			materialids[i] = "" + prodbatch.getMatList().get(i);
-			amounts[i] = "" + prodbatch.getNettoList().get(i);
+			amounts[i] = "" + df.format(prodbatch.getNettoList().get(i));
 			dates[i] = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(prodbatch.getDateList().get(i));
 			for (int j = 0; j < materials.size(); j++) {
 				if (materials.get(j).getMaterialBatchId() == prodbatch.getMatList().get(i)) {
