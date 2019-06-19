@@ -50,7 +50,7 @@ public class Main {
 			double bruttoweight = 0;
 			double expeded_nettoweight = 0;
 			double tolerance = 0;
-			boolean færdig, match = false, exit = false;
+			boolean færdig, exit = false;
 
 
 			try {
@@ -109,6 +109,7 @@ public class Main {
 									}
 
 								} catch (IDALException.DALException e) {
+
 									c.setWrite("RM20 8 \"Findes ikke\" \"\" \"&3\"");
 								}
 							}catch (Exception e){
@@ -131,6 +132,7 @@ public class Main {
 							try {
 
 								batch = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
+								System.out.println("try");
 
 								try {
 									prodBatch = prodBatchDAO.getProdBatch(batch);
@@ -139,19 +141,26 @@ public class Main {
 									int product_id = recipe.getProductId();
 									product = productDAO.getProduct(product_id);
 									product_name = product.getProductName();
+									System.out.println("ind");
 
 
 									ingredientArray = recipe.getIngList();
-									int ingSize = ingredientArray.size();
 
-									for (int i = 0; i < ingSize; i++) {
-										for (int ing : prodBatch.getMatList()) {
-											if (ing == ingredientArray.get(i)) {
-												ingredientArray.remove(i);
+									int ingSize = ingredientArray.size();
+									List<Integer> currentIngList = prodBatch.getMatList();
+									int iIndex;
+
+									for (iIndex = 0; iIndex < ingSize; iIndex++) {
+										for (int ing : currentIngList) {
+											material = materialDAO.getMaterial(ing);
+											if (material.getIngredientId() == ingredientArray.get(iIndex)) {
+												ingredientArray.remove(iIndex);
+												iIndex--;
 											}
 										}
 									}
 									if (ingredientArray.size() == 0) {
+										System.out.println("2");
 										text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
 										c.setWrite(text);
 										state--;
@@ -169,13 +178,19 @@ public class Main {
 										text = "RM20 8 \"" + product_name + "\" \"\" \"&3\"";
 										c.setWrite(text);
 									}
-
-
 								} catch (Exception e) {
-									c.setWrite("RM20 8 \"produkt batch findes ikke\" \"&3\"");
+									System.out.println("inde");
+									try {
+										Thread.sleep(100);
+									} catch (InterruptedException f) {
+										e.printStackTrace();
+									}
+									c.setWrite("RM20 8 \"batch findes ikke\" \"\" \"&3\"");
 									state--;
+									e.printStackTrace();
 								}
 							} catch (Exception e){
+								System.out.println("hvad sker der her");
 								c.setWrite("RM20 8 \"Indtast ProdBatchNr.\" \"\" \"&3\"");
 							}
 						}
@@ -321,7 +336,9 @@ public class Main {
 						}
 						break;
 					case 14:
-						if (bruttoweight == -taralist.get(0)) {
+						System.out.println(bruttoweight);
+						System.out.println(taralist);
+						if (bruttoweight == taralist.get(0)) {
 							færdig = true;
 							for (int i = 0; i < ingredientArray.size(); i++) {
 								if (currentIngredient == ingredientArray.get(i) ) {
@@ -357,9 +374,13 @@ public class Main {
 								} catch (IDALException.DALException e) {
 									e.printStackTrace();
 								}
+								matlist = new ArrayList<>();
+								lablist = new ArrayList<>();
+								nettolist = new ArrayList<>();
+								taralist = new ArrayList<>();
 							}
 						} else {
-							c.setWrite("RM20 8 \"Netto ikke fjernet\" \"\" \"&3\"");
+							c.setWrite("RM20 8 \"ikke fjernet\" \"\" \"&3\"");
 							state--;
 							state--;
 						}
