@@ -34,8 +34,8 @@ public class Main {
 			MaterialDAO materialDAO = new MaterialDAO();
 			IMaterialDTO material = null;
 			IngredientDAO ingDAO = new IngredientDAO();
-			IIngredientDTO ingredient;
-			String reply, ingName;
+			IIngredientDTO ingredient = null;
+			String reply, ingName = null;
 			String[] commands = {"Unknown", "Command"};
 			String text;
 			String product_name;
@@ -45,6 +45,7 @@ public class Main {
 			int state = 0, currentIngredient = 0;
 			int operator;
 			int batch;
+			int ing_index = 0;
 			double nettoweight;
 			double bruttoweight = 0;
 			double expeded_nettoweight = 0;
@@ -190,18 +191,16 @@ public class Main {
 					case 5:
 						if (commands[0].equals("T") && commands[1].equals("S")) {
 							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
-								e.printStackTrace();
-							}
-							text = "RM20 8 \"Placer beholderen\" \"\" \"&3\"";
+								currentIngredient = ingredientArray.get(ing_index);
+								ingredient = ingDAO.getIngredient(currentIngredient);
+								ingName = ingredient.getIngredientName();
+								text = "RM20 8 \"Placer beholder til \" \""+ ingName +"\" \"&3\"";
+								state++;
 							c.setWrite(text);
-							try {
-								Thread.sleep(100);
-							} catch (InterruptedException e) {
+							} catch (IIngredientDAO.DALException e) {
 								e.printStackTrace();
 							}
-							state++;
+
 						}
 						commands[0] = "Unknown";
 						break;
@@ -216,6 +215,7 @@ public class Main {
 						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
 							taralist.add(0, Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
 							state++;
+
 							c.setWrite("RM20 8 \"Skriv raavarebatch nr\" \"\" \"&3\"");
 						}
 						commands[0] = "Unknown";
@@ -224,39 +224,40 @@ public class Main {
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							try {
 
-
 								operator = Integer.parseInt(commands[2].substring(1, (commands[2].length() - 1)));
 								matlist.add(0, operator);
 
+								for (int i = 0; i < recipe.getIngList().size(); i++){
+									if (recipe.getIngList().get(i) == currentIngredient){
+										expeded_nettoweight = recipe.getAmount().get(i);
+										tolerance = recipe.getMargin().get(i)/100;
+									}
+								}
+
+
 								try {
 									material = materialDAO.getMaterial(operator);
-									currentIngredient = material.getIngredientId();
-									ingredient = ingDAO.getIngredient(currentIngredient);
-									ingName = ingredient.getIngredientName();
 
-									for (int ing: ingredientArray){
-										if (ing == currentIngredient) {
-											match = true;
+									if (currentIngredient == material.getIngredientId()) {
+										if (material.getAmount() >= expeded_nettoweight) {
 											state++;
 											c.setWrite("RM20 8 \"placer " + ingName + "\" \"\" \"&3\"");
+										} else {
+											c.setWrite("RM20 8 \"ikke nok " + ingName + "\" \"\" \"&3\"");
+											state--;
 										}
+									} else {
+										c.setWrite("RM20 8 \"ikke " + ingName + "\" \"\" \"&3\"");
+										state--;
 									}
-
 								} catch (IDALException.DALException e) {
 									c.setWrite("RM20 8 \"Ikke fundet.\" \"\" \"&3\"");
 									e.printStackTrace();
-									match = true;
 									state--;
 								}
 							} catch (Exception e){
 								c.setWrite("RM20 8 \"Skriv raavarebatch nr \" \"\" \"&3\"");
 								e.printStackTrace();
-								match = true;
-							}
-
-							if (!match) {
-								c.setWrite("RM20 8 \"ikke del af opskrift.\" \"\" \"&3\"");
-								state--;
 							}
 						}
 						commands[0] = "Unknown";
@@ -264,11 +265,20 @@ public class Main {
 					case 9:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							state++;
+							c.setWrite("P111 \"Forventet "+ expeded_nettoweight + " kg +/- " + tolerance + "%" + "\"");
 							commands[0] = "Unknown";
 						}
 						break;
 					case 10:
 						if (commands[0].equals("RM30")) {
+							c.setWrite("P110");
+
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+
 							c.setWrite("S");
 							state++;
 						}
@@ -279,16 +289,10 @@ public class Main {
 
 							currentIngredient = material.getIngredientId();
 
-							for (int i = 0; i < recipe.getIngList().size(); i++){
-								if (recipe.getIngList().get(i) == currentIngredient){
-									expeded_nettoweight = recipe.getAmount().get(i);
-									tolerance = recipe.getMargin().get(i)/100;
-								}
-							}
 
 							if ( expeded_nettoweight * (1 - tolerance) <= nettoweight ) {
 								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
-									c.setWrite("RM20 8 \"Remove netto\" \"\" \"&3\"");
+									c.setWrite("RM20 8 \"Fjern beholderen\" \"\" \"&3\"");
 									nettolist.add(0, nettoweight);
 									state++;
 								} else {
@@ -317,7 +321,7 @@ public class Main {
 						}
 						break;
 					case 14:
-						if (bruttoweight == 0) {
+						if (bruttoweight == -taralist.get(0)) {
 							færdig = true;
 							for (int i = 0; i < ingredientArray.size(); i++) {
 								if (currentIngredient == ingredientArray.get(i) ) {
@@ -329,19 +333,25 @@ public class Main {
 							}
 							if (færdig) {
 								c.setWrite("RM20 8 \"du er færdig\" \"\" \"&3\"");
+								prodBatch.setLabList(lablist);
+								prodBatch.setMatList(matlist);
+								prodBatch.setNettoList(nettolist);
+								prodBatch.setTaraList(taralist);
 								try {
 									prodBatchDAO.closeProdBatch(prodBatch, 2);
+									prodBatchDAO.finishProdBatch(prodBatch);
 								} catch (IDALException.DALException e) {
 									e.printStackTrace();
 								}
 								state++;
 							} else {
 								c.setWrite("RM20 8 \"Registreret\" \"\" \"&3\"");
-								state -= 8;
+								state -= 10;
 								prodBatch.setLabList(lablist);
 								prodBatch.setMatList(matlist);
 								prodBatch.setNettoList(nettolist);
 								prodBatch.setTaraList(taralist);
+								ing_index++;
 								try {
 									prodBatchDAO.finishProdBatch(prodBatch);
 								} catch (IDALException.DALException e) {
