@@ -123,7 +123,7 @@ public class ProdBatchDAO implements IProdBatchDAO {
 			PreparedStatement ps;
 			for(int labTech: prodBatch.getLabList()){
 				ps = c.prepareStatement("INSERT INTO Laboranter_Produkt_Batches VALUES (?,?)");
-				ps.setInt(1, labTech);
+				ps.setInt(1, prodBatch.getLabList().get(0));
 				ps.setInt(2, prodBatch.getProdBatchId());
 				ps.executeUpdate();
 			}

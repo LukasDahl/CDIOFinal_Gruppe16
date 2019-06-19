@@ -71,6 +71,10 @@ public class Main {
 				if (reply.equals("tom")) ;
 				else commands = reply.split("\\s+");
 
+				if (commands[0].equals("RM20") && commands[1].equals("C")) {
+					state = 0;
+				}
+
 				switch (state) {
 					case 0:
 						text = "RM30 \"\" \"\" \"\" \"\" \"OK\"";
@@ -151,7 +155,7 @@ public class Main {
 										state--;
 									} else if (prodBatch.getStatus() == 1 ){
 
-										recipe = recipeDAO.getRecipe(prodBatch.getProdBatchId());
+
 										ingredientArray = recipe.getIngList();
 										weightArray = recipe.getAmount();
 										toloranceArray = recipe.getMargin();
@@ -163,12 +167,14 @@ public class Main {
 											weightArray.remove(0);
 											toloranceArray.remove(0);
 										}
-										text = "RM20 8 \"Fortsæt " + product_name + "\" \"\" \"&3\"";
+										text = "RM20 8 \"Fortsæt " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
 										c.setWrite(text);
 										state++;
 									} else {
 										ingredientArray = recipe.getIngList();
-										text = "RM20 8 \"Start " + product_name + "\" \"\" \"&3\"";
+										weightArray = recipe.getAmount();
+										toloranceArray = recipe.getMargin();
+										text = "RM20 8 \"Start " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
 										c.setWrite(text);
 										state++;
 									}
@@ -192,6 +198,7 @@ public class Main {
 						break;
 					case 4:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
+							System.out.println("vi lander i 4");
 							state++;
 							c.setWrite("T");
 						}
@@ -199,8 +206,9 @@ public class Main {
 						break;
 					case 5:
 						if (commands[0].equals("T") && commands[1].equals("S")) {
+							System.out.println("vi lander i 5");
 							try {
-								currentIngredient = ingredientArray.get(0);
+								currentIngredient = ingredientArray.get(ing_index);
 								ingredient = ingDAO.getIngredient(currentIngredient);
 								ingName = ingredient.getIngredientName();
 								text = "RM20 8 \"Placer beholder til \" \""+ ingName +"\" \"&3\"";
@@ -237,8 +245,8 @@ public class Main {
 								matlist.add(0, operator);
 
 
-								expeded_nettoweight = weightArray.get(0);
-								tolerance = toloranceArray.get(0)/100;
+								expeded_nettoweight = weightArray.get(ing_index);
+								tolerance = toloranceArray.get(ing_index);
 
 
 
@@ -281,7 +289,7 @@ public class Main {
 							c.setWrite("P110");
 
 							try {
-								Thread.sleep(100);
+								Thread.sleep(200);
 							} catch (InterruptedException e) {
 								e.printStackTrace();
 							}
@@ -303,11 +311,11 @@ public class Main {
 									nettolist.add(0, nettoweight);
 									state++;
 								} else {
-									c.setWrite("RM20 8 \""+ (nettoweight - expeded_nettoweight) +" for meget\" \"\" \"&3\"");
+									c.setWrite("RM20 8 \"for meget\" \"\" \"&3\"");
 									state--;
 								}
 							} else {
-								c.setWrite("RM20 8 \""+ ( expeded_nettoweight - nettoweight ) +" for lidt\" \"\" \"&3\"");
+								c.setWrite("RM20 8 \"for lidt\" \"\" \"&3\"");
 								state--;
 							}
 							commands[0] = "Unknown";
@@ -356,13 +364,14 @@ public class Main {
 							} else {
 								c.setWrite("RM20 8 \"Registreret\" \"\" \"&3\"");
 								state -= 10;
-								prodBatch.setLabList(lablist);
 								prodBatch.setMatList(matlist);
 								prodBatch.setNettoList(nettolist);
 								prodBatch.setTaraList(taralist);
+								prodBatch.setLabList(lablist);
 								ing_index++;
 								try {
 									prodBatchDAO.finishProdBatch(prodBatch);
+									prodBatchDAO.closeProdBatch(prodBatch, 1);
 								} catch (IDALException.DALException e) {
 									e.printStackTrace();
 								}
@@ -372,7 +381,7 @@ public class Main {
 								taralist = new ArrayList<>();
 							}
 						} else {
-							c.setWrite("RM20 8 \"ikke fjernet\" \"\" \"&3\"");
+							c.setWrite("RM20 8 \"Beholder ikke fjernet\" \"\" \"&3\"");
 							state--;
 							state--;
 						}
