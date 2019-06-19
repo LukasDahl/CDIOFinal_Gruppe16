@@ -78,21 +78,21 @@ public class Main {
 				switch (state) {
 					case 0:
 						text = "RM30 \"\" \"\" \"\" \"\" \"OK\"";
-						c.setWrite(text);
+						c.setWrite(clean(text));
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 						text = "RM39 1";
-						c.setWrite(text);
+						c.setWrite(clean(text));
 						try {
 							Thread.sleep(100);
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
-						text = "RM20 8 \"Indtast operatornr.\" \"\" \"&3\"";
-						c.setWrite(text);
+						text = "RM20 8 \"Indtast operatørnr.\" \"Tryk OK\" \"&3\"";
+						c.setWrite(clean(text));
 						state++;
 						commands[0] = "Unknown";
 						break;
@@ -107,27 +107,27 @@ public class Main {
 								try {
 									user = userDAO.getUser(operator);
 									if (user.isPLeader() || user.isLabo() || user.isPharma()) {
-										text = "RM20 8 \"Operator: " + user.getUserName() + "\" \"\" \"&3\"";
-										c.setWrite(text);
+										text = "RM20 8 \"Operatør: " + user.getUserName() + "\" \"Tryk OK\" \"&3\"";
+										c.setWrite(clean(text));
 										state++;
 									} else {
-										c.setWrite("RM20 8 \"ingen adgang\" \"\" \"&3\"");
+										c.setWrite(clean("RM20 8 \"Ingen adgang\" \"Tryk OK\" \"&3\""));
 									}
 
 								} catch (IDALException.DALException e) {
 
-									c.setWrite("RM20 8 \"Findes ikke\" \"\" \"&3\"");
+									c.setWrite(clean("RM20 8 \"Findes ikke\" \"Tryk OK\" \"&3\""));
 								}
 							}catch (Exception e){
-								text = "RM20 8 \"Indtast operatornr.\" \"\" \"&3\"";
-								c.setWrite(text);
+								text = "RM20 8 \"Indtast operatørnr.\" \"Tryk OK\" \"&3\"";
+								c.setWrite(clean(text));
 							}
 						}
 						commands[0] = "Unknown";
 						break;
 					case 2:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
-							c.setWrite("RM20 8 \"Indtast ProdBatchNr.\" \"\" \"&3\"");
+							c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk OK\" \"&3\""));
 							state++;
 						}
 						commands[0] = "Unknown";
@@ -150,8 +150,8 @@ public class Main {
 									System.out.println("ind");
 
 									if (prodBatch.getStatus() == 2){
-										text = "RM20 8 \"Allerede vejet\" \"\" \"&3\"";
-										c.setWrite(text);
+										text = "RM20 8 \"Allerede vejet\" \"Tryk OK\" \"&3\"";
+										c.setWrite(clean(text));
 										state--;
 									} else if (prodBatch.getStatus() == 1 ){
 
@@ -167,15 +167,15 @@ public class Main {
 											weightArray.remove(0);
 											toloranceArray.remove(0);
 										}
-										text = "RM20 8 \"Fortsæt " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
-										c.setWrite(text);
+										text = "RM20 8 \"Fortsaet " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
+										c.setWrite(clean(text));
 										state++;
 									} else {
 										ingredientArray = recipe.getIngList();
 										weightArray = recipe.getAmount();
 										toloranceArray = recipe.getMargin();
 										text = "RM20 8 \"Start " + product_name + "\" \"Opskrift "+ recipe.getRecipeId() +"\" \"&3\"";
-										c.setWrite(text);
+										c.setWrite(clean(text));
 										state++;
 									}
 								} catch (Exception e) {
@@ -185,13 +185,13 @@ public class Main {
 									} catch (InterruptedException f) {
 										e.printStackTrace();
 									}
-									c.setWrite("RM20 8 \"batch findes ikke\" \"\" \"&3\"");
+									c.setWrite(clean("RM20 8 \"Batch findes ikke\" \"Tryk OK\" \"&3\""));
 									state--;
 									e.printStackTrace();
 								}
 							} catch (Exception e){
 								System.out.println("hvad sker der her");
-								c.setWrite("RM20 8 \"Indtast ProdBatchNr.\" \"\" \"&3\"");
+								c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk OK\" \"&3\""));
 							}
 						}
 						commands[0] = "Unknown";
@@ -213,7 +213,7 @@ public class Main {
 								ingName = ingredient.getIngredientName();
 								text = "RM20 8 \"Placer beholder til \" \""+ ingName +"\" \"&3\"";
 								state++;
-							c.setWrite(text);
+							c.setWrite(clean(text));
 							} catch (IIngredientDAO.DALException e) {
 								e.printStackTrace();
 							}
@@ -233,7 +233,7 @@ public class Main {
 							taralist.add(0, Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
 							state++;
 
-							c.setWrite("RM20 8 \"Skriv raavarebatch nr\" \"\" \"&3\"");
+							c.setWrite(clean("RM20 8 \"Skriv råvarebatch nr\" \"Tryk OK\" \"&3\""));
 						}
 						commands[0] = "Unknown";
 						break;
@@ -256,22 +256,22 @@ public class Main {
 									if (currentIngredient == material.getIngredientId()) {
 										if (material.getAmount() >= expeded_nettoweight) {
 											state++;
-											c.setWrite("RM20 8 \"placer " + ingName + "\" \"\" \"&3\"");
+											c.setWrite(clean("RM20 8 \"Placer " + ingName + "\" \"Tryk OK\" \"&3\""));
 										} else {
-											c.setWrite("RM20 8 \"ikke nok " + ingName + "\" \"\" \"&3\"");
+											c.setWrite(clean("RM20 8 \"Ikke nok " + ingName + "\" \"Tryk OK\" \"&3\""));
 											state--;
 										}
 									} else {
-										c.setWrite("RM20 8 \"ikke " + ingName + "\" \"\" \"&3\"");
+										c.setWrite(clean("RM20 8 \"Ikke " + ingName + "\" \"Tryk OK\" \"&3\""));
 										state--;
 									}
 								} catch (IDALException.DALException e) {
-									c.setWrite("RM20 8 \"Ikke fundet.\" \"\" \"&3\"");
+									c.setWrite(clean("RM20 8 \"Ikke fundet.\" \"Tryk OK\" \"&3\""));
 									e.printStackTrace();
 									state--;
 								}
 							} catch (Exception e){
-								c.setWrite("RM20 8 \"Skriv raavarebatch nr \" \"\" \"&3\"");
+								c.setWrite(clean("RM20 8 \"Skriv raavarebatch nr \" \"Tryk OK\" \"&3\""));
 								e.printStackTrace();
 							}
 						}
@@ -280,7 +280,7 @@ public class Main {
 					case 9:
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							state++;
-							c.setWrite("P111 \"Forventet "+ expeded_nettoweight + " kg +/- " + tolerance + "%" + "\"");
+							c.setWrite(clean("P111 \"Forventet "+ expeded_nettoweight + " kg +/- " + tolerance + "%" + "\""));
 							commands[0] = "Unknown";
 						}
 						break;
@@ -307,15 +307,15 @@ public class Main {
 
 							if ( expeded_nettoweight * (1 - tolerance) <= nettoweight ) {
 								if ( nettoweight <= expeded_nettoweight * (1 + tolerance)) {
-									c.setWrite("RM20 8 \"Fjern beholderen\" \"\" \"&3\"");
+									c.setWrite(clean("RM20 8 \"Fjern beholderen\" \"Tryk OK\" \"&3\""));
 									nettolist.add(0, nettoweight);
 									state++;
 								} else {
-									c.setWrite("RM20 8 \"for meget\" \"\" \"&3\"");
+									c.setWrite(clean("RM20 8 \"For meget\" \"Tryk OK\" \"&3\""));
 									state--;
 								}
 							} else {
-								c.setWrite("RM20 8 \"for lidt\" \"\" \"&3\"");
+								c.setWrite(clean("RM20 8 \"For lidt\" \"Tryk OK\" \"&3\""));
 								state--;
 							}
 							commands[0] = "Unknown";
@@ -349,7 +349,7 @@ public class Main {
 								}
 							}
 							if (færdig) {
-								c.setWrite("RM20 8 \"du er færdig\" \"\" \"&3\"");
+								c.setWrite(clean("RM20 8 \"Batchen er færdig\" \"Tryk OK\" \"&3\""));
 								prodBatch.setLabList(lablist);
 								prodBatch.setMatList(matlist);
 								prodBatch.setNettoList(nettolist);
@@ -362,7 +362,7 @@ public class Main {
 								}
 								state++;
 							} else {
-								c.setWrite("RM20 8 \"Registreret\" \"\" \"&3\"");
+								c.setWrite(clean("RM20 8 \"Bruttotest: OK\" \"Tryk OK\" \"&3\""));
 								state -= 10;
 								prodBatch.setMatList(matlist);
 								prodBatch.setNettoList(nettolist);
@@ -376,12 +376,11 @@ public class Main {
 									e.printStackTrace();
 								}
 								matlist = new ArrayList<>();
-								lablist = new ArrayList<>();
 								nettolist = new ArrayList<>();
 								taralist = new ArrayList<>();
 							}
 						} else {
-							c.setWrite("RM20 8 \"Beholder ikke fjernet\" \"\" \"&3\"");
+							c.setWrite(clean("RM20 8 \"Bruttotest: Fejl\" \"Fjern beholder\" \"&3\""));
 							state--;
 							state--;
 						}
@@ -395,5 +394,10 @@ public class Main {
 				}
 			}
 		}
+	}
+
+	private static String clean(String in){
+		in = in.replace("æ","ae").replace("ø", "o").replace("å", "aa");
+		return in;
 	}
 }
