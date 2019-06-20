@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Denne klasse skaber en connection til vægten, og starter read og write klasserne.
+ */
+
 package scale;
 
 import java.io.BufferedReader;

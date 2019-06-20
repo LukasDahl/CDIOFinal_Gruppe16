@@ -1,3 +1,8 @@
+/*
+Forfatter: August
+Ansvar: Denne klasse bruges til at læse svar fra vægten.
+ */
+
 package scale;
 
 import java.io.BufferedReader;
