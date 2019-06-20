@@ -1,3 +1,8 @@
+/*
+Forfatter: August
+Ansvar: Denne klasse bruges til at skrive commands til vægten.
+ */
+
 package scale;
 
 import java.io.DataOutputStream;

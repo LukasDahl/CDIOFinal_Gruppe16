@@ -1,3 +1,8 @@
+/*
+Forfatter: August and Søren
+Ansvar: Denne klasse er en state machine, som står for afvejningsproceduren, og for at sende dataen til databasen.
+ */
+
 package scale;
 
 import database.dal.IDALException;
@@ -67,6 +72,7 @@ public class Main {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
+				//Får svar fra vægten.
 				reply = c.getRead();
 				if (reply.equals("tom")) ;
 				else commands = reply.split("\\s+");
@@ -75,8 +81,9 @@ public class Main {
 					state = 0;
 				}
 
+				//State machine starter på 0.
 				switch (state) {
-					case 0:
+					case 0:		//Opsætter "OK" knappen, og beder om brugerID.
 						text = "RM30 \"\" \"\" \"\" \"\" \"OK\"";
 						c.setWrite(clean(text));
 						try {
@@ -96,7 +103,7 @@ public class Main {
 						state++;
 						commands[0] = "Unknown";
 						break;
-					case 1:
+					case 1:		//Checker om brugeren har de nødvændige rettigheder.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 
 							try {
@@ -125,14 +132,14 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 2:
+					case 2:		//Beder om ProdBatchNr.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							c.setWrite(clean("RM20 8 \"Indtast ProdBatchNr.\" \"Tryk derefter OK\" \"&3\""));
 							state++;
 						}
 						commands[0] = "Unknown";
 						break;
-					case 3:
+					case 3:		//Tjekker om alt er i orden med produkt batchet.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 
 							try {
@@ -196,7 +203,7 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 4:
+					case 4:		//Tarerer vægten.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							System.out.println("vi lander i 4");
 							state++;
@@ -204,7 +211,7 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 5:
+					case 5:		//Beder om beholderen til ingrediens.
 						if (commands[0].equals("T") && commands[1].equals("S")) {
 							System.out.println("vi lander i 5");
 							try {
@@ -221,14 +228,14 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 6:
+					case 6:		//Tarerer beholderens vægt.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							state++;
 							c.setWrite("T");
 						}
 						commands[0] = "Unknown";
 						break;
-					case 7:
+					case 7:		//Beder om råvarebatch nr, og gemmer beholderens taravægt.
 						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
 							taralist.add(0, Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
 							state++;
@@ -237,7 +244,7 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 8:
+					case 8:		//Tjekker om alt er ok med det givne råvarebatch.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							try {
 
@@ -277,14 +284,14 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 9:
+					case 9:		//Viser den forventede mængde der skal afvejes.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							state++;
 							c.setWrite(clean("P111 \"Forventet "+ expeded_nettoweight + " kg +/- " + tolerance + "%" + "\""));
 							commands[0] = "Unknown";
 						}
 						break;
-					case 10:
+					case 10:		//Beder vægten om at veje.
 						if (commands[0].equals("RM30")) {
 							c.setWrite("P110");
 
@@ -298,7 +305,8 @@ public class Main {
 							state++;
 						}
 						break;
-					case 11:
+					case 11:		//tjekker om der er for meget eller for lidt afvejet,
+									// og gemmer vægten hvis mængden er korrekt, og beder om at fjerne beholderen.
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							nettoweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
 							System.out.println("vi er inde");
@@ -321,21 +329,22 @@ public class Main {
 							commands[0] = "Unknown";
 						}
 						break;
-					case 12:
+					case 12:		//Beder vægten om at veje
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							c.setWrite("S");
 							state++;
 							commands[0] = "Unknown";
 						}
 						break;
-					case 13:
+					case 13:		//Gemmer vægten.
 						if (commands[0].equals("S") && commands[1].equals("S")) {
 							bruttoweight = Double.parseDouble(commands[2].substring(2, (commands[2].length() - 1)));
 							state++;
 							commands[0] = "Unknown";
 						}
 						break;
-					case 14:
+					case 14:		//Tjekker om alt er fjernet, og indsender dataen til databasen, hvis alt er ok.
+									//Sender brugeren tilbage til starten af afvejningen, hvis der er flere ingredienser at veje.
 						System.out.println(bruttoweight);
 						System.out.println(taralist);
 						if (bruttoweight == taralist.get(0)) {
@@ -386,7 +395,7 @@ public class Main {
 						}
 						commands[0] = "Unknown";
 						break;
-					case 15:
+					case 15:		//Sender brugeren tilbage til state 0, når alle ingredienser er afvejet.
 						if (commands[0].equals("RM20") && commands[1].equals("A")) {
 							exit = true;
 							break;
