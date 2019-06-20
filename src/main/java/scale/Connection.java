@@ -18,7 +18,7 @@ public class Connection{
 
 	public void createConnection() throws IOException{
 		Socket socket;
-		socket = new Socket("169.254.2.2", 8000);
+		socket = new Socket("169.254.2.3", 8000);
 		DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 		BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 

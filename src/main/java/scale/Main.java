@@ -78,7 +78,7 @@ public class Main {
 				else commands = reply.split("\\s+");
 
 				if (commands[0].equals("RM20") && commands[1].equals("C")) {
-					state = 0;
+					break;
 				}
 
 				//State machine starter på 0.
@@ -237,7 +237,7 @@ public class Main {
 						break;
 					case 7:		//Beder om råvarebatch nr, og gemmer beholderens taravægt.
 						if (commands[0].equals("T") && commands[1].equals("S") || commands[0].equals("RM20") && commands[1].equals("A")) {
-							taralist.add(0, Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1))));
+							taralist.add(0, Double.parseDouble(commands[2]));
 							state++;
 
 							c.setWrite(clean("RM20 8 \"Indtast råvarebatch nr\" \"Tryk derefter OK\" \"&3\""));
@@ -275,7 +275,6 @@ public class Main {
 								} catch (IDALException.DALException e) {
 									c.setWrite(clean("RM20 8 \"Ikke fundet.\" \"Tryk OK\" \"&3\""));
 									e.printStackTrace();
-									state--;
 								}
 							} catch (Exception e){
 								c.setWrite(clean("RM20 8 \"Indtast raavarebatch nr \" \"Tryk derefter OK\" \"&3\""));
@@ -308,7 +307,7 @@ public class Main {
 					case 11:		//tjekker om der er for meget eller for lidt afvejet,
 									// og gemmer vægten hvis mængden er korrekt, og beder om at fjerne beholderen.
 						if (commands[0].equals("S") && commands[1].equals("S")) {
-							nettoweight = Double.parseDouble(commands[2].substring(1, (commands[2].length() - 1)));
+							nettoweight = Double.parseDouble(commands[2]);
 							System.out.println("vi er inde");
 							currentIngredient = material.getIngredientId();
 
@@ -338,7 +337,7 @@ public class Main {
 						break;
 					case 13:		//Gemmer vægten.
 						if (commands[0].equals("S") && commands[1].equals("S")) {
-							bruttoweight = Double.parseDouble(commands[2].substring(2, (commands[2].length() - 1)));
+							bruttoweight = Double.parseDouble(commands[2]);
 							state++;
 							commands[0] = "Unknown";
 						}
