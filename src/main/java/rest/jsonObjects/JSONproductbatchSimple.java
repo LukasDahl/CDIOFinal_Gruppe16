@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Dette er en forsimplet version a productbatch JSON objektet.
+ */
+
 package rest.jsonObjects;
 
 public class JSONproductbatchSimple {

@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Denne klasse får information om ingredienser fra hjemmesiden, og sender dem videre til databasen.
+ */
+
 package rest.jsonObjects;
 
 public class JSONingredient {
