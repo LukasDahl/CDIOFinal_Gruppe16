@@ -1,7 +1,6 @@
-<!--
-Forfatter: Theis
-Ansvar: Filen indeholder generelle funktioner som anvendes på websiden heriblandt styrringen af login navigationsbaren.
--->
+// Forfatter: Theis
+// Ansvar: Filen indeholder generelle funktioner som anvendes på websiden heriblandt styrringen af login navigationsbaren.
+
 
 var userpriv = "0";
 function colorChosenUser() {

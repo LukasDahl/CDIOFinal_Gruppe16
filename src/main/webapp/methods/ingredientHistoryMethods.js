@@ -1,7 +1,6 @@
-<!--
-Forfatter: Lukas
-Ansvar: Filen indeholder funktioner som anvendes til at oprette og indlæse ingredienshistorikken på websiden.
--->
+
+// Forfatter: Lukas
+// Ansvar: Filen indeholder funktioner som anvendes til at oprette og indlæse ingredienshistorikken på websiden.
 
 function loadIngredientHistory() {
     $.get('rest/ingredientHistory/' + updateid, function (data, textStatus, req) {

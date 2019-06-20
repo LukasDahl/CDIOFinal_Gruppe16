@@ -1,7 +1,6 @@
-<!--
-Forfatter: Lukas
-Ansvar: Filen indeholder funktioner som anvendes til at oprette, opdatere, indhente og indlæse listen over opskrifter på websiden.
--->
+// Forfatter: Lukas
+// Ansvar: Filen indeholder funktioner som anvendes til at oprette, opdatere, indhente og indlæse listen over opskrifter på websiden.
+
 
 function setIng(x) {
     var i;
