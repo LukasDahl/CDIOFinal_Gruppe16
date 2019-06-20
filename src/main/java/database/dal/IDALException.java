@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen er oprettet som et interface med overordnede metoder for fejlhåndtering.
+*/
+
 package database.dal;
 
 public interface IDALException {

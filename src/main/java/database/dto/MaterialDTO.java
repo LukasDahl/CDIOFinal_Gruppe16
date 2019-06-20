@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer overførsel af data til databasen for råvareobjekter og bruger IMaterialDTO interfacet.
+*/
+
 package database.dto;
 
 import java.io.Serializable;

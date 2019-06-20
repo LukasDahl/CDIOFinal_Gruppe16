@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer overførsel af data til databasen for  objekter i ingredienshistorikken og bruger IIngredientHistoryDTO interfacet.
+*/
+
 package database.dto;
 
 import java.sql.Date;

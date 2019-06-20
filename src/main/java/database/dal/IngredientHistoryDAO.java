@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer data adgangen til databasen for historiske ingrediensobjekter og bruger IIngredientHistoryDAO interfacet.
+*/
+
 package database.dal;
 
 import database.dto.*;

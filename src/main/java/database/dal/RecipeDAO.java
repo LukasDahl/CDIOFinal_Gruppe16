@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer data adgangen til databasen for opskriftobjekter og bruger IRecipeDAO interfacet.
+*/
+
 package database.dal;
 
 import database.dto.*;

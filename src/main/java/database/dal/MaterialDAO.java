@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer data adgangen til databasen for råvareobjekter og bruger IMaterialsDAO interfacet.
+*/
+
 package database.dal;
 
 import database.dto.*;

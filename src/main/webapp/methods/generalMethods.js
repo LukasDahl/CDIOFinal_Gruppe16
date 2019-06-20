@@ -1,3 +1,8 @@
+<!--
+Forfatter: Lukas
+Ansvar: Filen indeholder generelle funktioner som anvendes på websiden heriblandt styrringen af login navigationsbaren.
+-->
+
 var userpriv = "0";
 function colorChosenUser() {
     document.getElementById("userMenu").className = "chosen";

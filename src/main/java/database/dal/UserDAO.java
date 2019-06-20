@@ -1,3 +1,8 @@
+/*
+Forfatter: Luksa
+Ansvar: Klassen håndterer data adgangen til databasen for brugerobjekter og bruger IUserDAO interfacet.
+*/
+
 package database.dal;
 
 import database.dto.*;

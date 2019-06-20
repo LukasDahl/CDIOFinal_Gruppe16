@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen er oprettet som interface og beskriver hvilke metoder der skal være i et "data access object" for ingredienser.
+*/
+
 package database.dal;
 
 import database.dto.*;

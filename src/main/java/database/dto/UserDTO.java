@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer overførsel af data til databasen for brugerobjekter og bruger IUserDTO interfacet.
+*/
+
 package database.dto;
 
 import java.io.Serializable;

@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer overførsel af data til databasen for produktobjekter og bruger IProductDTO interfacet.
+*/
+
 package database.dto;
 
 import java.io.Serializable;

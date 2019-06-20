@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen er oprettet som interface og beskriver hvilke metoder og atributter der skal være i et "data transfer object" for råvare.
+*/
+
 package database.dto;
 
 import java.sql.Date;

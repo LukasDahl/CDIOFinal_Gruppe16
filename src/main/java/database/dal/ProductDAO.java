@@ -1,3 +1,8 @@
+/*
+Forfatter: Lukas
+Ansvar: Klassen håndterer data adgangen til databasen for produktobjekter og bruger IProduktDAO interfacet.
+*/
+
 package database.dal;
 
 import database.dto.*;
