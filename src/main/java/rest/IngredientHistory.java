@@ -1,3 +1,8 @@
+/*
+Author: Lukas
+Ansvar: Denne klasse bruges til at gemme ændringer der laves til ingredienser.
+ */
+
 package rest;
 
 import database.dal.*;

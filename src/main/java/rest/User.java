@@ -1,3 +1,8 @@
+/*
+Author: Lukas
+Ansvar: Denne klasse bruges til at konvertere input fra hjemmesiden til databasen, og vice versa, når det kommer til brugere.
+ */
+
 package rest;
 
 import database.dal.*;
