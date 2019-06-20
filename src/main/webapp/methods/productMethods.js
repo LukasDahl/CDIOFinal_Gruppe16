@@ -1,3 +1,8 @@
+<!--
+Forfatter: Lukas
+Ansvar: Filen indeholder funktioner som anvendes til at oprette, opdatere, indhente og indlæse listen over produkter på websiden.
+-->
+
 function createProduct(){
 
     var $form = $("#newProd");

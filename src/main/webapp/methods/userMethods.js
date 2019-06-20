@@ -1,3 +1,8 @@
+<!--
+Forfatter: Lukas
+Ansvar: Filen indeholder funktioner som anvendes til at oprette, opdatere, indhente og indlæse listen over brugere på websiden.
+-->
+
 var updateid;
 $(document).ready(function () {
     loadUsers();

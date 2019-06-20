@@ -1,3 +1,8 @@
+<!--
+Forfatter: Lukas
+Ansvar: Filen indeholder funktioner som anvendes til at oprette, opdatere, indhente og indlæse listen over produktbatches på websiden.
+-->
+
 function createProductBatch(){
 
     var $form = $("#newProdBatch");

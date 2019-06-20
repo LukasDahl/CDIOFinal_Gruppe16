@@ -1,5 +1,5 @@
 <!--
-Forfatter: Lukas
+Forfatter: Theis
 Ansvar: Filen indeholder generelle funktioner som anvendes på websiden heriblandt styrringen af login navigationsbaren.
 -->
 
